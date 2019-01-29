@@ -1,13 +1,21 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, Text, View, TouchableHighlight} from 'react-native';
 
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Open up App.js tsdf o start working on your app!</Text>
+        <TouchableHighlight onPress={this.logIn} underlayColor="white">
+          <View style={styles.button}>
+            <Text style={styles.buttonText} >Log In</Text>
+          </View>
+        </TouchableHighlight>
       </View>
     );
+  }
+  // Log In Method
+  logIn = () => {
+    console.log("Claus")
   }
 }
 
@@ -18,4 +26,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  button: {
+   alignItems: 'center',
+   backgroundColor: 'lightblue'
+ },
+ buttonText: {
+   padding: 20,
+   color: 'white'
+ }
 });
