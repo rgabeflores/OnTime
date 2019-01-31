@@ -14,6 +14,7 @@ export class LoginScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.container}>
+          <Text style={styles.Title}> On Time </Text>
           <View style={styles.textInputContainer}>
             <TextInput
               placeholder={"Username"}
@@ -104,6 +105,10 @@ const styles = StyleSheet.create({
     margin: 5,
     width: "100%",
     minWidth: "75%"
+  },
+  Title:{
+    color:'lightblue',
+    fontSize:50
   },
   button: {
    alignItems: 'center',
