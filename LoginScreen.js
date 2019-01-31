@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableHighlight} from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight} from 'react-native';
 
 export class LoginScreen extends React.Component {
   constructor(props) {
@@ -14,6 +14,9 @@ export class LoginScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.container}>
+          <View>
+            <Image source={require('./assets/stopwatch_vector.png')} style={styles.image}/>
+          </View>
           <Text style={styles.Title}> On Time </Text>
           <View style={styles.textInputContainer}>
             <TextInput
@@ -79,8 +82,8 @@ function loginRequest(){
   request.send(params);
 }
 
-function getMoviesFromApiAsync() {
-  return fetch('https://facebook.github.io/react-native/movies.json')
+function asyncRequest(url) {
+  return fetch(url)
     .then((response) => response.json())
     .then((responseJson) => {
       return responseJson.movies;
@@ -109,6 +112,10 @@ const styles = StyleSheet.create({
   Title:{
     color:'lightblue',
     fontSize:50
+  },
+  image:{
+    width: 150,
+    height: 150
   },
   button: {
    alignItems: 'center',
