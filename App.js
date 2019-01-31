@@ -13,7 +13,8 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.inputContainer}>
+        <LoginScreen />
+        {/*<View style={styles.inputContainer}>
           <TextInput style={styles.inputs}
               placeholder="Username"
               underlineColorAndroid='transparent'
@@ -35,7 +36,7 @@ export default class App extends React.Component {
             <View style={styles.button}>
               <Text style={styles.buttonText} >Register</Text>
             </View>
-          </TouchableHighlight>
+          </TouchableHighlight>*/}
       </View>
     );
   }
