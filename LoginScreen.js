@@ -8,7 +8,6 @@ export class LoginScreen extends React.Component {
       username: "",
       password: ""
     };
-
   }
 
   render() {
@@ -17,19 +16,19 @@ export class LoginScreen extends React.Component {
         <View style={styles.container}>
           <View style={styles.textInputContainer}>
             <TextInput
-              placeholder = {"Username"}
+              placeholder={"Username"}
               onChangeText={(username) => this.setState({username})}
-              editable = {true}
-              maxLength = {40}
+              editable={true}
+              maxLength={40}
             />
           </View>
           <View style={styles.textInputContainer}>
             <TextInput
-              placeholder = {"Password"}
+              placeholder={"Password"}
               onChangeText={(password) => this.setState({password})}
-              password = {true}
-              editable = {true}
-              maxLength = {40}
+              password={true}
+              editable={true}
+              maxLength={40}
               secureTextEntry
             />
           </View>
@@ -47,33 +46,36 @@ export class LoginScreen extends React.Component {
       </View>
     );
   }
+
   // Log In Method
   logIn = (e) => {
     let username = this.state.username;
     let password = this.state.password;
     console.log("Username: " + username);
     console.log("Password: " + password);
-
-    // // Traditional XMLHttpRequest
-    // let request = new XMLHttpRequest();
-    // let params = 'username=test&password=password12345';
-    // let url = 'https://web.csulb.edu/~tebert/teaching/spring19/419-519/lectures.html';
-
-    // request.onreadystatechange = (e) => {
-    //   if (request.readyState !== 4) {
-    //     return;
-    //   }
-
-    //   if (request.status === 200) {
-    //     console.log('success', request.responseText);
-    //   } else {
-    //     console.warn('error');
-    //   }
-    // };
-
-    // request.open('POST', url);
-    // request.send(params);
   }
+}
+
+function loginRequest(){
+  // Traditional XMLHttpRequest
+  let request = new XMLHttpRequest();
+  let params = 'username=test&password=password12345';
+  let url = 'https://web.csulb.edu/~tebert/teaching/spring19/419-519/lectures.html';
+
+  request.onreadystatechange = (e) => {
+    if (request.readyState !== 4) {
+      return;
+    }
+
+    if (request.status === 200) {
+      console.log('success', request.responseText);
+    } else {
+      console.warn('error');
+    }
+  };
+
+  request.open('POST', url);
+  request.send(params);
 }
 
 function getMoviesFromApiAsync() {
