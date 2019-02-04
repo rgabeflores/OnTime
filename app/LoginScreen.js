@@ -6,13 +6,14 @@ export class LoginScreen extends React.Component {
     super(props);
     this.state = {
       username: "",
-      password: ""
+      password: "",
+      isTyping: false
     };
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={(this.state.isTyping) ? styles.containerCompressed : styles.container}>
         <View style={styles.container}>
           <View>
             <Image source={require('./assets/stopwatch_vector.png')} style={styles.image}/>
@@ -24,6 +25,8 @@ export class LoginScreen extends React.Component {
               onChangeText={(username) => this.setState({username})}
               editable={true}
               maxLength={40}
+              onFocus={this.compressViews.bind(this)}
+              onBlur={this.decompressViews.bind(this)}
             />
           </View>
           <View style={styles.textInputContainer}>
@@ -34,6 +37,8 @@ export class LoginScreen extends React.Component {
               editable={true}
               maxLength={40}
               secureTextEntry
+              onFocus={this.compressViews.bind(this)}
+              onBlur={this.decompressViews.bind(this)}
             />
           </View>
           <TouchableHighlight style={styles.buttonContainer} onPress={this.logIn.bind(this)} underlayColor="white">
@@ -57,6 +62,15 @@ export class LoginScreen extends React.Component {
     let password = this.state.password;
     console.log("Username: " + username);
     console.log("Password: " + password);
+  }
+
+  compressViews = (e) =>{
+    this.setState({isTyping : true})
+    console.log(this.state.isTyping);
+  }
+  decompressViews = (e) =>{
+    this.setState({isTyping : false})
+    console.log(this.state.isTyping);
   }
 }
 
@@ -99,6 +113,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  containerCompressed:{
+    flex: 1,
+    marginBottom: "35%",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'flex-start'
   },
   textInputContainer:{
     borderColor: 'lightblue',
