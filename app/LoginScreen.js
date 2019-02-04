@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight} from 'react-native';
+import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert} from 'react-native';
 
 export class LoginScreen extends React.Component {
   constructor(props) {
@@ -62,6 +62,8 @@ export class LoginScreen extends React.Component {
     let password = this.state.password;
     console.log("Username: " + username);
     console.log("Password: " + password);
+    loginRequest();
+
   }
 
   compressViews = (e) =>{
@@ -78,7 +80,7 @@ function loginRequest(){
   // Traditional XMLHttpRequest
   let request = new XMLHttpRequest();
   let params = 'username=test&password=password12345';
-  let url = 'https://web.csulb.edu/~tebert/teaching/spring19/419-519/lectures.html';
+  let url = 'https://us-central1-database-17029.cloudfunctions.net/helloWorld';
 
   request.onreadystatechange = (e) => {
     if (request.readyState !== 4) {
@@ -87,6 +89,7 @@ function loginRequest(){
 
     if (request.status === 200) {
       console.log('success', request.responseText);
+      Alert.alert(request.responseText);
     } else {
       console.warn('error');
     }
