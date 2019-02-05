@@ -63,7 +63,10 @@ export class LoginScreen extends React.Component {
     let password = this.state.password;
     console.log("Username: " + username);
     console.log("Password: " + password);
-
+    db.ref('/Test').push({
+      username: username,
+      password: password
+    });
   }
 
   compressViews = (e) =>{
