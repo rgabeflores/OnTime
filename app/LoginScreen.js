@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert} from 'react-native';
+import firebase from 'firebase';
 import { db } from './config/db';
 
 export class LoginScreen extends React.Component {
@@ -47,7 +48,7 @@ export class LoginScreen extends React.Component {
               <Text style={styles.buttonText} >Log In</Text>
             </View>
           </TouchableHighlight>
-          <TouchableHighlight style={styles.buttonContainer} onPress={this.logIn.bind(this)} underlayColor="white">
+          <TouchableHighlight style={styles.buttonContainer} onPress={this.register.bind(this)} underlayColor="white">
             <View style={styles.button}>
               <Text style={styles.buttonText} >Register</Text>
             </View>
@@ -66,11 +67,35 @@ export class LoginScreen extends React.Component {
     // db.ref('/x').push
     // this pushes '/x' as the 'folder name'
     // then stores the username as 'name'
-    db.ref('/TestAccounts').push({
+    firebase.auth().signInWithEmailAndPassword(username,password)
+    .catch(function(error){
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      alert(errorMessage);
+      console.log(error);
+    });
+  }
+  register = (e) => {
+
+      let username = this.state.username;
+      let password = this.state.password;
+      console.log("Username: " + username);
+      console.log("Password: " + password);
+      firebase.auth().createUserWithEmailAndPassword(username, password)
+      .catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      if (errorCode == 'auth/weak-password') {
+        alert('The password is too weak.');
+      } else {
+        alert(errorMessage);
+      }
+      console.log(error);
+    });
+    db.ref('/Accounts').push({
         name: username
     });
-    loginRequest();
-
   }
 
   compressViews = (e) =>{
