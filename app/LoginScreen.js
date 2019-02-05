@@ -63,7 +63,6 @@ export class LoginScreen extends React.Component {
     let password = this.state.password;
     console.log("Username: " + username);
     console.log("Password: " + password);
-    loginRequest();
 
   }
 
