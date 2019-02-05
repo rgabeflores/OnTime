@@ -1,6 +1,10 @@
 # OnTime
 
-OnTime is a time management and scheduling app for mobile devices.
+__OnTime__ is a time management and scheduling app for mobile devices.
+
+## Built With
+* [React Native](https://facebook.github.io/react-native/)
+* [Firebase](https://firebase.google.com/)
 
 ## Authors
 * [Carl Joshua Costa](https://github.com/totatmeister)

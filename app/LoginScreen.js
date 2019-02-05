@@ -63,6 +63,12 @@ export class LoginScreen extends React.Component {
     let password = this.state.password;
     console.log("Username: " + username);
     console.log("Password: " + password);
+    // db.ref('/x').push
+    // this pushes '/x' as the 'folder name'
+    // then stores the username as 'name'
+    db.ref('/TestAccounts').push({
+        name: username
+    });
     loginRequest();
 
   }
