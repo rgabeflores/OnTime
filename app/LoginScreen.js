@@ -94,8 +94,10 @@ export class LoginScreen extends React.Component {
       }
       console.log(error);
     });
-    db.ref('/Accounts').push({
-        name: username
+    // .child() specifies the entry name
+    db.ref('/Accounts').child("yeetfam").set({
+        username: username,
+        password: password
     });
   }
 
