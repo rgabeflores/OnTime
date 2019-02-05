@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert} from 'react-native';
+import { db } from './config/db';
 
 export class LoginScreen extends React.Component {
   constructor(props) {
