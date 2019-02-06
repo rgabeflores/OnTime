@@ -81,6 +81,21 @@ export class LoginScreen extends React.Component {
     this.setState({isTyping : false})
     console.log(this.state.isTyping);
   }
+
+  register = () =>{
+    firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(
+      email, password).catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          if (errorCode == 'auth/weak-password') {
+            alert('The password is too weak.');
+          } else {
+            alert(errorMessage);
+          }
+          console.log(error);
+        });
+  }
 }
 
 function loginRequest(){
