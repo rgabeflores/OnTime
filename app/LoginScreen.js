@@ -7,7 +7,7 @@ export class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
+      email: "",
       password: "",
       isTyping: false
     };
@@ -23,8 +23,8 @@ export class LoginScreen extends React.Component {
           <Text style={styles.Title}> On Time </Text>
           <View style={styles.textInputContainer}>
             <TextInput
-              placeholder={"Username"}
-              onChangeText={(username) => this.setState({username})}
+              placeholder={"Email"}
+              onChangeText={(email) => this.setState({email})}
               editable={true}
               maxLength={40}
               onFocus={this.compressViews.bind(this)}
@@ -60,14 +60,14 @@ export class LoginScreen extends React.Component {
 
   // Log In Method
   logIn = (e) => {
-    let username = this.state.username;
+    let email = this.state.email;
     let password = this.state.password;
-    console.log("Username: " + username);
+    console.log("Email: " + email);
     console.log("Password: " + password);
     // db.ref('/x').push
     // this pushes '/x' as the 'folder name'
-    // then stores the username as 'name'
-    firebase.auth().signInWithEmailAndPassword(username,password)
+    // then stores the Email as 'name'
+    firebase.auth().signInWithEmailAndPassword(email,password)
     .catch(function(error){
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -78,11 +78,11 @@ export class LoginScreen extends React.Component {
   }
   register = (e) => {
 
-      let username = this.state.username;
+      let email = this.state.email;
       let password = this.state.password;
-      console.log("Username: " + username);
+      console.log("Email: " + email);
       console.log("Password: " + password);
-      firebase.auth().createUserWithEmailAndPassword(username, password)
+      firebase.auth().createUserWithEmailAndPassword(email, password)
       .catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
@@ -94,9 +94,9 @@ export class LoginScreen extends React.Component {
       }
       console.log(error);
     });
-    // .child() specifies the entry name
+    // .child() specifies the entry name i.e. "yeetfam"
     db.ref('/Accounts').child("yeetfam").set({
-        username: username,
+        email: email,
         password: password
     });
   }
