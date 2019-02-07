@@ -27,6 +27,7 @@ export class LoginScreen extends React.Component {
               onChangeText={(email) => this.setState({email})}
               editable={true}
               maxLength={40}
+              keyboardType={"email-address"}
               onFocus={this.compressViews.bind(this)}
               onBlur={this.decompressViews.bind(this)}
             />
@@ -77,29 +78,35 @@ export class LoginScreen extends React.Component {
     loginRequest();
   }
   register = (e) => {
-
       let email = this.state.email;
       let password = this.state.password;
       console.log("Email: " + email);
       console.log("Password: " + password);
-      firebase.auth().createUserWithEmailAndPassword(email, password)
-      .catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      if (errorCode == 'auth/weak-password') {
-        alert('The password is too weak.');
-      } else {
-        alert(errorMessage);
-      }
-      console.log(error);
-    });
-    // .child() specifies the entry name i.e. "yeetfam"
-    db.ref('/Accounts').child("yeetfam").set({
-        email: email,
-        password: password
-    });
+      let firebaseAuth = firebase.auth();
+      let userCredential = firebaseAuth.createUserWithEmailAndPassword(email, password).then(
+        // This function is called when createUserWithEmailAndPassword() returns successfully
+        function(T){
+          let userID = firebaseAuth.currentUser.uid;
+
+          db.ref('Accounts/' + userID).set({
+            email: email,
+            password: password
+          });
+        },
+        // This function is called when createUserWithEmailAndPassword() returns with an error
+        function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          if (errorCode == 'auth/weak-password') {
+            alert('The password is too weak.');
+          } else {
+            alert(errorMessage);
+          }
+          console.log(error);
+      });
   }
+
 
   compressViews = (e) =>{
     this.setState({isTyping : true})
@@ -109,29 +116,6 @@ export class LoginScreen extends React.Component {
     this.setState({isTyping : false})
     console.log(this.state.isTyping);
   }
-}
-
-function loginRequest(){
-  // Traditional XMLHttpRequest
-  let request = new XMLHttpRequest();
-  let params = 'username=test&password=password12345';
-  let url = 'https://us-central1-database-17029.cloudfunctions.net/helloWorld';
-
-  request.onreadystatechange = (e) => {
-    if (request.readyState !== 4) {
-      return;
-    }
-
-    if (request.status === 200) {
-      console.log('success', request.responseText);
-      Alert.alert(request.responseText);
-    } else {
-      console.warn('error');
-    }
-  };
-
-  request.open('POST', url);
-  request.send(params);
 }
 
 function asyncRequest(url) {
