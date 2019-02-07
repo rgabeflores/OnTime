@@ -1,7 +1,19 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert} from 'react-native';
-import firebase from 'firebase';
-import { db } from './config/db';
+import React, { Component } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TextInput,
+  TouchableHighlight,
+  Alert,
+  StatusBar,
+  Platform
+} from "react-native";
+import firebase from "firebase";
+import { db } from "./config/db";
+import AppNavigator from "./navigation/AppNavigator";
+import SettingsScreen from "./screens/SettingsScreen";
 
 export class LoginScreen extends React.Component {
   constructor(props) {
@@ -9,57 +21,82 @@ export class LoginScreen extends React.Component {
     this.state = {
       username: "",
       password: "",
-      isTyping: false
+      isTyping: false,
+      loginSuccess: true
     };
   }
 
   render() {
-    return (
-      <View style={(this.state.isTyping) ? styles.containerCompressed : styles.container}>
+    if (this.state.loginSuccess) {
+      return (
         <View style={styles.container}>
-          <View>
-            <Image source={require('./assets/stopwatch_vector.png')} style={styles.image}/>
-          </View>
-          <Text style={styles.Title}> On Time </Text>
-          <View style={styles.textInputContainer}>
-            <TextInput
-              placeholder={"Username"}
-              onChangeText={(username) => this.setState({username})}
-              editable={true}
-              maxLength={40}
-              onFocus={this.compressViews.bind(this)}
-              onBlur={this.decompressViews.bind(this)}
-            />
-          </View>
-          <View style={styles.textInputContainer}>
-            <TextInput
-              placeholder={"Password"}
-              onChangeText={(password) => this.setState({password})}
-              password={true}
-              editable={true}
-              maxLength={40}
-              secureTextEntry
-              onFocus={this.compressViews.bind(this)}
-              onBlur={this.decompressViews.bind(this)}
-            />
-          </View>
-          <TouchableHighlight style={styles.buttonContainer} onPress={this.logIn.bind(this)} underlayColor="white">
-            <View style={styles.button}>
-              <Text style={styles.buttonText} >Log In</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight style={styles.buttonContainer} onPress={this.register.bind(this)} underlayColor="white">
-            <View style={styles.button}>
-              <Text style={styles.buttonText} >Register</Text>
-            </View>
-          </TouchableHighlight>
+          {Platform.OS === "ios" && <StatusBar barStyle="default" />}
+          <AppNavigator />
         </View>
-      </View>
-    );
+      );
+    } else {
+      return (
+        <View
+          style={
+            this.state.isTyping ? styles.containerCompressed : styles.container
+          }
+        >
+          <View style={styles.container}>
+            <View>
+              <Image
+                source={require("./assets/stopwatch_vector.png")}
+                style={styles.image}
+              />
+            </View>
+            <Text style={styles.Title}> On Time </Text>
+            <View style={styles.textInputContainer}>
+              <TextInput
+                placeholder={"Username"}
+                onChangeText={username => this.setState({ username })}
+                editable={true}
+                maxLength={40}
+                onFocus={this.compressViews.bind(this)}
+                onBlur={this.decompressViews.bind(this)}
+              />
+            </View>
+            <View style={styles.textInputContainer}>
+              <TextInput
+                placeholder={"Password"}
+                onChangeText={password => this.setState({ password })}
+                password={true}
+                editable={true}
+                maxLength={40}
+                secureTextEntry
+                onFocus={this.compressViews.bind(this)}
+                onBlur={this.decompressViews.bind(this)}
+              />
+            </View>
+            <TouchableHighlight
+              style={styles.buttonContainer}
+              onPress={this.logIn.bind(this)}
+              underlayColor="white"
+            >
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Log In</Text>
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.buttonContainer}
+              onPress={this.register.bind(this)}
+              underlayColor="white"
+            >
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Register</Text>
+              </View>
+            </TouchableHighlight>
+          </View>
+        </View>
+      );
+    }
   }
 
   // Log In Method
-  logIn = (e) => {
+  logIn = e => {
     let username = this.state.username;
     let password = this.state.password;
     console.log("Username: " + username);
@@ -67,115 +104,110 @@ export class LoginScreen extends React.Component {
     // db.ref('/x').push
     // this pushes '/x' as the 'folder name'
     // then stores the username as 'name'
-    firebase.auth().signInWithEmailAndPassword(username,password)
-    .catch(function(error){
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      alert(errorMessage);
-      console.log(error);
-    });
-    loginRequest();
-  }
-  register = (e) => {
-
-      let username = this.state.username;
-      let password = this.state.password;
-      console.log("Username: " + username);
-      console.log("Password: " + password);
-      firebase.auth().createUserWithEmailAndPassword(username, password)
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(username, password)
       .catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      if (errorCode == 'auth/weak-password') {
-        alert('The password is too weak.');
-      } else {
+        var errorCode = error.code;
+        var errorMessage = error.message;
         alert(errorMessage);
-      }
-      console.log(error);
-    });
+        console.log(error);
+      });
+    //loginRequest();
+    //handleLoginState();
+  };
+  register = e => {
+    let username = this.state.username;
+    let password = this.state.password;
+    console.log("Username: " + username);
+    console.log("Password: " + password);
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(username, password)
+      .catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        if (errorCode == "auth/weak-password") {
+          alert("The password is too weak.");
+        } else {
+          alert(errorMessage);
+        }
+        console.log(error);
+      });
     // .child() specifies the entry name
-    db.ref('/Accounts').child("yeetfam").set({
+    db.ref("/Accounts")
+      .child("yeetfam")
+      .set({
         username: username,
         password: password
-    });
-  }
+      });
+  };
 
-  compressViews = (e) =>{
-    this.setState({isTyping : true})
+  compressViews = e => {
+    this.setState({ isTyping: true });
     console.log(this.state.isTyping);
-  }
-  decompressViews = (e) =>{
-    this.setState({isTyping : false})
+  };
+  decompressViews = e => {
+    this.setState({ isTyping: false });
     console.log(this.state.isTyping);
-  }
-
-  register = () =>{
-    firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(
-      email, password).catch(function(error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          if (errorCode == 'auth/weak-password') {
-            alert('The password is too weak.');
-          } else {
-            alert(errorMessage);
-          }
-          console.log(error);
-        });
-  }
+  };
 }
 
-function loginRequest(){
+function loginRequest() {
   // Traditional XMLHttpRequest
   let request = new XMLHttpRequest();
-  let params = 'username=test&password=password12345';
-  let url = 'https://us-central1-database-17029.cloudfunctions.net/helloWorld';
+  let params = "username=test&password=password12345";
+  let url = "https://us-central1-database-17029.cloudfunctions.net/helloWorld";
 
-  request.onreadystatechange = (e) => {
+  request.onreadystatechange = e => {
     if (request.readyState !== 4) {
       return;
     }
 
-    if (request.status === 200) {
-      console.log('success', request.responseText);
+    if (request.status === 50) {
+      console.log("success", request.responseText);
       Alert.alert(request.responseText);
     } else {
-      console.warn('error');
+      console.warn("error");
     }
   };
 
-  request.open('POST', url);
+  request.open("POST", url);
   request.send(params);
 }
 
 function asyncRequest(url) {
   return fetch(url)
-    .then((response) => response.json())
-    .then((responseJson) => {
+    .then(response => response.json())
+    .then(responseJson => {
       return responseJson.movies;
     })
-    .catch((error) => {
+    .catch(error => {
       console.error(error);
     });
 }
 
+handleLoginState = e => {
+  this.setState({ loginSuccess: true });
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center"
   },
-  containerCompressed:{
+  containerCompressed: {
     flex: 1,
     marginBottom: "35%",
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'flex-start'
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "flex-start"
   },
-  textInputContainer:{
-    borderColor: 'lightblue',
+  textInputContainer: {
+    borderColor: "lightblue",
     borderWidth: 1,
     borderRadius: 30,
     padding: 15,
@@ -183,23 +215,22 @@ const styles = StyleSheet.create({
     width: "100%",
     minWidth: "75%"
   },
-  Title:{
-    color:'lightblue',
-    fontSize:50
+  Title: {
+    color: "lightblue",
+    fontSize: 50
   },
-  image:{
+  image: {
     width: 150,
     height: 150
   },
   button: {
-   alignItems: 'center',
-   backgroundColor: 'lightblue',
-   borderRadius: 30,
-
+    alignItems: "center",
+    backgroundColor: "lightblue",
+    borderRadius: 30
   },
   buttonText: {
     padding: 20,
-    color: 'white'
+    color: "white"
   },
   buttonContainer: {
     margin: 5,
