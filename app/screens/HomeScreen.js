@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, TextInput} from 'react-native';
-import { LoginScreen } from './screens/LoginScreen';
+import { StyleSheet, Text, View} from 'react-native';
 
-export default class App extends React.Component {
+export class HomeScreen extends React.Component {
   render() {
     return (
-      <LoginScreen/>
+      <View style={styles.container}>
+        <Text>This is the home screen</Text>
+      </View>
     );
   }
 }
@@ -18,3 +19,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   }
 });
+
+export default HomeScreen;

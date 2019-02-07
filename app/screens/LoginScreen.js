@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert} from 'react-native';
 import firebase from 'firebase';
-import { db } from './config/db';
+import { db } from '../config/db';
 
 export class LoginScreen extends React.Component {
   constructor(props) {
@@ -18,7 +18,7 @@ export class LoginScreen extends React.Component {
       <View style={(this.state.isTyping) ? styles.containerCompressed : styles.container}>
         <View style={styles.container}>
           <View>
-            <Image source={require('./assets/stopwatch_vector.png')} style={styles.image}/>
+            <Image source={require('../assets/stopwatch_vector.png')} style={styles.image}/>
           </View>
           <Text style={styles.Title}> On Time </Text>
           <View style={styles.textInputContainer}>
@@ -68,12 +68,16 @@ export class LoginScreen extends React.Component {
     // db.ref('/x').push
     // this pushes '/x' as the 'folder name'
     // then stores the Email as 'name'
-    firebase.auth().signInWithEmailAndPassword(email,password)
-    .catch(function(error){
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      alert(errorMessage);
-      console.log(error);
+    firebase.auth().signInWithEmailAndPassword(email,password).then(
+      function(firebaseUser){
+        console.log("logged in!")
+        navigate("Home");
+      },
+      function(error){
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        alert(errorMessage);
+        console.log(error);
     });
     loginRequest();
   }
@@ -85,7 +89,7 @@ export class LoginScreen extends React.Component {
       let firebaseAuth = firebase.auth();
       let userCredential = firebaseAuth.createUserWithEmailAndPassword(email, password).then(
         // This function is called when createUserWithEmailAndPassword() returns successfully
-        function(T){
+        function(firebaseUser){
           let userID = firebaseAuth.currentUser.uid;
 
           db.ref('Accounts/' + userID).set({
@@ -106,15 +110,11 @@ export class LoginScreen extends React.Component {
           console.log(error);
       });
   }
-
-
   compressViews = (e) =>{
     this.setState({isTyping : true})
-    console.log(this.state.isTyping);
   }
   decompressViews = (e) =>{
     this.setState({isTyping : false})
-    console.log(this.state.isTyping);
   }
 }
 
