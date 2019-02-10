@@ -2,7 +2,7 @@
 
 __OnTime__ is a time management and scheduling app for mobile devices.
 
-> Note this project is still in development and many of it's features are not yet implemented.
+> NOTE: this project is still in development and many of it's features are not yet implemented.
 
 ## Installation
 
@@ -30,7 +30,7 @@ __OnTime__ is a time management and scheduling app for mobile devices.
 
 5. Scan the QR code to open the application through Expo.
 
-> NOTE: to run the program in development mode, Expo must be installed on the mobile device and the PC must be capable of making a local Wi-Fi connection.
+> NOTE: To run the program in development mode, Expo must be installed on the mobile device and the PC must be capable of making a local Wi-Fi connection.
 
 ## Built With
 * [React Native](https://facebook.github.io/react-native/)
