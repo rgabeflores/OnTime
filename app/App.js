@@ -1,6 +1,12 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, TextInput} from 'react-native';
-import { LoginScreen } from './LoginScreen';
+import React, { Component } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableHighlight,
+  TextInput
+} from "react-native";
+import { LoginScreen } from "./LoginScreen";
 
 export default class App extends React.Component {
   render() {
@@ -15,8 +21,8 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff"
+    // alignItems: 'center',
+    // justifyContent: 'center',
   }
 });

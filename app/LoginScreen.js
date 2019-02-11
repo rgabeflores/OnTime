@@ -14,6 +14,7 @@ import firebase from "firebase";
 import { db } from "./config/db";
 import AppNavigator from "./navigation/AppNavigator";
 import SettingsScreen from "./screens/SettingsScreen";
+import { Constants } from "expo";
 
 export class LoginScreen extends React.Component {
   constructor(props) {
@@ -196,8 +197,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    paddingTop: Constants.statusBarHeight
     //alignItems: "center",
-    justifyContent: "center"
+    //justifyContent: "center"
   },
   containerCompressed: {
     flex: 1,
