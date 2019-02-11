@@ -2,8 +2,7 @@ import React from "react";
 import { Platform, Text, View, Style } from "react-native";
 import {
   createStackNavigator,
-  createBottomTabNavigator,
-  createAppContainer
+  createBottomTabNavigator
 } from "react-navigation";
 
 import TabBarIcon from "../components/TabBarIcon";
