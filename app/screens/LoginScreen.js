@@ -79,7 +79,6 @@ export class LoginScreen extends React.Component {
         alert(errorMessage);
         console.log(error);
     });
-    loginRequest();
   }
   register = (e) => {
       let email = this.state.email;
