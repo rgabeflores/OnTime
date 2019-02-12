@@ -10,8 +10,6 @@ import {
 } from "react-native";
 import { WebBrowser } from "expo";
 
-import { MonoText } from "../components/StyledText";
-
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null
@@ -43,9 +41,9 @@ export default class HomeScreen extends React.Component {
             <View
               style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
             >
-              <MonoText style={styles.codeHighlightText}>
+              <Text style={styles.codeHighlightText}>
                 screens/HomeScreen.js
-              </MonoText>
+              </Text>
             </View>
 
             <Text style={styles.getStartedText}>
@@ -73,9 +71,9 @@ export default class HomeScreen extends React.Component {
           <View
             style={[styles.codeHighlightContainer, styles.navigationFilename]}
           >
-            <MonoText style={styles.codeHighlightText}>
+            <Text style={styles.codeHighlightText}>
               navigation/MainTabNavigator.js
-            </MonoText>
+            </Text>
           </View>
         </View>
       </View>
