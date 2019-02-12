@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   containerCompressed:{
     flex: 1,
-    marginBottom: "35%",
+    marginBottom: "45%",
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'flex-start'
