@@ -2,7 +2,7 @@
 
 __OnTime__ is a time management and scheduling app for mobile devices.
 
-> NOTE: this project is still in development and many of it's features are not yet implemented.
+> NOTE: This project is still in development and many of it's features are not yet implemented.
 
 ## Installation
 
@@ -16,7 +16,7 @@ __OnTime__ is a time management and scheduling app for mobile devices.
 
     `npm install`
 
-> NOTE: Node must be installed in order for the installation to be successful
+> NOTE: npm (Node package manager) must be installed in order for the installation to be successful
 
 ## Running the Program
 
