@@ -1,4 +1,4 @@
-import { createStackNavigator, createTabNavigator, createAppContainer } from "react-navigation";
+import { createStackNavigator, createBottomTabNavigator, createAppContainer } from "react-navigation";
 
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
@@ -25,7 +25,7 @@ export const AppNavigator = createStackNavigator({
   */
 });
 
-export const HomeNavigator = createTabNavigator({
+export const HomeNavigator = createBottomTabNavigator({
     Home: {
         screen: HomeScreen,
         navigationOptions:{
