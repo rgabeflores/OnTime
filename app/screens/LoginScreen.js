@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert} from 'react-native';
 import firebase from 'firebase';
-import { db } from './config/db';
+import { db } from '../config/db';
 
 export class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
+      email: "",
       password: "",
       isTyping: false
     };
@@ -18,15 +18,16 @@ export class LoginScreen extends React.Component {
       <View style={(this.state.isTyping) ? styles.containerCompressed : styles.container}>
         <View style={styles.container}>
           <View>
-            <Image source={require('./assets/stopwatch_vector.png')} style={styles.image}/>
+            <Image source={require('../assets/stopwatch_vector.png')} style={styles.image}/>
           </View>
           <Text style={styles.Title}> On Time </Text>
           <View style={styles.textInputContainer}>
             <TextInput
-              placeholder={"Username"}
-              onChangeText={(username) => this.setState({username})}
+              placeholder={"Email"}
+              onChangeText={(email) => this.setState({email})}
               editable={true}
               maxLength={40}
+              keyboardType={"email-address"}
               onFocus={this.compressViews.bind(this)}
               onBlur={this.decompressViews.bind(this)}
             />
@@ -60,54 +61,59 @@ export class LoginScreen extends React.Component {
 
   // Log In Method
   logIn = (e) => {
-    let username = this.state.username;
+    let email = this.state.email;
     let password = this.state.password;
-    console.log("Username: " + username);
+    console.log("Email: " + email);
     console.log("Password: " + password);
     // db.ref('/x').push
     // this pushes '/x' as the 'folder name'
-    // then stores the username as 'name'
-    firebase.auth().signInWithEmailAndPassword(username,password)
-    .catch(function(error){
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      alert(errorMessage);
-      console.log(error);
+    // then stores the Email as 'name'
+    firebase.auth().signInWithEmailAndPassword(email,password).then(
+      function(firebaseUser){
+        console.log("logged in!")
+        navigate("Home");
+      },
+      function(error){
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        alert(errorMessage);
+        console.log(error);
     });
-    loginRequest();
   }
   register = (e) => {
-
-      let username = this.state.username;
+      let email = this.state.email;
       let password = this.state.password;
-      console.log("Username: " + username);
+      console.log("Email: " + email);
       console.log("Password: " + password);
-      firebase.auth().createUserWithEmailAndPassword(username, password)
-      .catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      if (errorCode == 'auth/weak-password') {
-        alert('The password is too weak.');
-      } else {
-        alert(errorMessage);
-      }
-      console.log(error);
-    });
-    // .child() specifies the entry name
-    db.ref('/Accounts').child("yeetfam").set({
-        username: username,
-        password: password
-    });
-  }
+      let firebaseAuth = firebase.auth();
+      let userCredential = firebaseAuth.createUserWithEmailAndPassword(email, password).then(
+        // This function is called when createUserWithEmailAndPassword() returns successfully
+        function(firebaseUser){
+          let userID = firebaseAuth.currentUser.uid;
 
+          db.ref('Accounts/' + userID).set({
+            email: email,
+            password: password
+          });
+        },
+        // This function is called when createUserWithEmailAndPassword() returns with an error
+        function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          if (errorCode == 'auth/weak-password') {
+            alert('The password is too weak.');
+          } else {
+            alert(errorMessage);
+          }
+          console.log(error);
+      });
+  }
   compressViews = (e) =>{
     this.setState({isTyping : true})
-    console.log(this.state.isTyping);
   }
   decompressViews = (e) =>{
     this.setState({isTyping : false})
-    console.log(this.state.isTyping);
   }
 
   register = () =>{
@@ -124,29 +130,6 @@ export class LoginScreen extends React.Component {
           console.log(error);
         });
   }
-}
-
-function loginRequest(){
-  // Traditional XMLHttpRequest
-  let request = new XMLHttpRequest();
-  let params = 'username=test&password=password12345';
-  let url = 'https://us-central1-database-17029.cloudfunctions.net/helloWorld';
-
-  request.onreadystatechange = (e) => {
-    if (request.readyState !== 4) {
-      return;
-    }
-
-    if (request.status === 200) {
-      console.log('success', request.responseText);
-      Alert.alert(request.responseText);
-    } else {
-      console.warn('error');
-    }
-  };
-
-  request.open('POST', url);
-  request.send(params);
 }
 
 function asyncRequest(url) {
