@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert} fr
 import firebase from 'firebase';
 import { db } from '../config/db';
 
-export class LoginScreen extends React.Component {
+export class RegisterScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -44,15 +44,15 @@ export class LoginScreen extends React.Component {
               onBlur={this.decompressViews.bind(this)}
             />
           </View>
-          <TouchableHighlight style={styles.buttonContainer} onPress={this.logIn.bind(this)} underlayColor="white">
+          <TouchableHighlight style={styles.buttonContainer} onPress={this.register.bind(this)} underlayColor="white">
             <View style={styles.button}>
-              <Text style={styles.buttonText} >Log In</Text>
+              <Text style={styles.buttonText} >Register</Text>
             </View>
           </TouchableHighlight>
           <View>
-            <TouchableHighlight onPress={this.goToRegister.bind(this)} underlayColor="white">
+            <TouchableHighlight onPress={this.goToLogin.bind(this)} underlayColor="white">
               <View>
-                <Text style={styles.linkText}>Dont have an account? Register Here</Text>
+                <Text style={styles.linkText}>Already have an account? Login Here</Text>
               </View>
             </TouchableHighlight>
           </View>
@@ -60,40 +60,27 @@ export class LoginScreen extends React.Component {
       </View>
     );
   }
-  goToRegister = (e) => {
-    this.props.navigation.navigate('Register');
+  goToLogin = (e) => {
+    this.props.navigation.navigate('Login');
   }
-  // Log In Method
-  logIn = (e) => {
-    let email = this.state.email;
-    let password = this.state.password;
-    console.log("Email: " + email);
-    console.log("Password: " + password);
-    // db.ref('/x').push
-    // this pushes '/x' as the 'folder name'
-    // then stores the Email as 'name'
-    firebase.auth().signInWithEmailAndPassword(email,password).then(
-      function(firebaseUser){
-        console.log("logged in!")
-        navigate("Home");
-      },
-      function(error){
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        alert(errorMessage);
-        console.log(error);
-    });
-  }
-  compressViews = (e) =>{
-    this.setState({isTyping : true})
-  }
-  decompressViews = (e) =>{
-    this.setState({isTyping : false})
-  }
+  register = (e) => {
+      let email = this.state.email;
+      let password = this.state.password;
+      console.log("Email: " + email);
+      console.log("Password: " + password);
+      let firebaseAuth = firebase.auth();
+      let userCredential = firebaseAuth.createUserWithEmailAndPassword(email, password).then(
+        // This function is called when createUserWithEmailAndPassword() returns successfully
+        function(firebaseUser){
+          let userID = firebaseAuth.currentUser.uid;
 
-  register = () =>{
-    firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(
-      email, password).catch(function(error) {
+          db.ref('Accounts/' + userID).set({
+            email: email,
+            password: password
+          });
+        },
+        // This function is called when createUserWithEmailAndPassword() returns with an error
+        function(error) {
           // Handle Errors here.
           var errorCode = error.code;
           var errorMessage = error.message;
@@ -103,7 +90,13 @@ export class LoginScreen extends React.Component {
             alert(errorMessage);
           }
           console.log(error);
-        });
+      });
+  }
+  compressViews = (e) =>{
+    this.setState({isTyping : true})
+  }
+  decompressViews = (e) =>{
+    this.setState({isTyping : false})
   }
 }
 
@@ -170,4 +163,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default LoginScreen;
+export default RegisterScreen;
