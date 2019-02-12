@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, { Component } from 'react';
-import { StyleSheet, Text, View} from 'react-native';
-=======
-import React from "react";
+import React, { Component } from "react";
 import {
   Image,
   Platform,
@@ -20,15 +16,11 @@ export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
->>>>>>> parent of 0afe9b0... more merge conflicts
 
 export class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-<<<<<<< HEAD
-        <Text>This is the home screen</Text>
-=======
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}
@@ -87,7 +79,6 @@ export class HomeScreen extends React.Component {
             </MonoText>
           </View>
         </View>
->>>>>>> parent of 0afe9b0... more merge conflicts
       </View>
     );
   }

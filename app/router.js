@@ -8,7 +8,7 @@ import HomeScreen from './screens/HomeScreen';
     Used to control routing for the app
 */
 
-export const AppNavigator = createStackNavigator({
+export const LoginNavigator = createStackNavigator({
   Register: {
     screen: RegisterScreen,
     navigationOptions:{
@@ -36,5 +36,5 @@ export const HomeNavigator = createBottomTabNavigator({
   */
 });
 
-export const LoggedOut = createAppContainer(AppNavigator);
+export const LoggedOut = createAppContainer(LoginNavigator);
 export const LoggedIn = createAppContainer(HomeNavigator);
