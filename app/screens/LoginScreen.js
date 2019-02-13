@@ -109,7 +109,7 @@ export class LoginScreen extends React.Component {
     this.props.navigation.navigate('Register');
   }
   // Log In Method
-  logIn = e => {
+  logIn = (e) => {
     let email = this.state.email;
     let password = this.state.password;
     console.log("Email: " + email);
