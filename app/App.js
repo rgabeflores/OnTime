@@ -3,10 +3,23 @@ import { StyleSheet, Text, View, TouchableHighlight, TextInput} from 'react-nati
 import { LoggedOut, LoggedIn } from './router';
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoggedIn: false
+    };
+  }
   render() {
-    return (
-      <LoggedOut/>
-    );
+    if(isLoggedIn){
+      return (
+        <LoggedOut />
+      );
+    }
+    else{
+      return (
+        <LoggedIn />
+        );
+    }
   }
 }
 
