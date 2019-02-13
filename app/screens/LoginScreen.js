@@ -110,7 +110,8 @@ export class LoginScreen extends React.Component {
       .then(
         function(firebaseUser) {
           console.log("logged in!");
-          navigate("Home");
+          
+          //navigate("Home");
         },
         function(error) {
           var errorCode = error.code;
