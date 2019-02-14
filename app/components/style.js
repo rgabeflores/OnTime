@@ -27,8 +27,14 @@ module.exports = StyleSheet.create({
         height: 22,
     },
     li: {
+<<<<<<< HEAD
         borderWidth: 5,
         backgroundColor: "white",
+=======
+        alignItems: "center",
+        borderWidth: 2,
+        backgroundColor: "grey",
+>>>>>>> Added styles
         justifyContent: "center",
         borderColor: "transparent",
         borderBottomColor: "#eee"
