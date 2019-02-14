@@ -6,8 +6,7 @@ import{
     View,
     StatusBar
 } from 'react-native';
-const styles = require('./style');
-
+import styles from './style';
 export default class Toolbar extends React.Component {
   render() {
     return (
@@ -17,10 +16,10 @@ export default class Toolbar extends React.Component {
             barStyle = "light-content"
          />
          <View style = {styles.navbar}>
-         </View>
-         <Text style = {styles.navbarTitle}>
+          <Text style = {styles.navbarTitle}>
             {this.props.title}
-         </Text>
+          </Text>
+         </View>
      </View>
     );
   }

@@ -1,18 +1,18 @@
 'use strict'
-let React = require('react-native');
+import React from 'react-native';
 let {StyleSheet} = React;
 const constants = {
-    actionColor:'#4cb433'
+    actionColor:'#ffff'
 }
 //create style sheets
 module.exports = StyleSheet.create({
     navbar: {
-        alignItems: 'center',
+        alignItems: "center",
         borderWidth: 1,
-        justifyContent: 'center',
+        justifyContent: "center",
         height: 44,
-        backgroundColor: 'white',
-        borderBottomColor: '#eee',
+        backgroundColor: "white",
+        borderBottomColor: "#eee",
         borderColor: 'transparent',
         flexDirection: 'row'
     },
