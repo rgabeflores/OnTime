@@ -13,6 +13,7 @@ export default class TasksScreen extends React.Component {
     // constructor of the class, this stores the data(what it displays) for TaskScreen
     constructor(){
         super();
+        // the datasource(ds) is a listener checking if the data has been changed or not
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 != r2});
         this.state = {
             taskDataSource: ds
@@ -30,14 +31,15 @@ export default class TasksScreen extends React.Component {
     }
     // get the items from the list view
     getItems(){
-        // hardcode values (fetch data from firebase later)
+        // hardcode values 
+        // TODO: fetch data from firebase
         let tasks = [{title: 'Task One', hours: '2', address: 'Address 123'}, {title: 'Task Two', hours: '2', address: '456 Some Street'}];
         // update the view
         this.setState({
             taskDataSource: this.state.taskDataSource.cloneWithRows(tasks)
         });
     }
-    // display task title 
+    // display task
     renderRow(task){
         return (
             <TouchableHighlight onPress={()=> {
@@ -67,7 +69,8 @@ export default class TasksScreen extends React.Component {
                 </View>
             );
         } else {
-        return(
+            // display the task list
+            return(
                 <View style = {styles.container}>
                     <Toolbar title = "Task List"/>
                     <ListView
