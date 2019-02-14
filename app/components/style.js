@@ -24,5 +24,16 @@ module.exports = StyleSheet.create({
     toolbar:{
         backgroundColor: '#fff',
         height: 22,
+    },
+    li: {
+        alignItems: "center",
+        borderWidth: 2,
+        backgroundColor: "grey",
+        justifyContent: "center",
+        borderColor: "transparent",
+        borderBottomColor: "#eee"
+    },
+    liText:{
+
     }
 });

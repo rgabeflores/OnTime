@@ -8,7 +8,7 @@ import{
     TouchableHighlight
 } from 'react-native';
 import Toolbar from '../components/Toolbar';
-const styles = '../components/style'
+import styles from '../components/style';
 export default class TasksScreen extends React.Component {
     // constructor of the class, this stores the data(what it displays) for TaskScreen
     constructor(){
