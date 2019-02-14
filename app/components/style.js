@@ -11,7 +11,7 @@ module.exports = StyleSheet.create({
         borderWidth: 1,
         justifyContent: "center",
         height: 44,
-        backgroundColor: "white",
+        backgroundColor: "lightblue",
         borderBottomColor: "#eee",
         borderColor: 'transparent',
         flexDirection: 'row'
@@ -19,16 +19,16 @@ module.exports = StyleSheet.create({
     navbarTitle:{
         color: '#444',
         fontSize: 16,
-        fontWeight: "500"
+        fontWeight: "500",
+        backgroundColor: "lightblue"
     },
     toolbar:{
         backgroundColor: '#fff',
         height: 22,
     },
     li: {
-        alignItems: "center",
-        borderWidth: 2,
-        backgroundColor: "grey",
+        borderWidth: 5,
+        backgroundColor: "white",
         justifyContent: "center",
         borderColor: "transparent",
         borderBottomColor: "#eee"

@@ -12,7 +12,7 @@ export default class Toolbar extends React.Component {
     return (
      <View>
          <StatusBar
-            backgroundColor = "light blue"
+            backgroundColor = "lightblue"
             barStyle = "light-content"
          />
          <View style = {styles.navbar}>
