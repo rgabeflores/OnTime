@@ -6,11 +6,11 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: true
+      isLoggedIn: false
     };
   }
   render() {
-    if(this.state.isLoggedIn){
+    if(isLoggedIn){
       return (
         <LoggedIn />
       );

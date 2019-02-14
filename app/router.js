@@ -37,4 +37,5 @@ export const HomeNavigator = createBottomTabNavigator({
 });
 
 export const LoggedOut = createAppContainer(LoginNavigator);
+export const LoggedOut = createAppContainer(AppNavigator);
 export const LoggedIn = createAppContainer(HomeNavigator);
