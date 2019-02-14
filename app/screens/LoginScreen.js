@@ -102,6 +102,7 @@ export class LoginScreen extends React.Component {
             </TouchableHighlight>
           </View>
         </View>
+        </View>
       );
     }
   }

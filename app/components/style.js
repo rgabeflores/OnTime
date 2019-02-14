@@ -28,6 +28,7 @@ module.exports = StyleSheet.create({
     },
     li: {
 <<<<<<< HEAD
+<<<<<<< HEAD
         borderWidth: 5,
         backgroundColor: "white",
 =======
@@ -35,6 +36,10 @@ module.exports = StyleSheet.create({
         borderWidth: 2,
         backgroundColor: "grey",
 >>>>>>> Added styles
+=======
+        borderWidth: 5,
+        backgroundColor: "white",
+>>>>>>> Adjusted the Task display to include task name, hours and location
         justifyContent: "center",
         borderColor: "transparent",
         borderBottomColor: "#eee"
