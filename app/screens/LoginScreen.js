@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert} from 'react-native';
 import firebase from 'firebase';
 import { db } from '../config/db';
+import { onLogin } from '../auth';
+import {NavigationActions} from 'react-navigation';
 
 export class LoginScreen extends React.Component {
   constructor(props) {
@@ -72,17 +74,7 @@ export class LoginScreen extends React.Component {
     // db.ref('/x').push
     // this pushes '/x' as the 'folder name'
     // then stores the Email as 'name'
-    firebase.auth().signInWithEmailAndPassword(email,password).then(
-      function(firebaseUser){
-        console.log("logged in!")
-        navigate("Home");
-      },
-      function(error){
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        alert(errorMessage);
-        console.log(error);
-    });
+    onLogin(email,password).then(()=>this.props.navigation.navigate('LoggedIn', {}, NavigationActions.navigate({ routeName: 'Main' })));
   }
   compressViews = (e) =>{
     this.setState({isTyping : true})

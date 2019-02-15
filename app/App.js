@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, TextInput} from 'react-native';
-import { LoggedOut, LoggedIn } from './router';
+import { LoggedOut, LoggedIn, createRootNavigator } from './navigation/router';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -10,16 +10,8 @@ export default class App extends React.Component {
     };
   }
   render() {
-    if(isLoggedIn){
-      return (
-        <LoggedIn />
-      );
-    }
-    else{
-      return (
-        <LoggedOut />
-        );
-    }
+    const Layout = createRootNavigator(this.state.isLoggedIn);
+    return <Layout />;
   }
 }
 

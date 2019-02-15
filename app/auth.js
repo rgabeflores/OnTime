@@ -3,8 +3,7 @@ import firebase from 'firebase';
 import { db } from './config/db';
 
 export const onRegister = (email, password) => {
-    let firebaseAuth = firebase.auth();
-    return firebaseAuth.createUserWithEmailAndPassword(email, password);
+    return firebase.auth().createUserWithEmailAndPassword(email, password);
     // .then(
     // // This function is called when createUserWithEmailAndPassword() returns successfully
     // function(firebaseUser){
@@ -26,4 +25,8 @@ export const onRegister = (email, password) => {
     //   }
     //   console.log(error);
     // });
+}
+
+export const onLogin = (email, password) => {
+    return firebase.auth().signInWithEmailAndPassword(email,password);
 }
