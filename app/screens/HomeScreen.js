@@ -15,7 +15,7 @@ import { WebBrowser } from "expo";
 
 export class HomeScreen extends React.Component {
   static navigationOptions = {
-    header: null
+    title: 'Home'
   };
   render() {
     return (
@@ -23,19 +23,6 @@ export class HomeScreen extends React.Component {
         <Text style={styles.getStartedText}>
           This is the HomeScreen
         </Text>
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>
-            This is a tab bar. You can edit it in:
-          </Text>
-
-          <View
-            style={[styles.codeHighlightContainer, styles.navigationFilename]}
-          >
-            <Text style={styles.codeHighlightText}>
-              navigation/MainTabNavigator.js
-            </Text>
-          </View>
-        </View>
       </View>
     );
   }
