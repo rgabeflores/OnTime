@@ -8,12 +8,15 @@ import {
   TouchableHighlight,
   Alert
 } from 'react-native';
+import { NavigationActions } from 'react-navigation';
+
+import styles from './style';
 
 import firebase from 'firebase';
 import { db } from '../config/db';
 
 import { onLogin } from '../auth';
-import { NavigationActions } from 'react-navigation';
+
 
 export class LoginScreen extends React.Component {
   constructor(props) {
@@ -102,56 +105,56 @@ function asyncRequest(url) {
     });
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  containerCompressed:{
-    flex: 1,
-    marginBottom: "45%",
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'flex-start'
-  },
-  textInputContainer:{
-    borderColor: 'lightblue',
-    borderWidth: 1,
-    borderRadius: 30,
-    padding: 15,
-    margin: 5,
-    width: "100%",
-    minWidth: "75%"
-  },
-  Title:{
-    color:'lightblue',
-    fontSize:50
-  },
-  image:{
-    width: 150,
-    height: 150
-  },
-  button: {
-   alignItems: 'center',
-   backgroundColor: 'lightblue',
-   borderRadius: 30,
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+//   containerCompressed:{
+//     flex: 1,
+//     marginBottom: "45%",
+//     backgroundColor: '#fff',
+//     alignItems: 'center',
+//     justifyContent: 'flex-start'
+//   },
+//   textInputContainer:{
+//     borderColor: 'lightblue',
+//     borderWidth: 1,
+//     borderRadius: 30,
+//     padding: 15,
+//     margin: 5,
+//     width: "100%",
+//     minWidth: "75%"
+//   },
+//   Title:{
+//     color:'lightblue',
+//     fontSize:50
+//   },
+//   image:{
+//     width: 150,
+//     height: 150
+//   },
+//   button: {
+//    alignItems: 'center',
+//    backgroundColor: 'lightblue',
+//    borderRadius: 30,
 
-  },
-  buttonText: {
-    padding: 20,
-    color: 'white'
-  },
-  buttonContainer: {
-    margin: 5,
-    minWidth: "50%"
-  },
-  linkText:{
-    padding: 5,
-    minWidth: "50%",
-    color: 'lightblue'
-  }
-});
+//   },
+//   buttonText: {
+//     padding: 20,
+//     color: 'white'
+//   },
+//   buttonContainer: {
+//     margin: 5,
+//     minWidth: "50%"
+//   },
+//   linkText:{
+//     padding: 5,
+//     minWidth: "50%",
+//     color: 'lightblue'
+//   }
+// });
 
 export default LoginScreen;
