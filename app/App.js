@@ -6,7 +6,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: false
+      isLoggedIn: false // Need to implement authentication token to prevent frequent logins
     };
   }
   render() {

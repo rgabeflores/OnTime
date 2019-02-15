@@ -1,9 +1,19 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert} from 'react-native';
+import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TextInput,
+  TouchableHighlight,
+  Alert
+} from 'react-native';
+
 import firebase from 'firebase';
 import { db } from '../config/db';
+
 import { onLogin } from '../auth';
-import {NavigationActions} from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
 
 export class LoginScreen extends React.Component {
   constructor(props) {
@@ -71,9 +81,6 @@ export class LoginScreen extends React.Component {
     let password = this.state.password;
     console.log("Email: " + email);
     console.log("Password: " + password);
-    // db.ref('/x').push
-    // this pushes '/x' as the 'folder name'
-    // then stores the Email as 'name'
     onLogin(email,password).then(()=>this.props.navigation.navigate('LoggedIn', {}, NavigationActions.navigate({ routeName: 'Main' })));
   }
   compressViews = (e) =>{

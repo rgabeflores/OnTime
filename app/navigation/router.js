@@ -7,8 +7,9 @@ import HomeScreen from '../screens/HomeScreen';
 
 import AppNavigator from './AppNavigator';
 import MainTabNavigator from './MainTabNavigator';
+
 /*
-    Used to control routing for the app
+    ======== This file is used for the App's routing =================
 */
 
 export const createRootNavigator = (loggedIn = false) => {
@@ -42,7 +43,6 @@ export const LoginNavigator = createStackNavigator({
   /*
   */
 });
-
 
 export const HomeNavigator = createSwitchNavigator({
   Main: MainTabNavigator,

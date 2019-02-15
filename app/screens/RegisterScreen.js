@@ -1,8 +1,19 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TextInput, TouchableHighlight, Alert} from 'react-native';
+import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TextInput,
+  TouchableHighlight,
+  Alert
+} from 'react-native';
+
 import firebase from 'firebase';
 import { db } from '../config/db';
+
 import { onRegister } from '../auth';
+import { NavigationActions } from 'react-navigation';
 
 export class RegisterScreen extends React.Component {
   constructor(props) {
@@ -72,30 +83,7 @@ export class RegisterScreen extends React.Component {
       let password = this.state.password;
       console.log("Email: " + email);
       console.log("Password: " + password);
-      onRegister(email,password).then(() => this.props.navigation.navigate('Login'));
-      // let firebaseAuth = firebase.auth();
-      // let userCredential = firebaseAuth.createUserWithEmailAndPassword(email, password).then(
-      //   // This function is called when createUserWithEmailAndPassword() returns successfully
-      //   function(firebaseUser){
-      //     let userID = firebaseAuth.currentUser.uid;
-
-      //     db.ref('Accounts/' + userID).set({
-      //       email: email,
-      //       password: password
-      //     });
-      //   },
-      //   // This function is called when createUserWithEmailAndPassword() returns with an error
-      //   function(error) {
-      //     // Handle Errors here.
-      //     var errorCode = error.code;
-      //     var errorMessage = error.message;
-      //     if (errorCode == 'auth/weak-password') {
-      //       alert('The password is too weak.');
-      //     } else {
-      //       alert(errorMessage);
-      //     }
-      //     console.log(error);
-      // });
+      onRegister(email,password).then(()=>this.props.navigation.navigate('LoggedIn', {}, NavigationActions.navigate({ routeName: 'Main' })));
   }
   compressViews = (e) =>{
     this.setState({isTyping : true})
