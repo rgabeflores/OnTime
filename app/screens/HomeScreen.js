@@ -1,4 +1,5 @@
 import React from "react";
+import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import {
   Image,
   Platform,
@@ -63,11 +64,35 @@ export default class HomeScreen extends React.Component {
           </View>
         </ScrollView>
 
-        <View style={styles.tabBarInfoContainer}>
+        <View style={styles.Container}>
           <Text style={styles.tabBarInfoText}>
             This is a tab bar. You can edit it in:
           </Text>
-
+          <Calendar
+            // Handler which gets executed on day press. Default = undefined
+            onDayPress={(day) => {console.log('selected day', day)}}
+            // Handler which gets executed on day long press. Default = undefined
+            monthFormat={'MMM yyyy'}
+            // Handler which gets executed when visible month changes in calendar. Default = undefined
+            onMonthChange={(month) => {console.log('month changed', month)}}
+            // Hide month navigation arrows. Default = false
+            hideArrows={false}
+            renderArrow = {this.renderArrow}
+            // Do not show days of other months in month page. Default = false
+            hideExtraDays={false}
+            // day from another month that is visible in calendar page. Default = false
+            disableMonthChange={true}
+            // If firstDay=0 week starts from Sunday. Note that dayNames and dayNamesShort should still start from Sunday.
+            firstDay={0}
+            // Hide day names. Default = false
+            hideDayNames={false}
+            // Show week numbers to the left. Default = false
+            showWeekNumbers={false}
+            // Handler which gets executed when press arrow icon left. It receive a callback can go back month
+            onPressArrowLeft={substractMonth => substractMonth()}
+            // Handler which gets executed when press arrow icon left. It receive a callback can go next month
+            onPressArrowRight={addMonth => addMonth()}
+          />
           <View
             style={[styles.codeHighlightContainer, styles.navigationFilename]}
           >
