@@ -1,6 +1,18 @@
+<<<<<<< HEAD
 import React from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, TextInput} from 'react-native';
 import { LoggedOut, LoggedIn, createRootNavigator } from './navigation/router';
+=======
+import React, { Component } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableHighlight,
+  TextInput
+} from "react-native";
+import { LoginScreen } from "./screens/LoginScreen";
+>>>>>>> f6673f4a99cf876d94c442a9990c07f673fc3233
 
 export default class App extends React.Component {
   constructor(props) {
@@ -10,8 +22,12 @@ export default class App extends React.Component {
     };
   }
   render() {
+<<<<<<< HEAD
     const Layout = createRootNavigator(this.state.isLoggedIn);
     return <Layout />;
+=======
+    return <LoginScreen />;
+>>>>>>> f6673f4a99cf876d94c442a9990c07f673fc3233
   }
 }
 
