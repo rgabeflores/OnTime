@@ -1,16 +1,17 @@
-import React, { Component } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableHighlight,
-  TextInput
-} from "react-native";
-import { LoginScreen } from "./screens/LoginScreen";
+import React from 'react';
+import { StyleSheet, Text, View, TouchableHighlight, TextInput} from 'react-native';
+import { LoggedOut, LoggedIn, createRootNavigator } from './navigation/router';
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoggedIn: false // Need to implement an authentication token to prevent frequent logins
+    };
+  }
   render() {
-    return <LoginScreen />;
+    const Layout = createRootNavigator(this.state.isLoggedIn);
+    return <Layout />;
   }
 }
 
