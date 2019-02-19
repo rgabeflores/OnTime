@@ -72,6 +72,9 @@ export default createMaterialTopTabNavigator({
     },
     style:{
       backgroundColor: "white",
+      paddingVertical: 10,
+      borderTopWidth: 0.5,
+      borderTopColor: "lightgrey"
     },
     tabStyle:{
       marginTop: (Platform.OS == 'ios') ? 0 : 0,
