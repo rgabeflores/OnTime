@@ -7,9 +7,14 @@ import{
     ListView,
     TouchableHighlight
 } from 'react-native';
+
 import Toolbar from '../components/Toolbar';
 import styles from '../components/style';
+
 export default class TasksScreen extends React.Component {
+    static navigationOptions = {
+        title: 'Tasks',
+      };
     // constructor of the class, this stores the data(what it displays) for TaskScreen
     constructor(){
         super();
