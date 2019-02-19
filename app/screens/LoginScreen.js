@@ -6,6 +6,8 @@ import {
   Image,
   TextInput,
   TouchableHighlight,
+  Platform,
+  StatusBar,
   Alert
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
@@ -30,14 +32,6 @@ export class LoginScreen extends React.Component {
   }
 
   render() {
-    if (this.state.loginSuccess) {
-      return (
-        <View style={styles.tabContainer}>
-          {Platform.OS === "ios" && <StatusBar barStyle="default" />}
-          <AppNavigator />
-        </View>
-      );
-    } else {
       return (
         <View
           style={
@@ -85,15 +79,6 @@ export class LoginScreen extends React.Component {
                 <Text style={styles.buttonText}>Log In</Text>
               </View>
             </TouchableHighlight>
-            <TouchableHighlight
-              style={styles.buttonContainer}
-              onPress={this.register.bind(this)}
-              underlayColor="white"
-            >
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>Register</Text>
-              </View>
-            </TouchableHighlight>
           <View>
             <TouchableHighlight onPress={this.goToRegister.bind(this)} underlayColor="white">
               <View>
@@ -104,7 +89,6 @@ export class LoginScreen extends React.Component {
         </View>
         </View>
       );
-    }
   }
   goToRegister = (e) => {
     this.props.navigation.navigate('Register');
