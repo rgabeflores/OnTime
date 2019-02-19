@@ -68,8 +68,10 @@ export default createMaterialTopTabNavigator({
     style:{
       backgroundColor: "white",
     },
-    labelStyle:{
-      fontSize: 11,
+    tabStyle:{
+      marginTop: (Platform.OS == 'ios') ? 0 : 0,
+      height: 60,
+      flexDirection: 'row',
     }
     }
 });
