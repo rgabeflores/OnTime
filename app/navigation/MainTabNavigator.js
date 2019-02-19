@@ -1,15 +1,9 @@
-<<<<<<< HEAD
 import React from "react";
 import { Platform } from "react-native";
 import {
   createStackNavigator,
-  createBottomTabNavigator
+  createMaterialTopTabNavigator
 } from "react-navigation";
-=======
-import React from 'react';
-import { Platform } from 'react-native';
-import { createStackNavigator, createMaterialTopTabNavigator } from 'react-navigation';
->>>>>>> eab4ad10d455d55d66024ceb3beca7dad4ebd1a7
 
 import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/HomeScreen";
@@ -80,32 +74,35 @@ TimerStack.navigationOptions = {
   )
 };
 
-export default createMaterialTopTabNavigator({
-  HomeStack,
-  TasksStack,
-  TimerStack,
-  SettingsStack,
-}, {
-  swipeEnabled: true,
-  tabBarPosition: "bottom",
-  tabBarOptions: {
-    showLabel: true,
-    showIcon: true,
-    inactiveTintColor: "grey",
-    activeTintColor: "lightblue",
-    style:{
-      backgroundColor: "white",
-    },
-    tabStyle:{
-      marginTop: (Platform.OS == 'ios') ? 0 : 0,
-      height: 40,
-    },
-    iconStyle:{
-      width: 20,
-      height: 20
-    },
-    labelStyle:{
-      fontSize: 6,
+export default createMaterialTopTabNavigator(
+  {
+    HomeStack,
+    TasksStack,
+    TimerStack,
+    SettingsStack
+  },
+  {
+    swipeEnabled: true,
+    tabBarPosition: "bottom",
+    tabBarOptions: {
+      showLabel: true,
+      showIcon: true,
+      inactiveTintColor: "grey",
+      activeTintColor: "lightblue",
+      style: {
+        backgroundColor: "white"
+      },
+      tabStyle: {
+        marginTop: Platform.OS == "ios" ? 0 : 0,
+        height: 40
+      },
+      iconStyle: {
+        width: 20,
+        height: 20
+      },
+      labelStyle: {
+        fontSize: 6
+      }
     }
-    }
-});
+  }
+);

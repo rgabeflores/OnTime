@@ -1,36 +1,43 @@
 import React from "react";
-import { createStackNavigator, createBottomTabNavigator, createSwitchNavigator, createAppContainer } from "react-navigation";
+import {
+  createStackNavigator,
+  createBottomTabNavigator,
+  createSwitchNavigator,
+  createAppContainer
+} from "react-navigation";
 
-import LoginScreen from '../screens/LoginScreen';
-import RegisterScreen from '../screens/RegisterScreen';
-import HomeScreen from '../screens/HomeScreen';
+import LoginScreen from "../screens/LoginScreen";
+import RegisterScreen from "../screens/RegisterScreen";
+import HomeScreen from "../screens/HomeScreen";
 
-import MainTabNavigator from './MainTabNavigator';
+import MainTabNavigator from "./MainTabNavigator";
 
 /*
     ======== This file is used for the App's routing =================
 */
 
 export const createRootNavigator = (loggedIn = false) => {
-  return createAppContainer(createSwitchNavigator(
-    {
-      LoggedIn: {
-        screen: LoggedIn
+  return createAppContainer(
+    createSwitchNavigator(
+      {
+        LoggedIn: {
+          screen: LoggedIn
+        },
+        LoggedOut: {
+          screen: LoggedOut
+        }
       },
-      LoggedOut: {
-        screen: LoggedOut
+      {
+        initialRouteName: loggedIn ? "LoggedIn" : "LoggedOut"
       }
-    },
-    {
-      initialRouteName: loggedIn ? "LoggedIn" : "LoggedOut"
-    }
-  ));
+    )
+  );
 };
 export const LoginNavigator = createStackNavigator({
   Register: {
     screen: RegisterScreen,
-    navigationOptions:{
-        title: "Register"
+    navigationOptions: {
+      title: "Register"
     }
   },
   Login: {
@@ -40,11 +47,11 @@ export const LoginNavigator = createStackNavigator({
     }
   }
   /*
-  */
+   */
 });
 
 export const HomeNavigator = createSwitchNavigator({
-  Main: MainTabNavigator,
+  Main: MainTabNavigator
 });
 
 export const LoggedOut = createAppContainer(LoginNavigator);
