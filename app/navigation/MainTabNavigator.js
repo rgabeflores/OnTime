@@ -4,8 +4,8 @@ import { createStackNavigator, createMaterialTopTabNavigator } from 'react-navig
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import TasksScreen from '../screens/TasksScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -25,16 +25,17 @@ HomeStack.navigationOptions = {
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+//Task Screen
+const TasksStack = createStackNavigator({
+  Tasks: TasksScreen,
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+TasksStack.navigationOptions = {
+  tabBarLabel: 'Tasks',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+      name={Platform.OS === 'ios' ? 'ios-checkbox-outline' : 'md-checkbox-outline'}
     />
   ),
 };
@@ -55,7 +56,7 @@ SettingsStack.navigationOptions = {
 
 export default createMaterialTopTabNavigator({
   HomeStack,
-  LinksStack,
+  TasksStack,
   SettingsStack,
 }, {
   swipeEnabled: true,

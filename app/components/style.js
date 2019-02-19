@@ -29,6 +29,13 @@ module.exports = StyleSheet.create({
     li: {
         borderWidth: 5,
         backgroundColor: "white",
+        alignItems: "center",
+        borderWidth: 2,
+        backgroundColor: "grey",
+        borderWidth: 5,
+        backgroundColor: "white",
+        borderWidth: 5,
+        backgroundColor: "white",
         justifyContent: "center",
         borderColor: "transparent",
         borderBottomColor: "#eee"
