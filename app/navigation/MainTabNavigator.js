@@ -1,6 +1,10 @@
 import React from 'react';
 import { Platform } from 'react-native';
+<<<<<<< HEAD
 import { createStackNavigator, createMaterialTopTabNavigator, createBottomTabNavigator } from 'react-navigation';
+=======
+import { createStackNavigator, createMaterialTopTabNavigator } from 'react-navigation';
+>>>>>>> SwipeGesture_Test
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
