@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { createStackNavigator, createMaterialTopTabNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
@@ -54,8 +54,31 @@ SettingsStack.navigationOptions = {
   ),
 };
 
-export default createBottomTabNavigator({
+export default createMaterialTopTabNavigator({
   HomeStack,
   TasksStack,
   SettingsStack,
+}, {
+  swipeEnabled: true,
+  tabBarPosition: "bottom",
+  tabBarOptions: {
+    showLabel: true,
+    showIcon: true,
+    inactiveTintColor: "grey",
+    activeTintColor: "lightblue",
+    style:{
+      backgroundColor: "white",
+    },
+    tabStyle:{
+      marginTop: (Platform.OS == 'ios') ? 0 : 0,
+      height: 40,
+    },
+    iconStyle:{
+      width: 20,
+      height: 20
+    },
+    labelStyle:{
+      fontSize: 6,
+    }
+    }
 });
