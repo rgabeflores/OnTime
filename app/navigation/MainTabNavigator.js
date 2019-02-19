@@ -70,8 +70,14 @@ export default createMaterialTopTabNavigator({
     },
     tabStyle:{
       marginTop: (Platform.OS == 'ios') ? 0 : 0,
-      height: 60,
-      flexDirection: 'row',
+      height: 40,
+    },
+    iconStyle:{
+      width: 20,
+      height: 20
+    },
+    labelStyle:{
+      fontSize: 6,
     }
     }
 });
