@@ -66,6 +66,10 @@ export default createMaterialTopTabNavigator({
     showIcon: true,
     inactiveTintColor: "grey",
     activeTintColor: "lightblue",
+    indicatorStyle: {
+      backgroundColor: "#2f95dc",
+      paddingVertical: 2
+    },
     style:{
       backgroundColor: "white",
     },
