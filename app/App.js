@@ -7,6 +7,7 @@ import {
   TextInput
 } from "react-native";
 import { LoggedOut, LoggedIn, createRootNavigator } from "./navigation/router";
+import ignoreWarnings from "react-native-ignore-warnings";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -20,6 +21,8 @@ export default class App extends React.Component {
     return <Layout />;
   }
 }
+
+ignoreWarnings("Setting a timer");
 
 const styles = StyleSheet.create({
   container: {

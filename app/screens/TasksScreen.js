@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   AppRegistry,
   StyleSheet,
@@ -7,11 +8,13 @@ import {
   ListView,
   TouchableHighlight
 } from "react-native";
+
 import Toolbar from "../components/Toolbar";
 import styles from "../components/style";
+
 export default class TasksScreen extends React.Component {
   static navigationOptions = {
-    title: "Task List"
+    title: "Tasks"
   };
   // constructor of the class, this stores the data(what it displays) for TaskScreen
   constructor() {
@@ -78,7 +81,7 @@ export default class TasksScreen extends React.Component {
       // display the task list
       return (
         <View style={styles.container}>
-          {/* <Toolbar title = "Task List"/> */}
+          <Toolbar title="Task List" />
           <ListView
             dataSource={this.state.taskDataSource}
             renderRow={this.renderRow}
