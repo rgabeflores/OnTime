@@ -64,7 +64,6 @@ SettingsStack.navigationOptions = {
 const TimerStack = createStackNavigator({
   Timer: TimerScreen
 });
-
 TimerStack.navigationOptions = {
   tabBarLabel: "Timer",
   tabBarIcon: ({ focused }) => (
@@ -90,8 +89,15 @@ export default createMaterialTopTabNavigator(
       showIcon: true,
       inactiveTintColor: "grey",
       activeTintColor: "lightblue",
+      indicatorStyle: {
+        backgroundColor: "#2f95dc",
+        paddingVertical: 2
+      },
       style: {
-        backgroundColor: "white"
+        backgroundColor: "white",
+        paddingVertical: 10,
+        borderTopWidth: 0.5,
+        borderTopColor: "lightgrey"
       },
       tabStyle: {
         marginTop: Platform.OS == "ios" ? 0 : 0,
