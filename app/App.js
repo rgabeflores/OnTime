@@ -1,13 +1,19 @@
-import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, TextInput} from 'react-native';
-import { LoggedOut, LoggedIn, createRootNavigator } from './navigation/router';
-import ignoreWarnings from 'react-native-ignore-warnings';
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableHighlight,
+  TextInput
+} from "react-native";
+import { LoggedOut, LoggedIn, createRootNavigator } from "./navigation/router";
+import ignoreWarnings from "react-native-ignore-warnings";
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: true // Need to implement an authentication token to prevent frequent logins
+      isLoggedIn: false // Need to implement an authentication token to prevent frequent logins
     };
   }
   render() {
@@ -16,7 +22,7 @@ export default class App extends React.Component {
   }
 }
 
-ignoreWarnings('Setting a timer');
+ignoreWarnings("Setting a timer");
 
 const styles = StyleSheet.create({
   container: {
