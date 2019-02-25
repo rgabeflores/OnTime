@@ -1,8 +1,13 @@
 "use strict";
-import React, { StyleSheet, Platform } from "react-native";
+import {
+   StyleSheet, 
+   Platform 
+} from "react-native";
+
 const constants = {
   actionColor: "#ffff"
 };
+
 //create style sheets
 module.exports = StyleSheet.create({
   container: {

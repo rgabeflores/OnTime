@@ -1,19 +1,14 @@
 import React from "react";
 import {
-  StyleSheet,
   Text,
   View,
   Image,
   TextInput,
-  TouchableHighlight,
-  Alert
+  TouchableHighlight
 } from "react-native";
 import { NavigationActions } from "react-navigation";
 
 import styles from "./style";
-
-import firebase from "firebase";
-import { db } from "../config/db";
 
 import { onRegister } from "../auth";
 

@@ -1,12 +1,7 @@
 import React from 'react';
 import {
-  StyleSheet,
   Text,
-  View,
-  Image,
-  TextInput,
-  TouchableHighlight,
-  Alert
+  View
 } from 'react-native';
 
 import styles from './style';

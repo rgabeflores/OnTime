@@ -3,7 +3,7 @@ import { Text, SafeAreaView } from "react-native";
 
 export default class TimerScreen extends React.Component {
   static navigationOptions = {
-    title: "Tab"
+    title: "Timer"
   };
 
   render() {

@@ -1,14 +1,11 @@
-import React from "react";
 import {
   createStackNavigator,
-  createBottomTabNavigator,
   createSwitchNavigator,
   createAppContainer
 } from "react-navigation";
 
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
-import HomeScreen from "../screens/HomeScreen";
 
 import MainTabNavigator from "./MainTabNavigator";
 

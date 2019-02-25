@@ -1,9 +1,12 @@
 'use strict'
-import React from 'react-native';
-let {StyleSheet} = React;
+import {
+    StyleSheet
+} from 'react-native';
+
 const constants = {
     actionColor:'#ffff'
 }
+
 //create style sheets
 module.exports = StyleSheet.create({
     navbar: {

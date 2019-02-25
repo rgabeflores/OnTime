@@ -1,18 +1,11 @@
 import React from "react";
 import {
   Calendar,
-  CalendarList,
   Agenda,
-  calendarTheme,
-  calendarParams
+  calendarTheme
 } from "react-native-calendars";
 import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   SafeAreaView,
   Button
