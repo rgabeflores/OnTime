@@ -16,7 +16,7 @@ __OnTime__ is a time management and scheduling app for mobile devices.
 
     `npm install`
 
-> NOTE: npm ([Node Package Manager](https://www.npmjs.com/get-npm)) must be installed in order for the installation to be successful.
+> NOTE: Node Package Manager ([npm](https://www.npmjs.com/get-npm)) must be installed in order for the installation to be successful.
 
 ## Running the Program
 
