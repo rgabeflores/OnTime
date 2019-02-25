@@ -8,15 +8,15 @@ __OnTime__ is a time management and scheduling app for mobile devices.
 
 1. Clone the repository at [this](https://github.com/rgabeflores/OnTime) link.
 
-2. Navigate to the project folder on your system.
+2. Navigate to the project folder/directory on your system.
 
-3. Navigate to the `/app` folder within the project
+3. Navigate to the `/app` folder within the project.
 
 2. Open a terminal or command prompt and run the following command:
 
     `npm install`
 
-> NOTE: npm (Node package manager) must be installed in order for the installation to be successful
+> NOTE: npm ([Node Package Manager](https://www.npmjs.com/get-npm)) must be installed in order for the installation to be successful.
 
 ## Running the Program
 
@@ -30,7 +30,7 @@ __OnTime__ is a time management and scheduling app for mobile devices.
 
 5. Scan the QR code to open the application through Expo.
 
-> NOTE: To run the program in development mode, Expo must be installed on the mobile device and the PC must be capable of making a local Wi-Fi connection.
+> NOTE: To run the program in development mode, [Expo](https://expo.io/) must be installed on the mobile device and the PC used for development must be capable of making a local Wi-Fi connection.
 
 ## Built With
 * [React Native](https://facebook.github.io/react-native/)
