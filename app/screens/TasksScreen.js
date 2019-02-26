@@ -12,6 +12,7 @@ import Toolbar from "../components/Toolbar";
 import styles from "../components/style";
 import otherStyles from "./style"
 import { db } from '../config/db';
+import firebase from 'firebase';
 let uID = 'vs5zAcoqmdYatVWRL6yARSuSiz22';
 export default class TasksScreen extends React.Component {
   static navigationOptions = {
@@ -38,7 +39,7 @@ export default class TasksScreen extends React.Component {
   }
   // get the items from the list view
   getItems() {
-    var userRef = db.ref("/items/" + uID);
+    var userRef = db.ref("/tasks/" + uID);
 
     // hardcode values
     // TODO: fetch data from firebase
@@ -54,6 +55,27 @@ export default class TasksScreen extends React.Component {
         address: element.address
       })
     });
+    // fetch all the data from the database
+    userRef.once("value")
+      .then(function (snapshot) {
+        snapshot.forEach(function (childSnapshot){
+
+          var taskName = childSnapshot.key; // "task name"
+          var hoursNeeded = childSnapshot.child(taskName + "/hours").key; // "hours"
+          var addressGiven = childSnapshot.child(taskName + "/address").key; // "address"
+          //console.log(tasks);
+          tasks.push({
+            title: taskName,
+            hours: hoursNeeded,
+            address: addressGiven
+          })
+          
+        })
+      });
+
+    // try storing task as a state variable
+    // debugging, prints the saved tasks
+    console.log(tasks);
     // update the view
     this.setState({
       taskDataSource: this.state.taskDataSource.cloneWithRows(tasks)
@@ -116,7 +138,7 @@ export default class TasksScreen extends React.Component {
             </View>
           </TouchableHighlight>
         </View>
-        
+
       );
     }
   }
