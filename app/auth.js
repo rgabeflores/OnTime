@@ -29,5 +29,7 @@ export const onRegister = (email, password) => {
 }
 
 export const onLogin = (email, password) => {
-    return firebase.auth().signInWithEmailAndPassword(email,password);
+    let firebaseAuth = firebase.auth();
+    return firebaseAuth.signInWithEmailAndPassword(email,password)
+        
 }

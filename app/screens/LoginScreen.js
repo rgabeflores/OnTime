@@ -6,11 +6,15 @@ import {
   TextInput,
   TouchableHighlight
 } from "react-native";
-import { NavigationActions } from "react-navigation";
+
+import { connect } from "react-redux";
+
+import { fetchUser } from "../redux/actions/userActions";
 
 import styles from "./style";
 
 import { onLogin } from "../auth";
+
 
 export class LoginScreen extends React.Component {
   constructor(props) {
@@ -22,7 +26,6 @@ export class LoginScreen extends React.Component {
       loginSuccess: true
     };
   }
-
   render() {
     return (
       <View
@@ -96,13 +99,18 @@ export class LoginScreen extends React.Component {
     let password = this.state.password;
     console.log("Email: " + email);
     console.log("Password: " + password);
-    onLogin(email, password).then(() =>
-      this.props.navigation.navigate(
-        "LoggedIn",
-        {},
-        NavigationActions.navigate({ routeName: "Main" })
-      )
-    );
+    // onLogin(email, password).then(() =>
+    //   this.props.navigation.navigate(
+    //     "LoggedIn",
+    //     {},
+    //     NavigationActions.navigate({ routeName: "Main" })
+    //   )
+    // );
+
+    // SEE ERRORS
+    this.props.fetchUser(email,password);
+    console.log("uid: " + this.props.user.uid);
+    console.log("email: " + this.props.user.email);
   };
   compressViews = e => {
     this.setState({ isTyping: true });
@@ -112,4 +120,15 @@ export class LoginScreen extends React.Component {
   };
 }
 
-export default LoginScreen;
+const mapStateToProps = (store) => {
+  return {
+    user: store.user.user, // store.user == reducer, store.user.user == reducer.state.user
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchUser
+  }
+}
+export default connect(mapStateToProps, {fetchUser})(LoginScreen);

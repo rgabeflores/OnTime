@@ -1,6 +1,7 @@
 import React from "react";
-
+import { Provider } from "react-redux";
 import { createRootNavigator } from "./navigation/router";
+import store from "./redux/store";
 import ignoreWarnings from "react-native-ignore-warnings";
 
 export default class App extends React.Component {
@@ -12,7 +13,7 @@ export default class App extends React.Component {
   }
   render() {
     const Layout = createRootNavigator(this.state.isLoggedIn);
-    return <Layout />;
+    return <Provider store={store}><Layout /></Provider>;
   }
 }
 
