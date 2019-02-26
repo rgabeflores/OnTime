@@ -27,9 +27,10 @@ export default class TasksScreen extends React.Component {
     this.pressRow = this.pressRow.bind(this);
   }
   // call it before the component mounts, debugging
-  componentWillMount() {
-    this.getItems();
-  }
+  //deprecated, same thing as didMount
+  // componentWillMount() {
+  //   this.getItems();
+  // }
   // get called
   componentDidMount() {
     this.getItems();

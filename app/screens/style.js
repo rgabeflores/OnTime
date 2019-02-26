@@ -1,8 +1,5 @@
 "use strict";
-import {
-   StyleSheet, 
-   Platform 
-} from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 const constants = {
   actionColor: "#ffff"
@@ -48,6 +45,9 @@ module.exports = StyleSheet.create({
   buttonText: {
     padding: 20,
     color: "white"
+  },
+  settingsButton: {
+    width: "white"
   },
   buttonContainer: {
     margin: 5,
