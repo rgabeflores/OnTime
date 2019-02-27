@@ -8,6 +8,10 @@ import {
 } from "react-native";
 import { NavigationActions } from "react-navigation";
 
+import { connect } from "react-redux";
+import { createUser } from "../redux/actions/userActions";
+
+
 import styles from "./style";
 
 import { onRegister } from "../auth";
@@ -96,13 +100,16 @@ export class RegisterScreen extends React.Component {
     let password = this.state.password;
     console.log("Email: " + email);
     console.log("Password: " + password);
-    onRegister(email, password).then(() =>
+    onRegister(email, password).then((firebaseUser) =>{
+      console.log(firebaseUser.user.uid);
+      this.props.dispatch(createUser(firebaseUser.user.uid, firebaseUser.user.email));
       this.props.navigation.navigate(
         "LoggedIn",
         {},
         NavigationActions.navigate({ routeName: "Main" })
       )
-    );
+    });
+    
   };
   compressViews = e => {
     this.setState({ isTyping: true });
@@ -111,68 +118,17 @@ export class RegisterScreen extends React.Component {
     this.setState({ isTyping: false });
   };
 }
+const mapStateToProps = (store) => {
+  return {
+    user: store.user.user, // store.user == reducer, store.user.user == reducer.state.user
+  }
+};
 
-function asyncRequest(url) {
-  return fetch(url)
-    .then(response => response.json())
-    .then(responseJson => {
-      return responseJson.movies;
-    })
-    .catch(error => {
-      console.error(error);
-    });
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatch,
+    createUser
+  }
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   containerCompressed:{
-//     flex: 1,
-//     marginBottom: "45%",
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'flex-start'
-//   },
-//   textInputContainer:{
-//     borderColor: 'lightblue',
-//     borderWidth: 1,
-//     borderRadius: 30,
-//     padding: 15,
-//     margin: 5,
-//     width: "100%",
-//     minWidth: "75%"
-//   },
-//   Title:{
-//     color:'lightblue',
-//     fontSize:50
-//   },
-//   image:{
-//     width: 150,
-//     height: 150
-//   },
-//   button: {
-//    alignItems: 'center',
-//    backgroundColor: 'lightblue',
-//    borderRadius: 30,
-
-//   },
-//   buttonText: {
-//     padding: 20,
-//     color: 'white'
-//   },
-//   buttonContainer: {
-//     margin: 5,
-//     minWidth: "50%"
-//   },
-//   linkText:{
-//     padding: 5,
-//     minWidth: "50%",
-//     color: 'lightblue'
-//   }
-// });
-
-export default RegisterScreen;
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);

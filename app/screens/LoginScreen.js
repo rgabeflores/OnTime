@@ -6,15 +6,13 @@ import {
   TextInput,
   TouchableHighlight
 } from "react-native";
+import { NavigationActions } from "react-navigation";
 
 import { connect } from "react-redux";
-
 import { fetchUser } from "../redux/actions/userActions";
 
+import { onLogin } from "../auth.js";
 import styles from "./style";
-
-import { onLogin } from "../auth";
-
 
 export class LoginScreen extends React.Component {
   constructor(props) {
@@ -99,18 +97,18 @@ export class LoginScreen extends React.Component {
     let password = this.state.password;
     console.log("Email: " + email);
     console.log("Password: " + password);
-    // onLogin(email, password).then(() =>
-    //   this.props.navigation.navigate(
-    //     "LoggedIn",
-    //     {},
-    //     NavigationActions.navigate({ routeName: "Main" })
-    //   )
-    // );
+    onLogin(email, password).then((firebaseUser) =>{
+        console.log(firebaseUser.user.uid);
+        this.props.dispatch(fetchUser(firebaseUser.user.uid, firebaseUser.user.email));
+        this.props.navigation.navigate(
+          "LoggedIn",
+          {},
+          NavigationActions.navigate({ routeName: "Main" })
+        )
+      });
 
     // SEE ERRORS
-    this.props.fetchUser(email,password);
-    console.log("uid: " + this.props.user.uid);
-    console.log("email: " + this.props.user.email);
+    
   };
   compressViews = e => {
     this.setState({ isTyping: true });
@@ -128,7 +126,8 @@ const mapStateToProps = (store) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    dispatch,
     fetchUser
   }
 }
-export default connect(mapStateToProps, {fetchUser})(LoginScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
