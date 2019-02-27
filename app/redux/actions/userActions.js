@@ -1,14 +1,10 @@
-import { onLogin, onRegister } from "../../auth";
-
 export function createUser(email,password){
-    return function action(dispatch){
-        return onRegister(email,password)
-        .then((response) => {
-            dispatch({type: "CREATE_USER_FULFILLED", payload: {uid: response.user.uid, email: response.user.email}});
-        })
-        .catch((err) => {
-            dispatch({type: "CREATE_USER_REJECTED", payload: err});
-        });
+    return {
+        type: "CREATE_USER_FULFILLED", 
+        payload: {
+            uid: _uid, 
+            email: _email
+        }
     }
 }
 
