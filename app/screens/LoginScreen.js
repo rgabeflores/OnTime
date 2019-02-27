@@ -95,17 +95,25 @@ export class LoginScreen extends React.Component {
   logIn = e => {
     let email = this.state.email;
     let password = this.state.password;
-    console.log("Email: " + email);
-    console.log("Password: " + password);
-    onLogin(email, password).then((firebaseUser) =>{
-        console.log(firebaseUser.user.uid);
-        this.props.dispatch(fetchUser(firebaseUser.user.uid, firebaseUser.user.email));
-        this.props.navigation.navigate(
-          "LoggedIn",
-          {},
-          NavigationActions.navigate({ routeName: "Main" })
-        )
-      });
+
+    if(__DEV__){
+      console.log("Email: " + email);
+      console.log("Password: " + password);
+    }
+
+    onLogin(email, password).then((firebaseUser) => {
+      console.log(firebaseUser.user.uid);
+
+      // dispatch() triggers redux action
+      // fetchUser() is a redux action creator
+      this.props.dispatch(fetchUser(firebaseUser.user.uid, firebaseUser.user.email));
+
+      this.props.navigation.navigate(
+        "LoggedIn",
+        {},
+        NavigationActions.navigate({ routeName: "Main" })
+      )
+    });
 
     // SEE ERRORS
     
@@ -118,16 +126,20 @@ export class LoginScreen extends React.Component {
   };
 }
 
+// create map of "store" object passed from Provider to this component's props
 const mapStateToProps = (store) => {
   return {
     user: store.user.user, // store.user == reducer, store.user.user == reducer.state.user
   }
 };
 
+// create map of "dispatch" object passed from Provider to this component's props
 const mapDispatchToProps = (dispatch) => {
   return {
     dispatch,
     fetchUser
   }
 }
+
+// connect() applies maps to component's props
 export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
