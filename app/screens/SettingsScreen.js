@@ -19,23 +19,29 @@ export default class SettingsScreen extends React.Component {
 
   render() {
     return (
-      <View style={{backgroundColor:'gray',flex:1}}>
-      <View style={{flex:1, marginTop:20}}>
-        <SettingsList>
-        	<SettingsList.Header headerText='My Account' headerStyle={{color:'white'}}/>
-          <SettingsList.Item title='Account Info'/>
+      <View style={{backgroundColor:'lightblue',flex:1}}>
+        <View style={{flex:1, marginTop:15}}>
+          <SettingsList>
 
-          <SettingsList.Header headerText='Notifications' headerStyle={{color:'white', marginTop:20}}/>
-          <SettingsList.Item
-            hasNavArrow={false}
-            switchState={this.state.switchValue}
-            switchOnValueChange={this.onValueChange}
-            hasSwitch={true}
-            title='Switch Example'/>
+            {/*Inserts a header text called "My Account" */}
+          	<SettingsList.Header headerText='My Account' headerStyle={{color:'white'}}/>
+            {/*Inserts a button that displays user's account info */}
+            <SettingsList.Item title='Account Info'/>
 
-        </SettingsList>
+            {/*Inserts a header text called "My Account" */}
+            <SettingsList.Header headerText='Notifications' headerStyle={{color:'white', marginTop:15}}/>
+
+            {/*Inserts toggle switch called "Push Notifications" */}
+            <SettingsList.Item
+              hasNavArrow={false}
+              switchState={this.state.switchValue}
+              switchOnValueChange={this.onValueChange}
+              hasSwitch={true}
+              title='Push Notifications'/>
+
+          </SettingsList>
+        </View>
       </View>
-    </View>
 
 
         );
