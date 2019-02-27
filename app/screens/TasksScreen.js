@@ -8,10 +8,12 @@ import {
   TouchableHighlight
 } from "react-native";
 
+import { connect } from "react-redux";
+
 import Toolbar from "../components/Toolbar";
 import styles from "../components/style";
 
-export default class TasksScreen extends React.Component {
+export class TasksScreen extends React.Component {
   static navigationOptions = {
     title: "Tasks"
   };
@@ -70,6 +72,8 @@ export default class TasksScreen extends React.Component {
     console.log(task);
   }
   render() {
+    if(__DEV__) console.log(this.props.user);
+
     if (this.state.taskDataSource.getRowCount === 0) {
       return (
         <View style={styles.container}>
@@ -91,4 +95,19 @@ export default class TasksScreen extends React.Component {
   }
 }
 
-AppRegistry.registerComponent("tasklister", () => tasklister);
+// create map of "store" object passed from Provider to this component's props
+const mapStateToProps = (store) => {
+  return {
+    user: store.user.user, // store.user == reducer, store.user.user == reducer.state.user
+  }
+};
+
+// create map of "dispatch" object passed from Provider to this component's props
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatch
+  }
+}
+
+// connect() applies maps to component's props
+export default connect(mapStateToProps, mapDispatchToProps)(TasksScreen);

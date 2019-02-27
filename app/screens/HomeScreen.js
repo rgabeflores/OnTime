@@ -38,7 +38,8 @@ export class HomeScreen extends React.Component {
   }
 
   render() {
-    console.log(this.props.user);
+    if(__DEV__) console.log(this.props.user);
+
     if (this.state.calendarView === true) {
       return (
         <View>
