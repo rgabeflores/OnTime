@@ -11,10 +11,35 @@ export default function reducer(
     action
     ){
     switch(action.type){
+        case "CREATE_USER":{
+            return {
+                ...state,
+                fetching: true
+            }
+        }
+        case "CREATE_USER_FULFILLED":{
+            return {
+                ...state, 
+                user: {
+                    uid: action.payload.uid,
+                    email: action.payload.email,
+                    fetched: true
+                }
+            }
+        }
+        case "CREATE_USER_REJECTED":{
+            return {
+                ...state, 
+                fetching: false, 
+                error: action.payload
+            }
+        }
         case "FETCH_USER":{
             return {
                 ...state, 
-                fetching: true
+                fetching: true,
+                uid: action.payload.uid,
+                email: action.payload.email
             }
         }
         case "FETCH_USER_FULFILLED":{

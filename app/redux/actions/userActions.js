@@ -1,15 +1,24 @@
-import { onLogin } from "../../auth";
+import { onLogin, onRegister } from "../../auth";
 
-export function fetchUser(email, password){
-    return function action(dispatch) {
-        onLogin(email,password)
+export function createUser(email,password){
+    return function action(dispatch){
+        return onRegister(email,password)
         .then((response) => {
-            dispatch({type: "FETCH_USER_FULFILLED", payload: {uid: response.user.uid, email: response.user.email}});
+            dispatch({type: "CREATE_USER_FULFILLED", payload: {uid: response.user.uid, email: response.user.email}});
         })
         .catch((err) => {
-            console.log("err")
-            return {type: "FETCH_USER_REJECTED", payload: err};
+            dispatch({type: "CREATE_USER_REJECTED", payload: err});
         });
+    }
+}
+
+export function fetchUser(_uid, _email){
+    return {
+        type: "FETCH_USER_FULFILLED", 
+        payload: {
+            uid: _uid, 
+            email: _email
+        }
     }
 }
 export function setUserEmail(email){
