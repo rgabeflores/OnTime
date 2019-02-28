@@ -221,11 +221,11 @@ const mapStateToProps = (store) => {
 };
 
 // create map of "dispatch" object passed from Provider to this component's props
-const mapDispatchToProps = (dispatch) => {
-  return {
-    dispatch
-  }
-}
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     dispatch
+//   }
+// }
 
 // connect() applies maps to component's props
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+export default connect(mapStateToProps)(HomeScreen);

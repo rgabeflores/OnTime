@@ -103,9 +103,8 @@ export class RegisterScreen extends React.Component {
     onRegister(email, password).then((firebaseUser) =>{
       console.log(firebaseUser.user.uid);
       
-      // dispatch() triggers redux action
       // createUser() is a redux action creator
-      this.props.dispatch(createUser(firebaseUser.user));
+      this.props.createUser(firebaseUser.user);
       this.props.navigation.navigate(
         "LoggedIn",
         {},
@@ -129,13 +128,15 @@ const mapStateToProps = (store) => {
   }
 };
 
-// create map of  "dispatch" object passed from Provider to this component's props
+// create map of "dispatch" object passed from Provider to Redux action creators in this component's props
 const mapDispatchToProps = (dispatch) => {
   return {
-    dispatch,
-    createUser
+    createUser: (user) => {
+      dispatch(createUser(user));
+    }
   }
 }
+
 
 // connect() applies maps to component's props
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);
