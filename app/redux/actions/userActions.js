@@ -1,20 +1,14 @@
-export function createUser(email,password){
+export function createUser(user){
     return {
         type: "CREATE_USER_FULFILLED", 
-        payload: {
-            uid: _uid, 
-            email: _email
-        }
+        payload: user
     }
 }
 
-export function fetchUser(_uid, _email){
+export function fetchUser(user){
     return {
         type: "FETCH_USER_FULFILLED", 
-        payload: {
-            uid: _uid, 
-            email: _email
-        }
+        payload: user
     }
 }
 export function setUserEmail(email){

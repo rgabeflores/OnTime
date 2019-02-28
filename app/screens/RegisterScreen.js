@@ -105,7 +105,7 @@ export class RegisterScreen extends React.Component {
       
       // dispatch() triggers redux action
       // createUser() is a redux action creator
-      this.props.dispatch(createUser(firebaseUser.user.uid, firebaseUser.user.email));
+      this.props.dispatch(createUser(firebaseUser.user));
       this.props.navigation.navigate(
         "LoggedIn",
         {},

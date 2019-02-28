@@ -106,8 +106,7 @@ export class LoginScreen extends React.Component {
 
       // dispatch() triggers redux action
       // fetchUser() is a redux action creator
-      this.props.dispatch(fetchUser(firebaseUser.user.uid, firebaseUser.user.email));
-
+      this.props.dispatch(fetchUser(firebaseUser.user));
       this.props.navigation.navigate(
         "LoggedIn",
         {},

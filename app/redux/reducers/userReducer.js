@@ -1,13 +1,24 @@
+const INITIAL_STATE = {
+    user: {
+        uid: "Re2ophJDDMX2yssltNZdCSz9gLz1",
+        email: "gabe@gabe.com",
+    },
+    fetching: false,
+    fetched: false,
+    error: null,
+};
+/*
+if (__DEV__) const INITIAL_STATE = {
+    user: {
+        uid: "",
+        email: "",
+    }
+}
+*/
+
+
 export default function reducer(
-    state={
-        user: {
-            uid: "",
-            email: "",
-        },
-        fetching: false,
-        fetched: false,
-        error: null,
-    }, 
+    state = INITIAL_STATE, 
     action
     ){
     switch(action.type){
@@ -20,11 +31,7 @@ export default function reducer(
         case "CREATE_USER_FULFILLED":{
             return {
                 ...state, 
-                user: {
-                    uid: action.payload.uid,
-                    email: action.payload.email,
-                    fetched: true
-                }
+                user: action.payload
             }
         }
         case "CREATE_USER_REJECTED":{
@@ -38,8 +45,7 @@ export default function reducer(
             return {
                 ...state, 
                 fetching: true,
-                uid: action.payload.uid,
-                email: action.payload.email
+                user: action.payload
             }
         }
         case "FETCH_USER_FULFILLED":{
@@ -47,10 +53,7 @@ export default function reducer(
                 ...state, 
                 fetching: false, 
                 fetched: true, 
-                user: {
-                    uid: action.payload.uid,
-                    email: action.payload.email
-                }
+                user: action.payload
             }
         }
         case "FETCH_USER_REJECTED":{
