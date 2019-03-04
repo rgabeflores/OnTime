@@ -5,7 +5,8 @@ import {
   Text,
   View,
   ListView,
-  TouchableHighlight
+  TouchableHighlight,
+  ScrollView
 } from "react-native";
 
 import Toolbar from "../components/Toolbar";
@@ -26,9 +27,9 @@ export default class TasksScreen extends React.Component {
     this.state = {
       taskDataSource: ds,
       tasks: [
-          { title: "Task One", hours: "2", address: "Address 123" },
-          { title: "Task Two", hours: "2", address: "456 Some Street" }
-        ]
+        { title: "Task One", hours: "2", address: "Address 123" },
+        { title: "Task Two", hours: "2", address: "456 Some Street" }
+      ]
     };
     this.renderRow = this.renderRow.bind(this);
     this.pressRow = this.pressRow.bind(this);
@@ -47,7 +48,7 @@ export default class TasksScreen extends React.Component {
 
     // hardcode values
     // TODO: fetch data from firebase
-    
+
     // store each tasks to the database
     // the key is the task name
     this.state.tasks.forEach(element => {
@@ -56,10 +57,10 @@ export default class TasksScreen extends React.Component {
         address: element.address
       })
     });
-    // fetch all the data from the database
+
     userRef.once("value")
       .then(function (snapshot) {
-        snapshot.forEach(function (childSnapshot){
+        snapshot.forEach(function (childSnapshot) {
 
           var taskName = childSnapshot.key; // "task name"
           var hoursNeeded = childSnapshot.val();
@@ -70,7 +71,7 @@ export default class TasksScreen extends React.Component {
             hours: hoursNeeded,
             address: addressGiven
           })
-          
+
         })
       });
 
@@ -111,37 +112,52 @@ export default class TasksScreen extends React.Component {
     } else {
       // display the task list
       return (
-        <View style={styles.container}>
-          <Toolbar title="Task List" />
-          <ListView
-            dataSource={this.state.taskDataSource}
-            renderRow={this.renderRow}
-          />
-          <TouchableHighlight
-            style={otherStyles.buttonContainer}
-            onPress={this.addTask.bind(this)}
-            underlayColor="white"
-          >
-            <View style={otherStyles.button}>
-              <Text style={otherStyles.buttonText}>Add Task</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={otherStyles.buttonContainer}
-            onPress={this.removeTask.bind(this)}
-            underlayColor="white"
-          >
-            <View style={otherStyles.button}>
-              <Text style={otherStyles.buttonText}>Remove Task</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
-
+        <ScrollView>
+          <View style={styles.container}>
+            <Toolbar title="Task List" />
+            <ListView
+              dataSource={this.state.taskDataSource}
+              renderRow={this.renderRow}
+            />
+            <TouchableHighlight
+              style={otherStyles.buttonContainer}
+              onPress={this.addTask.bind(this)}
+              underlayColor="white"
+            >
+              <View style={otherStyles.button}>
+                <Text style={otherStyles.buttonText}>Add Task</Text>
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={otherStyles.buttonContainer}
+              onPress={this.removeTask.bind(this)}
+              underlayColor="white"
+            >
+              <View style={otherStyles.button}>
+                <Text style={otherStyles.buttonText}>Remove Task</Text>
+              </View>
+            </TouchableHighlight>
+          </View>
+        </ScrollView>
       );
     }
   }
-  addTask = e => {
-
+  addTask = (e) => {
+    this.setState((prevState) => ({
+      // add a new set of tasks
+      tasks: [...prevState.tasks, { title: "Task Three", hours: "2", address: "456 Some Street heh" }],
+      // update the view
+      taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks)
+    }));
+    // store each tasks to the database
+    // the key is the task name
+    this.state.tasks.forEach(element => {
+      userRef.child(element.title).set({
+        hours: element.hours,
+        address: element.address
+      })
+    });
+    console.log(this.state.tasks);
   };
   removeTask = e => {
 
