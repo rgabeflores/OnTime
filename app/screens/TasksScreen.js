@@ -24,7 +24,11 @@ export default class TasksScreen extends React.Component {
     // the datasource(ds) is a listener checking if the data has been changed or not
     let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 != r2 });
     this.state = {
-      taskDataSource: ds
+      taskDataSource: ds,
+      tasks: [
+          { title: "Task One", hours: "2", address: "Address 123" },
+          { title: "Task Two", hours: "2", address: "456 Some Street" }
+        ]
     };
     this.renderRow = this.renderRow.bind(this);
     this.pressRow = this.pressRow.bind(this);
@@ -43,13 +47,10 @@ export default class TasksScreen extends React.Component {
 
     // hardcode values
     // TODO: fetch data from firebase
-    let tasks = [
-      { title: "Task One", hours: "2", address: "Address 123" },
-      { title: "Task Two", hours: "2", address: "456 Some Street" }
-    ];
+    
     // store each tasks to the database
     // the key is the task name
-    tasks.forEach(element => {
+    this.state.tasks.forEach(element => {
       userRef.child(element.title).set({
         hours: element.hours,
         address: element.address
@@ -61,10 +62,10 @@ export default class TasksScreen extends React.Component {
         snapshot.forEach(function (childSnapshot){
 
           var taskName = childSnapshot.key; // "task name"
-          var hoursNeeded = childSnapshot.child(taskName + "/hours").key; // "hours"
-          var addressGiven = childSnapshot.child(taskName + "/address").key; // "address"
-          //console.log(tasks);
-          tasks.push({
+          var hoursNeeded = childSnapshot.val();
+          console.log(taskName);
+          console.log(hoursNeeded);
+          this.state.tasks.push({
             title: taskName,
             hours: hoursNeeded,
             address: addressGiven
@@ -73,12 +74,9 @@ export default class TasksScreen extends React.Component {
         })
       });
 
-    // try storing task as a state variable
-    // debugging, prints the saved tasks
-    console.log(tasks);
     // update the view
     this.setState({
-      taskDataSource: this.state.taskDataSource.cloneWithRows(tasks)
+      taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks)
     });
   }
   // display task
