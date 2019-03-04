@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, Button, containerViewStyle } from "react-native";
+import { Text, View, Button, TouchableOpacity } from "react-native";
 import firebase from "firebase";
 import { db } from "../config/db";
 import styles from "./style";
@@ -21,10 +21,30 @@ export default class SettingsScreen extends React.Component {
   render() {
     return (
       <View>
-        <Button
-          style={styles.settingsButton}
-          title="Log Out"
-          onPress={() => this.logout()}
+        <View
+          style={{
+            borderBottomColor: "black",
+            borderBottomWidth: 1
+          }}
+        />
+        <TouchableOpacity onPress={() => this.logout()}>
+          <View
+            style={{
+              backgroundColor: "white",
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+          >
+            <Text style={{ fontSize: 40, fontWeight: "500", color: "black" }}>
+              Log Out
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <View
+          style={{
+            borderBottomColor: "black",
+            borderBottomWidth: 1
+          }}
         />
       </View>
     );
