@@ -45,7 +45,6 @@ export default function reducer(
             return {
                 ...state, 
                 fetching: true,
-                user: action.payload
             }
         }
         case "FETCH_USER_FULFILLED":{
