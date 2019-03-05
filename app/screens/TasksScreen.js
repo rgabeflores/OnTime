@@ -11,10 +11,10 @@ import {
 
 import Toolbar from "../components/Toolbar";
 import styles from "../components/style";
-import otherStyles from "./style"
-import { db } from '../config/db';
-import firebase from 'firebase';
-let uID = 'vs5zAcoqmdYatVWRL6yARSuSiz22';
+import otherStyles from "./style";
+import { db } from "../config/db";
+import firebase from "firebase";
+let uID = "vs5zAcoqmdYatVWRL6yARSuSiz22";
 export default class TasksScreen extends React.Component {
   static navigationOptions = {
     title: "Tasks"
@@ -56,25 +56,22 @@ export default class TasksScreen extends React.Component {
       userRef.child(element.title).set({
         hours: element.hours,
         address: element.address
-      })
+      });
     });
 
-    userRef.once("value")
-      .then(function (snapshot) {
-        snapshot.forEach(function (childSnapshot) {
-
-          var taskName = childSnapshot.key; // "task name"
-          var hoursNeeded = childSnapshot.val();
-          console.log(taskName);
-          console.log(hoursNeeded);
-          this.state.tasks.push({
-            title: taskName,
-            hours: hoursNeeded,
-            address: addressGiven
-          })
-
-        })
+    userRef.once("value").then(function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+        var taskName = childSnapshot.key; // "task name"
+        var hoursNeeded = childSnapshot.val();
+        console.log(taskName);
+        console.log(hoursNeeded);
+        this.state.tasks.push({
+          title: taskName,
+          hours: hoursNeeded,
+          address: addressGiven
+        });
       });
+    });
 
     // update the view
     this.setState({
@@ -143,10 +140,13 @@ export default class TasksScreen extends React.Component {
       );
     }
   }
-  addTask = (e) => {
-    this.setState((prevState) => ({
+  addTask = e => {
+    this.setState(prevState => ({
       // add a new set of tasks
-      tasks: [...prevState.tasks, { title: "Task Three", hours: "2", address: "456 Some Street heh" }],
+      tasks: [
+        ...prevState.tasks,
+        { title: "Task Three", hours: "2", address: "456 Some Street heh" }
+      ],
       // update the view
       taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks)
     }));
@@ -156,13 +156,11 @@ export default class TasksScreen extends React.Component {
       userRef.child(element.title).set({
         hours: element.hours,
         address: element.address
-      })
+      });
     });
     console.log(this.state.tasks);
   };
-  removeTask = e => {
-
-  };
+  removeTask = e => {};
 }
 
 AppRegistry.registerComponent("tasklister", () => tasklister);
