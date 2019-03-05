@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, SafeAreaView } from "react-native";
+import { Text, SafeAreaView, View } from "react-native";
 import { Stopwatch, Timer } from 'react-native-stopwatch-timer';
 import { TouchableHighlight } from 'react-native';
 
@@ -12,7 +12,7 @@ export default class TimerScreen extends React.Component {
     this.state = {
       timerStart: false,
       stopwatchStart: false,
-      totalDuration: 90000,
+      totalDuration: 30000,
       timerReset: false,
       stopwatchReset: false,
     };
@@ -42,9 +42,12 @@ export default class TimerScreen extends React.Component {
     this.currentTime = time;
   };
 
+
   render() {
     return (
       <SafeAreaView>
+
+        <Text style={{fontSize: 30}}>Stopwatch</Text>
 
         <Stopwatch laps msecs start={this.state.stopwatchStart}
           reset={this.state.stopwatchReset}
@@ -52,12 +55,14 @@ export default class TimerScreen extends React.Component {
           getTime={this.getFormattedTime} />
 
         <TouchableHighlight onPress={this.toggleStopwatch}>
-          <Text style={{fontSize: 30}}>{!this.state.stopwatchStart ? "Start" : "Stop"}</Text>
+          <Text style={{fontSize: 30,left:120,}}>{!this.state.stopwatchStart ? "Start" : "Stop"}</Text>
         </TouchableHighlight>
 
         <TouchableHighlight onPress={this.resetStopwatch}>
-          <Text style={{fontSize: 30}}>Reset</Text>
+          <Text style={{fontSize: 30,left:120,}}>Reset</Text>
         </TouchableHighlight>
+
+        <Text style={{fontSize: 30}}>Timer</Text>
 
         <Timer totalDuration={this.state.totalDuration} msecs start={this.state.timerStart}
           reset={this.state.timerReset}
@@ -65,27 +70,31 @@ export default class TimerScreen extends React.Component {
           getTime={this.getFormattedTime} />
 
         <TouchableHighlight onPress={this.toggleTimer}>
-          <Text style={{fontSize: 30}}>{!this.state.timerStart ? "Start" : "Stop"}</Text>
+          <Text style={{fontSize: 30,left:120,}}>{!this.state.timerStart ? "Start" : "Stop"}</Text>
         </TouchableHighlight>
 
         <TouchableHighlight onPress={this.resetTimer}>
-          <Text style={{fontSize: 30}}>Reset</Text>
+          <Text style={{fontSize: 30,left:120,}}>Reset</Text>
         </TouchableHighlight>
 
       </SafeAreaView>
+
     );
   }
 }
   const options = {
   container: {
-    backgroundColor: '#000',
+    backgroundColor: 'lightblue',
     padding: 5,
     borderRadius: 5,
     width: 220,
+    position:"relative",
+    left:50,
   },
   text: {
     fontSize: 30,
     color: '#FFF',
-    marginLeft: 7,
-  }
+    textAlign: "center",
+  },
+
 }
