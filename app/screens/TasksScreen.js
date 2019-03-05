@@ -168,13 +168,22 @@ export default class TasksScreen extends React.Component {
     }
   }
   addTask = (e) => {
+    // user's database reference
+    var userRef = db.ref("/tasks/" + uID);
+    
+    // update the database
+    userRef.child(this.state.title).set({
+      hours: this.state.hours,
+      address: this.state.address
+    })
     this.setState((prevState) => ({
       // add a new set of tasks
       tasks: [...prevState.tasks, { title: this.state.title, hours: this.state.hours, address: this.state.address }],
       // update the view
       taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks)
     }));
-    console.log(this.state.tasks);
+    // debugging
+    //console.log(this.state.tasks);
   };
   removeTask = e => {
 
