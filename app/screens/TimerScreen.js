@@ -1,14 +1,16 @@
 import React from "react";
 import { Text, SafeAreaView } from "react-native";
 
-export default class TimerScreen extends React.Component {
+import { connect } from "react-redux";
+
+export class TimerScreen extends React.Component {
   static navigationOptions = {
     title: "Timer"
   };
 
   render() {
-    /* Go ahead and delete ExpoConfigView and replace it with your
-     * content, we just wanted to give you a quick view of your config */
+    if(__DEV__) console.log(this.props.user);
+
     return (
       <SafeAreaView>
         <Text>Something</Text>
@@ -16,3 +18,20 @@ export default class TimerScreen extends React.Component {
     );
   }
 }
+
+// create map of "store" object passed from Provider to this component's props
+const mapStateToProps = (store) => {
+  return {
+    user: store.user.user, // store.user == reducer, store.user.user == reducer.state.user
+  }
+};
+
+// create map of "dispatch" object passed from Provider to this component's props
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     dispatch
+//   }
+// }
+
+// connect() applies maps to component's props
+export default connect(mapStateToProps)(TimerScreen);

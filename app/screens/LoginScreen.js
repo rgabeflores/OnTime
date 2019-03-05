@@ -8,9 +8,11 @@ import {
 } from "react-native";
 import { NavigationActions } from "react-navigation";
 
-import styles from "./style";
+import { connect } from "react-redux";
+import { fetchUser } from "../redux/actions/userActions";
 
-import { onLogin } from "../auth";
+import { onLogin } from "../auth.js";
+import styles from "./style";
 
 export class LoginScreen extends React.Component {
   constructor(props) {
@@ -22,7 +24,6 @@ export class LoginScreen extends React.Component {
       loginSuccess: true
     };
   }
-
   render() {
     return (
       <View
@@ -94,15 +95,27 @@ export class LoginScreen extends React.Component {
   logIn = e => {
     let email = this.state.email;
     let password = this.state.password;
-    console.log("Email: " + email);
-    console.log("Password: " + password);
-    onLogin(email, password).then(() =>
+
+    if(__DEV__){
+      console.log("Email: " + email);
+      console.log("Password: " + password);
+    }
+
+    onLogin(email, password).then((firebaseUser) => {
+      console.log(firebaseUser.user.uid);
+
+      // dispatch() triggers redux action
+      // fetchUser() is a redux action creator
+      this.props.fetchUser(firebaseUser.user);
       this.props.navigation.navigate(
         "LoggedIn",
         {},
         NavigationActions.navigate({ routeName: "Main" })
       )
-    );
+    });
+
+    // SEE ERRORS
+    
   };
   compressViews = e => {
     this.setState({ isTyping: true });
@@ -112,56 +125,21 @@ export class LoginScreen extends React.Component {
   };
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   containerCompressed:{
-//     flex: 1,
-//     marginBottom: "45%",
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'flex-start'
-//   },
-//   textInputContainer:{
-//     borderColor: 'lightblue',
-//     borderWidth: 1,
-//     borderRadius: 30,
-//     padding: 15,
-//     margin: 5,
-//     width: "100%",
-//     minWidth: "75%"
-//   },
-//   Title:{
-//     color:'lightblue',
-//     fontSize:50
-//   },
-//   image:{
-//     width: 150,
-//     height: 150
-//   },
-//   button: {
-//    alignItems: 'center',
-//    backgroundColor: 'lightblue',
-//    borderRadius: 30,
+// create map of "store" object passed from Provider to this component's props
+const mapStateToProps = (store) => {
+  return {
+    user: store.user.user, // store.user == reducer, store.user.user == reducer.state.user
+  }
+};
 
-//   },
-//   buttonText: {
-//     padding: 20,
-//     color: 'white'
-//   },
-//   buttonContainer: {
-//     margin: 5,
-//     minWidth: "50%"
-//   },
-//   linkText:{
-//     padding: 5,
-//     minWidth: "50%",
-//     color: 'lightblue'
-//   }
-// });
+// create map of "dispatch" object passed from Provider to Redux action creators in this component's props
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchUser: (user) => {
+      dispatch(fetchUser(user));
+    }
+  }
+}
 
-export default LoginScreen;
+// connect() applies maps to component's props
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
