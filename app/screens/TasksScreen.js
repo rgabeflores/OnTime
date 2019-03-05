@@ -17,7 +17,6 @@ import styles from "../components/style";
 import otherStyles from "./style"
 import { db } from '../config/db';
 import firebase from 'firebase';
-let uID = this.props.user.uID;
 export class TasksScreen extends React.Component {
   static navigationOptions = {
     title: "Tasks"
@@ -50,7 +49,7 @@ export class TasksScreen extends React.Component {
   }
   // get the items from the list view
   getItems() {
-    var userRef = db.ref("/tasks/" + uID);
+    var userRef = db.ref("/tasks/" + this.props.user.uid);
 
     // hardcode values
     // TODO: fetch data from firebase
@@ -173,7 +172,7 @@ export class TasksScreen extends React.Component {
   }
   addTask = (e) => {
     // user's database reference
-    var userRef = db.ref("/tasks/" + uID);
+    var userRef = db.ref("/tasks/" + this.props.user.uid);
     
     // update the database
     userRef.child(this.state.title).set({
