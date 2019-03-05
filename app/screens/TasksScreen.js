@@ -17,7 +17,7 @@ import styles from "../components/style";
 import otherStyles from "./style"
 import { db } from '../config/db';
 import firebase from 'firebase';
-let uID = 'vs5zAcoqmdYatVWRL6yARSuSiz22';
+let uID = this.props.user.uID;
 export class TasksScreen extends React.Component {
   static navigationOptions = {
     title: "Tasks"
