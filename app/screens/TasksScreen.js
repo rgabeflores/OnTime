@@ -6,7 +6,8 @@ import {
   View,
   ListView,
   TouchableHighlight,
-  ScrollView
+  ScrollView,
+  TextInput
 } from "react-native";
 
 import Toolbar from "../components/Toolbar";
@@ -29,7 +30,10 @@ export default class TasksScreen extends React.Component {
       tasks: [
         { title: "Task One", hours: "2", address: "Address 123" },
         { title: "Task Two", hours: "2", address: "456 Some Street" }
-      ]
+      ],
+      title: "",
+      hours: "",
+      address: "",
     };
     this.renderRow = this.renderRow.bind(this);
     this.pressRow = this.pressRow.bind(this);
@@ -113,21 +117,42 @@ export default class TasksScreen extends React.Component {
       // display the task list
       return (
         <ScrollView>
+          <TouchableHighlight
+            style={otherStyles.buttonContainer}
+            onPress={this.addTask.bind(this)}
+            underlayColor="white"
+          >
+            <View style={otherStyles.button}>
+              <Text style={otherStyles.buttonText}>Add Task</Text>
+            </View>
+          </TouchableHighlight>
+          <View>
+            <TextInput
+              clearButtonMode="always"
+              style={otherStyles.textInputContainerTask}
+              placeholder="Task Title"
+              onChangeText={(text) => this.setState({ title: text })}
+            />
+            <TextInput
+              clearButtonMode="always"
+              style={otherStyles.textInputContainerTask}
+              placeholder="Task Hours"
+              onChangeText={(text) => this.setState({ hours: text })}
+            />
+            <TextInput
+              clearButtonMode="always"
+              style={otherStyles.textInputContainerTask}
+              placeholder="Task Address"
+              onChangeText={(text) => this.setState({ address: text })}
+            />
+          </View>
           <View style={styles.container}>
             <Toolbar title="Task List" />
             <ListView
               dataSource={this.state.taskDataSource}
               renderRow={this.renderRow}
             />
-            <TouchableHighlight
-              style={otherStyles.buttonContainer}
-              onPress={this.addTask.bind(this)}
-              underlayColor="white"
-            >
-              <View style={otherStyles.button}>
-                <Text style={otherStyles.buttonText}>Add Task</Text>
-              </View>
-            </TouchableHighlight>
+
             <TouchableHighlight
               style={otherStyles.buttonContainer}
               onPress={this.removeTask.bind(this)}
@@ -145,18 +170,10 @@ export default class TasksScreen extends React.Component {
   addTask = (e) => {
     this.setState((prevState) => ({
       // add a new set of tasks
-      tasks: [...prevState.tasks, { title: "Task Three", hours: "2", address: "456 Some Street heh" }],
+      tasks: [...prevState.tasks, { title: this.state.title, hours: this.state.hours, address: this.state.address }],
       // update the view
       taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks)
     }));
-    // store each tasks to the database
-    // the key is the task name
-    this.state.tasks.forEach(element => {
-      userRef.child(element.title).set({
-        hours: element.hours,
-        address: element.address
-      })
-    });
     console.log(this.state.tasks);
   };
   removeTask = e => {
