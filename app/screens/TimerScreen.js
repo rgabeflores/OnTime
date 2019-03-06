@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, SafeAreaView, View } from "react-native";
+import { Text, TextInput, SafeAreaView, View } from "react-native";
 import { Stopwatch, Timer } from 'react-native-stopwatch-timer';
 import { TouchableHighlight } from 'react-native';
 
@@ -20,6 +20,7 @@ export default class TimerScreen extends React.Component {
     this.resetTimer = this.resetTimer.bind(this);
     this.toggleStopwatch = this.toggleStopwatch.bind(this);
     this.resetStopwatch = this.resetStopwatch.bind(this);
+    this.onTextChanged = this.onTextChanged.bind(this);
   }
 
   toggleTimer() {
@@ -40,6 +41,10 @@ export default class TimerScreen extends React.Component {
 
   getFormattedTime(time) {
     this.currentTime = time;
+  }
+  onTextChanged(text) {
+  // code to remove non-numeric characters from text
+  this.setState({myNumber: text})
   };
 
 
@@ -76,6 +81,12 @@ export default class TimerScreen extends React.Component {
         <TouchableHighlight onPress={this.resetTimer}>
           <Text style={{fontSize: 30,left:120,}}>Reset</Text>
         </TouchableHighlight>
+
+        <TextInput
+          keyboardType = 'numeric'
+          onChangeText = {(text)=> this.onChanged(text)}
+          value = {this.state.myNumber}
+        />
 
       </SafeAreaView>
 
