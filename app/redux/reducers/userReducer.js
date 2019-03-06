@@ -1,3 +1,12 @@
+import {
+    CREATE_USER,
+    CREATE_USER_FULFILLED,
+    FETCH_USER,
+    FETCH_USER_FULFILLED,
+    REQUEST_REJECTED,
+    SET_USER_EMAIL
+    } from './types';
+    
 const INITIAL_STATE = {
     user: {
         uid: "Re2ophJDDMX2yssltNZdCSz9gLz1",
@@ -22,32 +31,25 @@ export default function reducer(
     action
     ){
     switch(action.type){
-        case "CREATE_USER":{
+        case CREATE_USER:{
             return {
                 ...state,
                 fetching: true
             }
         }
-        case "CREATE_USER_FULFILLED":{
+        case CREATE_USER_FULFILLED:{
             return {
                 ...state, 
                 user: action.payload
             }
         }
-        case "CREATE_USER_REJECTED":{
-            return {
-                ...state, 
-                fetching: false, 
-                error: action.payload
-            }
-        }
-        case "FETCH_USER":{
+        case FETCH_USER:{
             return {
                 ...state, 
                 fetching: true,
             }
         }
-        case "FETCH_USER_FULFILLED":{
+        case FETCH_USER_FULFILLED:{
             return {
                 ...state, 
                 fetching: false, 
@@ -55,14 +57,14 @@ export default function reducer(
                 user: action.payload
             }
         }
-        case "FETCH_USER_REJECTED":{
+        case REQUEST_REJECTED:{
             return {
                 ...state, 
                 fetching: false, 
                 error: action.payload
             }
         }
-        case "SET_USER_EMAIL": {
+        case SET_USER_EMAIL: {
             return {
                 ...state, 
                 user: {...state.user, email: action.payload}
