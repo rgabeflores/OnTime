@@ -28,6 +28,7 @@ export class TasksScreen extends React.Component {
     // the datasource(ds) is a listener checking if the data has been changed or not
     let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
+      longPressedTask: false,
       modalVisible: false,
       taskDataSource: ds,
       tasks: [
@@ -91,16 +92,26 @@ export class TasksScreen extends React.Component {
       <TouchableHighlight
         onPress={() => {
           this.pressRow(task);
-        }}>
+        }}
+        onLongPress={
+          () => { this.longPressTask(task); }
+        }>
         <View style={styles.li}>
           <Text style={styles.liText}>
             Task Name: {task.title} {"\n"}
             Required Time: {task.hours} {"\n"}
             Location: {task.address}
           </Text>
+          <View style={this.state.longPressedTask ? {display: 'flex'}:{display: 'none'}}>
+            <Text>Surprise</Text>
+          </View>
         </View>
       </TouchableHighlight>
     );
+  }
+  // when a task is long pressed, this is what happens
+  longPressTask(task) {
+    this.setState({ longPressedTask: true });
   }
   // when the task is pressed, make a popup asking if the user wants to remove the task
   pressRow(task) {
@@ -119,6 +130,35 @@ export class TasksScreen extends React.Component {
       // display the task list
       return (
         <ScrollView>
+          <View style={styles.container}>
+            <Toolbar />
+            {/* Task List Toolbar */}
+            <ListView
+              dataSource={this.state.taskDataSource}
+              renderRow={this.renderRow}
+            />
+            {/* Add a Task button */}
+            <TouchableHighlight
+              style={otherStyles.buttonContainer}
+              onPress={this.showAddTask}
+              underlayColor="white"
+            >
+              <View style={otherStyles.button}>
+                <Text style={otherStyles.buttonText}>Add a Task</Text>
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={otherStyles.buttonContainer}
+              onPress={this.removeTask.bind(this)}
+              underlayColor="white"
+            >
+              {/* Remove a Task Button */}
+              <View style={otherStyles.button}>
+                <Text style={otherStyles.buttonText}>Remove Task</Text>
+              </View>
+            </TouchableHighlight>
+          </View>
+          {/* Prompt for Adding */}
           <Modal
             animationType="slide"
             visible={this.state.modalVisible}
@@ -162,31 +202,6 @@ export class TasksScreen extends React.Component {
               </TouchableHighlight>
             </View>
           </Modal>
-          <View style={styles.container}>
-            <Toolbar title="Task List" />
-            <ListView
-              dataSource={this.state.taskDataSource}
-              renderRow={this.renderRow}
-            />
-            <TouchableHighlight
-              style={otherStyles.buttonContainer}
-              onPress={this.showAddTask}
-              underlayColor="white"
-            >
-              <View style={otherStyles.button}>
-                <Text style={otherStyles.buttonText}>Add a Task</Text>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={otherStyles.buttonContainer}
-              onPress={this.removeTask.bind(this)}
-              underlayColor="white"
-            >
-              <View style={otherStyles.button}>
-                <Text style={otherStyles.buttonText}>Remove Task</Text>
-              </View>
-            </TouchableHighlight>
-          </View>
         </ScrollView>
       );
     }
