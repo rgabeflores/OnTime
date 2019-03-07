@@ -7,7 +7,8 @@ import {
   ListView,
   TouchableHighlight,
   ScrollView,
-  TextInput
+  TextInput,
+  Modal
 } from "react-native";
 
 import { connect } from "react-redux";
@@ -25,12 +26,11 @@ export class TasksScreen extends React.Component {
   constructor() {
     super();
     // the datasource(ds) is a listener checking if the data has been changed or not
-    let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 != r2 });
+    let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
+      modalVisible: false,
       taskDataSource: ds,
       tasks: [
-        { title: "Task One", hours: "2", address: "Address 123" },
-        { title: "Task Two", hours: "2", address: "456 Some Street" }
       ],
       title: "",
       hours: "",
@@ -91,8 +91,7 @@ export class TasksScreen extends React.Component {
       <TouchableHighlight
         onPress={() => {
           this.pressRow(task);
-        }}
-      >
+        }}>
         <View style={styles.li}>
           <Text style={styles.liText}>
             Task Name: {task.title} {"\n"}
@@ -103,13 +102,13 @@ export class TasksScreen extends React.Component {
       </TouchableHighlight>
     );
   }
-  // log the task that was tapped on (or do something else later)
+  // when the task is pressed, make a popup asking if the user wants to remove the task
   pressRow(task) {
-    console.log(task);
+
   }
   render() {
-    if(__DEV__) console.log(this.props.user);
-
+    if (__DEV__) console.log(this.props.user);
+    // the first if does not seem to be useful
     if (this.state.taskDataSource.getRowCount === 0) {
       return (
         <View style={styles.container}>
@@ -120,42 +119,64 @@ export class TasksScreen extends React.Component {
       // display the task list
       return (
         <ScrollView>
-          <TouchableHighlight
-            style={otherStyles.buttonContainer}
-            onPress={this.addTask.bind(this)}
-            underlayColor="white"
+          <Modal
+            animationType="slide"
+            visible={this.state.modalVisible}
           >
-            <View style={otherStyles.button}>
-              <Text style={otherStyles.buttonText}>Add Task</Text>
+            <View style={otherStyles.container}>
+              <TextInput
+                clearButtonMode="always"
+                style={otherStyles.textInputContainerTask}
+                placeholder="Task Title"
+                onChangeText={(text) => this.setState({ title: text })}
+              />
+              <TextInput
+                clearButtonMode="always"
+                style={otherStyles.textInputContainerTask}
+                placeholder="Task Hours"
+                onChangeText={(text) => this.setState({ hours: text })}
+              />
+              <TextInput
+                clearButtonMode="always"
+                style={otherStyles.textInputContainerTask}
+                placeholder="Task Address"
+                onChangeText={(text) => this.setState({ address: text })}
+              />
+              <TouchableHighlight
+                style={otherStyles.buttonContainer}
+                onPress={this.addTask.bind(this)}
+                underlayColor="white"
+              >
+                <View style={otherStyles.button}>
+                  <Text style={otherStyles.buttonText}>Add Task</Text>
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={otherStyles.buttonContainer}
+                onPress={() => { this.setState({ modalVisible: false }) }}
+                underlayColor="white"
+              >
+                <View style={otherStyles.button}>
+                  <Text style={otherStyles.buttonText}>Cancel Adding</Text>
+                </View>
+              </TouchableHighlight>
             </View>
-          </TouchableHighlight>
-          <View>
-            <TextInput
-              clearButtonMode="always"
-              style={otherStyles.textInputContainerTask}
-              placeholder="Task Title"
-              onChangeText={(text) => this.setState({ title: text })}
-            />
-            <TextInput
-              clearButtonMode="always"
-              style={otherStyles.textInputContainerTask}
-              placeholder="Task Hours"
-              onChangeText={(text) => this.setState({ hours: text })}
-            />
-            <TextInput
-              clearButtonMode="always"
-              style={otherStyles.textInputContainerTask}
-              placeholder="Task Address"
-              onChangeText={(text) => this.setState({ address: text })}
-            />
-          </View>
+          </Modal>
           <View style={styles.container}>
             <Toolbar title="Task List" />
             <ListView
               dataSource={this.state.taskDataSource}
               renderRow={this.renderRow}
             />
-
+            <TouchableHighlight
+              style={otherStyles.buttonContainer}
+              onPress={this.showAddTask}
+              underlayColor="white"
+            >
+              <View style={otherStyles.button}>
+                <Text style={otherStyles.buttonText}>Add a Task</Text>
+              </View>
+            </TouchableHighlight>
             <TouchableHighlight
               style={otherStyles.buttonContainer}
               onPress={this.removeTask.bind(this)}
@@ -170,23 +191,36 @@ export class TasksScreen extends React.Component {
       );
     }
   }
+  showAddTask = (e) => {
+    this.setState((prevState) => ({
+      modalVisible: true
+    }));
+  }
   addTask = (e) => {
     // user's database reference
     var userRef = db.ref("/tasks/" + this.props.user.uid);
-    
-    // update the database
-    userRef.child(this.state.title).set({
-      hours: this.state.hours,
-      address: this.state.address
-    })
-    this.setState((prevState) => ({
-      // add a new set of tasks
-      tasks: [...prevState.tasks, { title: this.state.title, hours: this.state.hours, address: this.state.address }],
-      // update the view
-      taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks)
-    }));
-    // debugging
-    //console.log(this.state.tasks);
+    if (this.state.title.length === 0) {
+      alert("Title can not be empty!");
+    } else {
+      // update the database
+      userRef.child(this.state.title).set({
+        hours: this.state.hours,
+        address: this.state.address
+      })
+      this.setState((prevState) => ({
+        // clear the current inputs
+        title: "",
+        hours: "",
+        address: "",
+        // add a new set of tasks
+        tasks: [...prevState.tasks, { title: this.state.title, hours: this.state.hours, address: this.state.address }],
+        taskDataSource: this.state.taskDataSource.cloneWithRows(
+          [...prevState.tasks, { title: this.state.title, hours: this.state.hours, address: this.state.address }]
+        ),
+        // remove the modal
+        modalVisible: false
+      }));
+    }
   };
   removeTask = e => {
 
