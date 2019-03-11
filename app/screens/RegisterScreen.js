@@ -6,15 +6,12 @@ import {
   TextInput,
   TouchableHighlight
 } from "react-native";
-import { NavigationActions } from "react-navigation";
 
 import { connect } from "react-redux";
 import { createUser } from "../redux/actions/userActions";
 
 
 import styles from "./style";
-
-import { onRegister } from "../auth";
 
 export class RegisterScreen extends React.Component {
   constructor(props) {
@@ -89,12 +86,17 @@ export class RegisterScreen extends React.Component {
       </View>
     );
   }
+
+  /**
+   * Navigates to the Login screen.
+   */
   goToLogin = e => {
     this.props.navigation.navigate("Login");
   };
-  goToHome = () => {
-    this.props.navigation.navigate("LoggedIn");
-  };
+
+  /**
+   * Handles the register button click.
+   */
   register = e => {
     let email = this.state.email;
     let password = this.state.password;
@@ -107,9 +109,19 @@ export class RegisterScreen extends React.Component {
     // Dispatch register
     this.props.createUser(email, password);
   };
+
+  /**
+   * Compresses the screen elements when the user types. This allows
+   * the visual elements to fit the device screen when the keyboard is open.
+   */
   compressViews = e => {
     this.setState({ isTyping: true });
   };
+
+  /**
+   * Decompresses the screen elements when the user stops typing. This returns
+   * the screen to its normal size.
+   */
   decompressViews = e => {
     this.setState({ isTyping: false });
   };
@@ -118,7 +130,7 @@ export class RegisterScreen extends React.Component {
 // create map of  "store" object passed from Provider to this component's props
 const mapStateToProps = (store) => {
   return {
-    user: store.user.user, // store.user == reducer, store.user.user == reducer.state.user
+    user: store.user.user, // store.user == userReducer
     isLoggedIn: store.user.isLoggedIn,
     fetching: store.user.fetching
   }
@@ -132,7 +144,6 @@ const mapDispatchToProps = (dispatch) => {
     }
   }
 }
-
 
 // connect() applies maps to component's props
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);
