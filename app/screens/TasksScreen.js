@@ -72,8 +72,6 @@ export class TasksScreen extends React.Component {
     console.log(task);
   }
   render() {
-    if(__DEV__) console.log(this.props.user);
-
     if (this.state.taskDataSource.getRowCount === 0) {
       return (
         <View style={styles.container}>

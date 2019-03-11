@@ -9,8 +9,6 @@ export class TimerScreen extends React.Component {
   };
 
   render() {
-    if(__DEV__) console.log(this.props.user);
-
     return (
       <SafeAreaView>
         <Text>Something</Text>

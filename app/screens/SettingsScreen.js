@@ -14,8 +14,6 @@ export class SettingsScreen extends React.Component {
   };
 
   render() {
-    if(__DEV__) console.log(this.props.user);
-
     return (
         <View>
             <Text>Settings Screen</Text>
