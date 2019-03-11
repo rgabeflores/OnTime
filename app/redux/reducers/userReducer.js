@@ -7,30 +7,19 @@ import {
     SET_USER_EMAIL
     } from '../actions/types';
 
+// Used for the initial state of the application
 const INITIAL_STATE = {
     user: {
         uid: "Re2ophJDDMX2yssltNZdCSz9gLz1",
         email: "gabe@gabe.com",
     },
-    isLoggedIn: false,
-    fetching: false,
-    fetched: false,
-    error: null,
+    isLoggedIn: false, // Keeps track of logged in status
+    fetching: false, // Used to indicate async loading
+    fetched: false, // Indicates the status of an async request
+    error: null, // Used for errors
 };
-/*
-if (__DEV__) const INITIAL_STATE = {
-    user: {
-        uid: "",
-        email: "",
-    }
-}
-*/
 
-
-export default function reducer(
-    state = INITIAL_STATE, 
-    action
-    ){
+export default function reducer( state = INITIAL_STATE, action){
     switch(action.type){
         case CREATE_USER:{
             return {
