@@ -15,9 +15,9 @@ import { connect } from "react-redux";
 
 import Toolbar from "../components/Toolbar";
 import styles from "../components/style";
-import otherStyles from "./style"
-import { db } from '../config/db';
-import firebase from 'firebase';
+import otherStyles from "./style";
+import { db } from "../config/db";
+import firebase from "firebase";
 export class TasksScreen extends React.Component {
   static navigationOptions = {
     title: "Tasks"
@@ -31,61 +31,60 @@ export class TasksScreen extends React.Component {
       longPressedTask: false,
       modalVisible: false,
       taskDataSource: ds,
-      tasks: [
-      ],
+      tasks: [],
       title: "",
       hours: "",
-      address: "",
+      address: ""
     };
     this.renderRow = this.renderRow.bind(this);
     this.pressRow = this.pressRow.bind(this);
+    // this.getItems = this.getItems.bind(this);
   }
   // call it before the component mounts, debugging
-  componentWillMount() {
-    this.getItems();
-  }
+  // componentWillMount() {
+  //   this.getItems();
+  // }
   // get called
   componentDidMount() {
     this.getItems();
   }
   // get the items from the list view
-  getItems() {
-    var userRef = db.ref("/tasks/" + this.props.user.uid);
+  getItems = async () => {
+    var userRef = db.ref("tasks/" + this.props.user.uid);
 
     // hardcode values
     // TODO: fetch data from firebase
 
     // store each tasks to the database
     // the key is the task name
-    this.state.tasks.forEach(element => {
-      userRef.child(element.title).set({
-        hours: element.hours,
-        address: element.address
-      })
-    });
-
-    userRef.once("value")
-      .then(function (snapshot) {
-        snapshot.forEach(function (childSnapshot) {
-
-          var taskName = childSnapshot.key; // "task name"
-          var hoursNeeded = childSnapshot.val();
-          console.log(taskName);
-          console.log(hoursNeeded);
-          this.state.tasks.push({
-            title: taskName,
-            hours: hoursNeeded,
-            address: addressGiven
-          })
-
-        })
+    // this.state.tasks.forEach(element => {
+    //   userRef.child(element.title).set({
+    //     hours: element.hours,
+    //     address: element.address
+    //   });
+    // });
+    let data = [];
+    userRef.once("value", snapshot => {
+      snapshot.forEach(childSnapshot => {
+        var taskName = childSnapshot.key; // "task name"
+        var taskDetails = childSnapshot.val();
+        // console.log(taskName);
+        // console.log(taskDetails);
+        var temp = {
+          title: taskName,
+          hours: taskDetails.hours,
+          address: taskDetails.address
+        };
+        data.push(temp);
+        return false;
       });
-
-    // update the view
-    this.setState({
-      taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks)
+      console.log(data);
+      this.setState({
+        taskDataSource: this.state.taskDataSource.cloneWithRows(data)
+      });
     });
-  }
+    // update the view
+  };
   // display task
   renderRow(task) {
     return (
@@ -93,16 +92,23 @@ export class TasksScreen extends React.Component {
         onPress={() => {
           this.pressRow(task);
         }}
-        onLongPress={
-          () => { this.longPressTask(task); }
-        }>
+        onLongPress={() => {
+          this.longPressTask(task);
+        }}
+      >
         <View style={styles.li}>
           <Text style={styles.liText}>
             Task Name: {task.title} {"\n"}
             Required Time: {task.hours} {"\n"}
             Location: {task.address}
           </Text>
-          <View style={this.state.longPressedTask ? {display: 'flex'}:{display: 'none'}}>
+          <View
+            style={
+              this.state.longPressedTask
+                ? { display: "flex" }
+                : { display: "none" }
+            }
+          >
             <Text>Surprise</Text>
           </View>
         </View>
@@ -114,9 +120,7 @@ export class TasksScreen extends React.Component {
     this.setState({ longPressedTask: true });
   }
   // when the task is pressed, make a popup asking if the user wants to remove the task
-  pressRow(task) {
-
-  }
+  pressRow(task) {}
   render() {
     if (__DEV__) console.log(this.props.user);
     // the first if does not seem to be useful
@@ -159,28 +163,25 @@ export class TasksScreen extends React.Component {
             </TouchableHighlight>
           </View>
           {/* Prompt for Adding */}
-          <Modal
-            animationType="slide"
-            visible={this.state.modalVisible}
-          >
+          <Modal animationType="slide" visible={this.state.modalVisible}>
             <View style={otherStyles.container}>
               <TextInput
                 clearButtonMode="always"
                 style={otherStyles.textInputContainerTask}
                 placeholder="Task Title"
-                onChangeText={(text) => this.setState({ title: text })}
+                onChangeText={text => this.setState({ title: text })}
               />
               <TextInput
                 clearButtonMode="always"
                 style={otherStyles.textInputContainerTask}
                 placeholder="Task Hours"
-                onChangeText={(text) => this.setState({ hours: text })}
+                onChangeText={text => this.setState({ hours: text })}
               />
               <TextInput
                 clearButtonMode="always"
                 style={otherStyles.textInputContainerTask}
                 placeholder="Task Address"
-                onChangeText={(text) => this.setState({ address: text })}
+                onChangeText={text => this.setState({ address: text })}
               />
               <TouchableHighlight
                 style={otherStyles.buttonContainer}
@@ -193,7 +194,9 @@ export class TasksScreen extends React.Component {
               </TouchableHighlight>
               <TouchableHighlight
                 style={otherStyles.buttonContainer}
-                onPress={() => { this.setState({ modalVisible: false }) }}
+                onPress={() => {
+                  this.setState({ modalVisible: false });
+                }}
                 underlayColor="white"
               >
                 <View style={otherStyles.button}>
@@ -206,12 +209,12 @@ export class TasksScreen extends React.Component {
       );
     }
   }
-  showAddTask = (e) => {
-    this.setState((prevState) => ({
+  showAddTask = e => {
+    this.setState(prevState => ({
       modalVisible: true
     }));
-  }
-  addTask = (e) => {
+  };
+  addTask = e => {
     // user's database reference
     var userRef = db.ref("/tasks/" + this.props.user.uid);
     if (this.state.title.length === 0) {
@@ -221,40 +224,53 @@ export class TasksScreen extends React.Component {
       userRef.child(this.state.title).set({
         hours: this.state.hours,
         address: this.state.address
-      })
-      this.setState((prevState) => ({
+      });
+      this.setState(prevState => ({
         // clear the current inputs
         title: "",
         hours: "",
         address: "",
         // add a new set of tasks
-        tasks: [...prevState.tasks, { title: this.state.title, hours: this.state.hours, address: this.state.address }],
-        taskDataSource: this.state.taskDataSource.cloneWithRows(
-          [...prevState.tasks, { title: this.state.title, hours: this.state.hours, address: this.state.address }]
-        ),
+        tasks: [
+          ...prevState.tasks,
+          {
+            title: this.state.title,
+            hours: this.state.hours,
+            address: this.state.address
+          }
+        ],
+        taskDataSource: this.state.taskDataSource.cloneWithRows([
+          ...prevState.tasks,
+          {
+            title: this.state.title,
+            hours: this.state.hours,
+            address: this.state.address
+          }
+        ]),
         // remove the modal
         modalVisible: false
       }));
     }
   };
-  removeTask = e => {
-
-  };
+  removeTask = e => {};
 }
 
 // create map of "store" object passed from Provider to this component's props
-const mapStateToProps = (store) => {
+const mapStateToProps = store => {
   return {
-    user: store.user.user, // store.user == reducer, store.user.user == reducer.state.user
-  }
+    user: store.user.user // store.user == reducer, store.user.user == reducer.state.user
+  };
 };
 
 // create map of "dispatch" object passed from Provider to this component's props
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     dispatch
-  }
-}
+  };
+};
 
 // connect() applies maps to component's props
-export default connect(mapStateToProps, mapDispatchToProps)(TasksScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TasksScreen);
