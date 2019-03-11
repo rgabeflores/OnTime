@@ -8,8 +8,7 @@ export const onRegister = (email, password) => {
     
 }
 export const onLogin = (email, password) => {
-    return firebase.auth().signInWithEmailAndPassword(email,password)
-        
+    return firebase.auth().signInWithEmailAndPassword(email,password);        
 }
 
 // .then(
@@ -33,3 +32,5 @@ export const onLogin = (email, password) => {
     //   }
     //   console.log(error);
     // });
+
+export default firebase.auth();
