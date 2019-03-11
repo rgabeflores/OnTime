@@ -10,6 +10,7 @@ import HomeScreen from "../screens/HomeScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import TasksScreen from "../screens/TasksScreen";
 import TimerScreen from "../screens/TimerScreen";
+import StatisticsScreen from "../screens/StatisticsScreen";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen
@@ -22,8 +23,8 @@ HomeStack.navigationOptions = {
       focused={focused}
       name={
         Platform.OS === "ios"
-          ? `ios-information-circle${focused ? "" : "-outline"}`
-          : "md-information-circle"
+          ? `ios-calendar${focused ? "" : "-outline"}`
+          : "md-calendar"
       }
     />
   )
@@ -55,7 +56,7 @@ SettingsStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "ios-options" : "md-options"}
+      name={Platform.OS === "ios" ? "ios-settings" : "md-settings"}
     />
   )
 };
@@ -68,16 +69,29 @@ TimerStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "ios-options" : "md-options"}
+      name={Platform.OS === "ios" ? "ios-timer" : "md-timer"}
     />
   )
 };
 
+const StatisticsStack = createStackNavigator({
+  Timer: StatisticsScreen
+});
+StatisticsStack.navigationOptions = {
+  tabBarLabel: "Statistics",
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === "ios" ? "ios-podium" : "md-podium"}
+    />
+  )
+};
 export default createMaterialTopTabNavigator(
   {
     HomeStack,
     TasksStack,
     TimerStack,
+    StatisticsStack,
     SettingsStack
   },
   {
