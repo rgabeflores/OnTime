@@ -1,3 +1,4 @@
+
 import {
   createStackNavigator,
   createSwitchNavigator,
@@ -15,8 +16,7 @@ import MainTabNavigator from "./MainTabNavigator";
 
 export const createRootNavigator = (loggedIn = false) => {
   return createAppContainer(
-    createSwitchNavigator(
-      {
+      createSwitchNavigator({
         LoggedIn: {
           screen: LoggedIn
         },
@@ -27,9 +27,10 @@ export const createRootNavigator = (loggedIn = false) => {
       {
         initialRouteName: loggedIn ? "LoggedIn" : "LoggedOut"
       }
-    )
-  );
+    ));
 };
+
+
 export const LoginNavigator = createStackNavigator({
   Register: {
     screen: RegisterScreen,

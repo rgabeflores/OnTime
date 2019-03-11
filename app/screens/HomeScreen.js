@@ -1,15 +1,8 @@
 import React from "react";
-import {
-  Calendar,
-  Agenda,
-  calendarTheme
-} from "react-native-calendars";
-import {
-  Text,
-  View,
-  SafeAreaView,
-  Button
-} from "react-native";
+import { Calendar, Agenda, calendarTheme } from "react-native-calendars";
+import { Text, View, SafeAreaView, Button } from "react-native";
+
+import { connect } from "react-redux";
 
 import styles from "./style";
 
@@ -23,7 +16,7 @@ minDate =
 maxDate =
   today.getFullYear() + 5 + "-" + today.getMonth() + 1 + "-" + today.getDate();
 
-export default class HomeScreen extends React.Component {
+export class HomeScreen extends React.Component {
   static navigationOptions = {
     title: "Calendar"
   };
@@ -31,11 +24,22 @@ export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      calendarView: true
+      calendarView: true,
+      items: {
+        "2019-03-06": [{ text: "item 1 - any js object" }],
+        "2019-03-06": [{ text: "item 2 - any js object" }],
+        "2018-05-24": [],
+        "2018-05-25": [
+          { text: "item 3 - any js object" },
+          { text: "any js object" }
+        ]
+      }
     };
   }
 
   render() {
+    if (__DEV__) console.log(this.props.user);
+
     if (this.state.calendarView === true) {
       return (
         <View>
@@ -79,15 +83,7 @@ export default class HomeScreen extends React.Component {
             // the list of items that have to be displayed in agenda. If you want to render item as empty date
             // the value of date key kas to be an empty array []. If there exists no value for date key it is
             // considered that the date in question is not yet loaded
-            items={{
-              "2012-05-22": [{ text: "item 1 - any js object" }],
-              "2012-05-23": [{ text: "item 2 - any js object" }],
-              "2012-05-24": [],
-              "2012-05-25": [
-                { text: "item 3 - any js object" },
-                { text: "any js object" }
-              ]
-            }}
+
             // callback that gets called when items for a certain month should be loaded (month became visible)
             loadItemsForMonth={month => {
               console.log("trigger items loading");
@@ -98,7 +94,9 @@ export default class HomeScreen extends React.Component {
             }}
             // callback that gets called on day press
             onDayPress={day => {
-              console.log("day pressed");
+              <View styles={{ marginTop: 100 }}>
+                <Text>{this.state.items}</Text>
+              </View>;
             }}
             // callback that gets called when day changes while scrolling agenda list
             onDayChange={day => {
@@ -120,7 +118,8 @@ export default class HomeScreen extends React.Component {
             }}
             // specify how each date should be rendered. day can be undefined if the item is not first in that day.
             renderDay={(day, item) => {
-              return <View />;
+              console.log(this.state.itmes);
+              return <View styles={{ marginTop: 100 }} />;
             }}
             // specify how empty date content with no items should be rendered
             renderEmptyDate={() => {
@@ -209,92 +208,19 @@ export default class HomeScreen extends React.Component {
   };
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     marginTop: 50
-//   },
-//   developmentModeText: {
-//     marginBottom: 20,
-//     color: "rgba(0,0,0,0.4)",
-//     fontSize: 14,
-//     lineHeight: 19,
-//     textAlign: "center"
-//   },
-//   contentContainer: {
-//     paddingTop: 30
-//   },
-//   welcomeContainer: {
-//     alignItems: "center",
-//     marginTop: 10,
-//     marginBottom: 20
-//   },
-//   welcomeImage: {
-//     width: 100,
-//     height: 80,
-//     resizeMode: "contain",
-//     marginTop: 3,
-//     marginLeft: -10
-//   },
-//   getStartedContainer: {
-//     alignItems: "center",
-//     marginHorizontal: 50
-//   },
-//   homeScreenFilename: {
-//     marginVertical: 7
-//   },
-//   codeHighlightText: {
-//     color: "rgba(96,100,109, 0.8)"
-//   },
-//   codeHighlightContainer: {
-//     backgroundColor: "rgba(0,0,0,0.05)",
-//     borderRadius: 3,
-//     paddingHorizontal: 4
-//   },
-//   getStartedText: {
-//     fontSize: 17,
-//     color: "rgba(96,100,109, 1)",
-//     lineHeight: 24,
-//     textAlign: "center"
-//   },
-//   tabBarInfoContainer: {
-//     position: "absolute",
-//     bottom: 0,
-//     left: 0,
-//     right: 0,
-//     ...Platform.select({
-//       ios: {
-//         shadowColor: "black",
-//         shadowOffset: { height: -3 },
-//         shadowOpacity: 0.1,
-//         shadowRadius: 3
-//       },
-//       android: {
-//         elevation: 20
-//       }
-//     }),
-//     alignItems: "center",
-//     backgroundColor: "#fbfbfb",
-//     paddingVertical: 20
-//   },
-//   tabBarInfoText: {
-//     fontSize: 17,
-//     color: "rgba(96,100,109, 1)",
-//     textAlign: "center"
-//   },
-//   navigationFilename: {
-//     marginTop: 5
-//   },
-//   helpContainer: {
-//     marginTop: 15,
-//     alignItems: "center"
-//   },
-//   helpLink: {
-//     paddingVertical: 15
-//   },
-//   helpLinkText: {
-//     fontSize: 14,
-//     color: "#2e78b7"
+// create map of "store" object passed from Provider to this component's props
+const mapStateToProps = store => {
+  return {
+    user: store.user.user // store.user == reducer, store.user.user == reducer.state.user
+  };
+};
+
+// create map of "dispatch" object passed from Provider to this component's props
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     dispatch
 //   }
-// });
+// }
+
+// connect() applies maps to component's props
+export default connect(mapStateToProps)(HomeScreen);

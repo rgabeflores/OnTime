@@ -5,7 +5,14 @@ import { db } from './config/db';
 
 export const onRegister = (email, password) => {
     return firebase.auth().createUserWithEmailAndPassword(email, password);
-    // .then(
+    
+}
+export const onLogin = (email, password) => {
+    return firebase.auth().signInWithEmailAndPassword(email,password)
+        
+}
+
+// .then(
     // // This function is called when createUserWithEmailAndPassword() returns successfully
     // function(firebaseUser){
     //   let userID = firebaseAuth.currentUser.uid;
@@ -26,8 +33,3 @@ export const onRegister = (email, password) => {
     //   }
     //   console.log(error);
     // });
-}
-
-export const onLogin = (email, password) => {
-    return firebase.auth().signInWithEmailAndPassword(email,password);
-}

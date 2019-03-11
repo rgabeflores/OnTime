@@ -2,17 +2,25 @@ import React from "react";
 import { Text, View, Button, TouchableOpacity } from "react-native";
 import firebase from "firebase";
 import { db } from "../config/db";
+
+import { connect } from "react-redux";
+
 import styles from "./style";
 
-export default class SettingsScreen extends React.Component {
+export class SettingsScreen extends React.Component {
   static navigationOptions = {
     title: "Settings"
   };
   constructor(props) {
     super(props);
     this.state = {
-      tasks: []
+      tasks: { name: "name", pass: "pass" },
+      test: "test"
     };
+  }
+
+  componentDidMount() {
+    this.printTask();
   }
 
   logout = () => {
@@ -37,14 +45,18 @@ export default class SettingsScreen extends React.Component {
 
   printTask = () => {
     // var that = this;
-    // db.ref("Test/").on("value", function(snapshot) {
-    //   let dbTasks = snapshot.val();
-    //   that.setState({ tasks: dbTasks });
-    // });
-    this.props.navigation.navigate("Timer");
+    let newState = [];
+    db.ref("Test/").once("value", snapshot => {
+      console.log(snapshot.val());
+      newState.push({ name: snapshot.val().name, pass: snapshot.val().pass });
+      // this.props.navigation.navigate("Timer");
+    });
+    this.setState({ tasks: newState });
+    console.log(this.state.tasks.name);
   };
 
   render() {
+    if (__DEV__) console.log(this.props.user);
     return (
       <View>
         <TouchableOpacity onPress={() => this.logout()}>
@@ -65,12 +77,14 @@ export default class SettingsScreen extends React.Component {
         <TouchableOpacity onPress={() => this.addTask("john", "doe")}>
           <View style={{ backgroundColor: "white" }} />
           <Text style={{ fontSize: 40, fontWeight: "300", color: "green" }}>
-            fuck off
+            Add
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.printTask()}>
+        <TouchableOpacity onPress={this.printTask}>
           <View style={{ backgroundColor: "white" }} />
-          <Text style={{ fontSize: 40, fontWeight: "500" }}>Press me</Text>
+          <Text style={{ fontSize: 40, fontWeight: "500" }}>
+            print:{this.state.tasks.name}
+          </Text>
           <TouchableOpacity>
             <Text style={{ fontSize: 40, fontWeight: "300", color: "blue" }} />
           </TouchableOpacity>
@@ -86,3 +100,20 @@ export default class SettingsScreen extends React.Component {
     );
   }
 }
+
+// create map of "store" object passed from Provider to this component's props
+const mapStateToProps = store => {
+  return {
+    user: store.user.user // store.user == reducer, store.user.user == reducer.state.user
+  };
+};
+
+// create map of "dispatch" object passed from Provider to this component's props
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     dispatch
+//   }
+// }
+
+// connect() applies maps to component's props
+export default connect(mapStateToProps)(SettingsScreen);

@@ -34,6 +34,7 @@ __OnTime__ is a time management and scheduling app for mobile devices.
 
 ## Built With
 * [React Native](https://facebook.github.io/react-native/)
+* [Redux](https://redux.js.org/)
 * [Firebase](https://firebase.google.com/)
 
 ## Contributors

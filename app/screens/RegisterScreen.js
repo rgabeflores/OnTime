@@ -8,6 +8,10 @@ import {
 } from "react-native";
 import { NavigationActions } from "react-navigation";
 
+import { connect } from "react-redux";
+import { createUser } from "../redux/actions/userActions";
+
+
 import styles from "./style";
 
 import { onRegister } from "../auth";
@@ -96,13 +100,18 @@ export class RegisterScreen extends React.Component {
     let password = this.state.password;
     console.log("Email: " + email);
     console.log("Password: " + password);
-    onRegister(email, password).then(() =>
+    onRegister(email, password).then((firebaseUser) =>{
+      console.log(firebaseUser.user.uid);
+      
+      // createUser() is a redux action creator
+      this.props.createUser(firebaseUser.user);
       this.props.navigation.navigate(
         "LoggedIn",
         {},
         NavigationActions.navigate({ routeName: "Main" })
       )
-    );
+    });
+    
   };
   compressViews = e => {
     this.setState({ isTyping: true });
@@ -112,67 +121,22 @@ export class RegisterScreen extends React.Component {
   };
 }
 
-function asyncRequest(url) {
-  return fetch(url)
-    .then(response => response.json())
-    .then(responseJson => {
-      return responseJson.movies;
-    })
-    .catch(error => {
-      console.error(error);
-    });
+// create map of  "store" object passed from Provider to this component's props
+const mapStateToProps = (store) => {
+  return {
+    user: store.user.user, // store.user == reducer, store.user.user == reducer.state.user
+  }
+};
+
+// create map of "dispatch" object passed from Provider to Redux action creators in this component's props
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createUser: (user) => {
+      dispatch(createUser(user));
+    }
+  }
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   containerCompressed:{
-//     flex: 1,
-//     marginBottom: "45%",
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'flex-start'
-//   },
-//   textInputContainer:{
-//     borderColor: 'lightblue',
-//     borderWidth: 1,
-//     borderRadius: 30,
-//     padding: 15,
-//     margin: 5,
-//     width: "100%",
-//     minWidth: "75%"
-//   },
-//   Title:{
-//     color:'lightblue',
-//     fontSize:50
-//   },
-//   image:{
-//     width: 150,
-//     height: 150
-//   },
-//   button: {
-//    alignItems: 'center',
-//    backgroundColor: 'lightblue',
-//    borderRadius: 30,
 
-//   },
-//   buttonText: {
-//     padding: 20,
-//     color: 'white'
-//   },
-//   buttonContainer: {
-//     margin: 5,
-//     minWidth: "50%"
-//   },
-//   linkText:{
-//     padding: 5,
-//     minWidth: "50%",
-//     color: 'lightblue'
-//   }
-// });
-
-export default RegisterScreen;
+// connect() applies maps to component's props
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);
