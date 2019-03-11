@@ -25,6 +25,14 @@ export class LoginScreen extends React.Component {
     };
   }
   render() {
+    if(this.props.isLoggedIn){
+      this.props.navigation.navigate(
+        "LoggedIn",
+        {},
+        NavigationActions.navigate({ routeName: "Main" })
+      );
+    }
+    
     return (
       <View
         style={
@@ -101,21 +109,8 @@ export class LoginScreen extends React.Component {
       console.log("Password: " + password);
     }
 
-    onLogin(email, password).then((firebaseUser) => {
-      console.log(firebaseUser.user.uid);
-
-      // dispatch() triggers redux action
-      // fetchUser() is a redux action creator
-      this.props.fetchUser(firebaseUser.user);
-      this.props.navigation.navigate(
-        "LoggedIn",
-        {},
-        NavigationActions.navigate({ routeName: "Main" })
-      )
-    });
-
-    // SEE ERRORS
-    
+    // Dispatch login
+    this.props.fetchUser(email, password);
   };
   compressViews = e => {
     this.setState({ isTyping: true });
@@ -129,14 +124,16 @@ export class LoginScreen extends React.Component {
 const mapStateToProps = (store) => {
   return {
     user: store.user.user, // store.user == reducer, store.user.user == reducer.state.user
+    isLoggedIn: store.user.isLoggedIn,
+    fetching: store.user.fetching
   }
 };
 
 // create map of "dispatch" object passed from Provider to Redux action creators in this component's props
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchUser: (user) => {
-      dispatch(fetchUser(user));
+    fetchUser: (email, password) => {
+      dispatch(fetchUser(email, password));
     }
   }
 }

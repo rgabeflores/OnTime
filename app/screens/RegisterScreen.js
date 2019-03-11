@@ -98,20 +98,14 @@ export class RegisterScreen extends React.Component {
   register = e => {
     let email = this.state.email;
     let password = this.state.password;
-    console.log("Email: " + email);
-    console.log("Password: " + password);
-    onRegister(email, password).then((firebaseUser) =>{
-      console.log(firebaseUser.user.uid);
-      
-      // createUser() is a redux action creator
-      this.props.createUser(firebaseUser.user);
-      this.props.navigation.navigate(
-        "LoggedIn",
-        {},
-        NavigationActions.navigate({ routeName: "Main" })
-      )
-    });
-    
+
+    if(__DEV__){
+      console.log("Email: " + email);
+      console.log("Password: " + password);
+    }
+
+    // Dispatch register
+    this.props.createUser(email, password);
   };
   compressViews = e => {
     this.setState({ isTyping: true });
@@ -125,14 +119,16 @@ export class RegisterScreen extends React.Component {
 const mapStateToProps = (store) => {
   return {
     user: store.user.user, // store.user == reducer, store.user.user == reducer.state.user
+    isLoggedIn: store.user.isLoggedIn,
+    fetching: store.user.fetching
   }
 };
 
 // create map of "dispatch" object passed from Provider to Redux action creators in this component's props
 const mapDispatchToProps = (dispatch) => {
   return {
-    createUser: (user) => {
-      dispatch(createUser(user));
+    createUser: (email, password) => {
+      dispatch(createUser(email, password));
     }
   }
 }
