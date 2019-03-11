@@ -12,7 +12,7 @@ export default class TimerScreen extends React.Component {
     this.state = {
       timerStart: false,
       stopwatchStart: false,
-      totalDuration: 30000,
+      totalDuration: 10000,
       timerReset: false,
       stopwatchReset: false,
     };
@@ -41,10 +41,6 @@ export default class TimerScreen extends React.Component {
 
   getFormattedTime(time) {
     this.currentTime = time;
-  }
-  onTextChanged(text) {
-  // code to remove non-numeric characters from text
-  this.setState({myNumber: text})
   };
 
 
@@ -81,12 +77,6 @@ export default class TimerScreen extends React.Component {
         <TouchableHighlight onPress={this.resetTimer}>
           <Text style={{fontSize: 30,left:120,}}>Reset</Text>
         </TouchableHighlight>
-
-        <TextInput
-          keyboardType = 'numeric'
-          onChangeText = {(text)=> this.onChanged(text)}
-          value = {this.state.myNumber}
-        />
 
       </SafeAreaView>
 

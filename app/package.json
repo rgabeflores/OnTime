@@ -15,6 +15,7 @@
     "react-native-ignore-warnings": "^0.1.1",
     "react-native-settings-list": "^1.8.0",
     "react-native-stopwatch-timer": "0.0.20",
+    "react-native-timer-countdown": "^2.1.2",
     "react-navigation": "^3.3.0"
   },
   "devDependencies": {
