@@ -1,3 +1,7 @@
+/**
+ * User Actions
+ */
+
 import { onLogin, onRegister } from '../../auth';
 import { db } from '../../config/db';
 
