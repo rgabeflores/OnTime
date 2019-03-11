@@ -82,6 +82,19 @@ export default class TimerScreen extends React.Component {
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
   const options = {
   container: {
     backgroundColor: 'lightblue',
