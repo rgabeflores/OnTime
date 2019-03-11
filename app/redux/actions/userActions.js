@@ -10,6 +10,11 @@ import {
     SET_USER_EMAIL
     } from './types';
 
+/**
+ * This action creates a Firebase user account.
+ * @param {String} email The user's email
+ * @param {String} password The user's password
+ */
 export function createUser(email, password){
     return (dispatch) => {
         // Sets a "loading... " state
@@ -28,6 +33,11 @@ export function createUser(email, password){
     }
 }
 
+/**
+ * This action logs into a Firebase user account.
+ * @param {String} email The user's email
+ * @param {String} password The user's password
+ */
 export function fetchUser(email, password){
     return (dispatch) => {
         // Sets a "loading... " state
@@ -45,6 +55,8 @@ export function fetchUser(email, password){
             })
     }
 }
+
+
 export function setUserEmail(email){
     return {
         type: SET_USER_EMAIL,
