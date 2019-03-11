@@ -5,13 +5,14 @@ import {
     FETCH_USER_FULFILLED,
     REQUEST_REJECTED,
     SET_USER_EMAIL
-    } from './types';
-    
+    } from '../actions/types';
+
 const INITIAL_STATE = {
     user: {
         uid: "Re2ophJDDMX2yssltNZdCSz9gLz1",
         email: "gabe@gabe.com",
     },
+    isLoggedIn: false,
     fetching: false,
     fetched: false,
     error: null,
@@ -40,7 +41,10 @@ export default function reducer(
         case CREATE_USER_FULFILLED:{
             return {
                 ...state, 
-                user: action.payload
+                fetching: false, 
+                fetched: true, 
+                isLoggedIn: true,
+                user: action.payload,
             }
         }
         case FETCH_USER:{
@@ -54,7 +58,8 @@ export default function reducer(
                 ...state, 
                 fetching: false, 
                 fetched: true, 
-                user: action.payload
+                isLoggedIn: true,
+                user: action.payload,
             }
         }
         case REQUEST_REJECTED:{
@@ -67,7 +72,10 @@ export default function reducer(
         case SET_USER_EMAIL: {
             return {
                 ...state, 
-                user: {...state.user, email: action.payload}
+                user: {
+                    ...state.user, 
+                    email: action.payload
+                }
             }
         }
     }
