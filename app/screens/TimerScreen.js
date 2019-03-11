@@ -20,7 +20,6 @@ export default class TimerScreen extends React.Component {
     this.resetTimer = this.resetTimer.bind(this);
     this.toggleStopwatch = this.toggleStopwatch.bind(this);
     this.resetStopwatch = this.resetStopwatch.bind(this);
-    this.onTextChanged = this.onTextChanged.bind(this);
   }
 
   toggleTimer() {
