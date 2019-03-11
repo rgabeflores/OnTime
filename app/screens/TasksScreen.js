@@ -10,7 +10,7 @@ import {
   TextInput,
   Modal
 } from "react-native";
-
+import Icon from "../components/TabBarIcon";
 import { connect } from "react-redux";
 
 import Toolbar from "../components/Toolbar";
@@ -89,25 +89,31 @@ export class TasksScreen extends React.Component {
   // display task
   renderRow(task) {
     return (
-      <TouchableHighlight
-        onPress={() => {
-          this.pressRow(task);
-        }}
-        onLongPress={
-          () => { this.longPressTask(task); }
-        }>
-        <View style={styles.li}>
+      <View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
           <Text style={styles.liText}>
             Task Name: {task.title} {"\n"}
             Required Time: {task.hours} {"\n"}
             Location: {task.address}
           </Text>
-          <View style={this.state.longPressedTask ? {display: 'flex'}:{display: 'none'}}>
-            <Text>Surprise</Text>
-          </View>
+          <TouchableHighlight
+            style={this.state.longPressedTask ? { display: 'flex', alignItems: 'center', justifyContent: 'center' } : { display: 'none' }}
+            onPress={() => { this.removeThisTask(task) }}
+          >
+            <Icon
+              name={Platform.OS === "ios" ? "ios-close-circle-outline" : "md-close-circle-outline"}
+            />
+          </TouchableHighlight>
         </View>
-      </TouchableHighlight>
+      </View>
     );
+  }
+  // when the user presses the remove task button
+  removeThisTask(task) {
+    this.setState((prevState) => ({
+      tasks: prevState.tasks.filter(i => i !== task),
+      taskDataSource: this.state.taskDataSource.cloneWithRows(prevState.tasks.filter(i=>i!== task))
+    }));
   }
   // when a task is long pressed, this is what happens
   longPressTask(task) {
@@ -238,7 +244,7 @@ export class TasksScreen extends React.Component {
     }
   };
   removeTask = e => {
-
+    this.setState({ longPressedTask: !this.state.longPressedTask })
   };
 }
 
