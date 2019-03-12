@@ -70,8 +70,6 @@ export class TasksScreen extends React.Component {
 
           var taskName = childSnapshot.key; // "task name"
           var hoursNeeded = childSnapshot.val();
-          console.log(taskName);
-          console.log(hoursNeeded);
           this.state.tasks.push({
             title: taskName,
             hours: hoursNeeded,
@@ -98,7 +96,8 @@ export class TasksScreen extends React.Component {
           </Text>
           <TouchableHighlight
             style={this.state.longPressedTask ? { display: 'flex', alignItems: 'center', justifyContent: 'center' } : { display: 'none' }}
-            onPress={() => { this.removeThisTask(task) }}
+            onPressIn = {() => { this.removeThisTask(task) }} 
+            onPressOut={() => { this.updateView() }}
           >
             <Icon
               name={Platform.OS === "ios" ? "ios-close-circle-outline" : "md-close-circle-outline"}
@@ -109,11 +108,15 @@ export class TasksScreen extends React.Component {
     );
   }
   // when the user presses the remove task button
+  updateView(){
+    this.setState({taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks)});
+  }
   removeThisTask(task) {
-    this.setState((prevState) => ({
-      tasks: prevState.tasks.filter(i => i !== task),
-      taskDataSource: this.state.taskDataSource.cloneWithRows(prevState.tasks.filter(i=>i!== task))
-    }));
+    this.setState((prevState) => {
+      return {
+        tasks: prevState.tasks.filter(taskInPrev => taskInPrev !== task)
+      }
+    });
   }
   // when a task is long pressed, this is what happens
   longPressTask(task) {
