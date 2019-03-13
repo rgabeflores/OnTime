@@ -1,3 +1,7 @@
+/**
+ * User Reducer 
+ */
+
 import {
     CREATE_USER,
     CREATE_USER_FULFILLED,
@@ -19,15 +23,19 @@ const INITIAL_STATE = {
     error: null, // Used for errors
 };
 
+/**
+ * This is the reducer for the user actions.
+ * 
+ */
 export default function reducer( state = INITIAL_STATE, action){
     switch(action.type){
-        case CREATE_USER:{
+        case CREATE_USER: {
             return {
                 ...state,
                 fetching: true
             }
         }
-        case CREATE_USER_FULFILLED:{
+        case CREATE_USER_FULFILLED: {
             return {
                 ...state, 
                 fetching: false, 
@@ -36,13 +44,13 @@ export default function reducer( state = INITIAL_STATE, action){
                 user: action.payload,
             }
         }
-        case FETCH_USER:{
+        case FETCH_USER: {
             return {
                 ...state, 
                 fetching: true,
             }
         }
-        case FETCH_USER_FULFILLED:{
+        case FETCH_USER_FULFILLED: {
             return {
                 ...state, 
                 fetching: false, 
@@ -51,7 +59,7 @@ export default function reducer( state = INITIAL_STATE, action){
                 user: action.payload,
             }
         }
-        case REQUEST_REJECTED:{
+        case REQUEST_REJECTED: {
             return {
                 ...state, 
                 fetching: false, 
