@@ -5,6 +5,9 @@ import ignoreWarnings from "react-native-ignore-warnings";
 
 import Layout from './Layout';
 
+/**
+ * This class is the root of the application. It connects Redux to the layout of the app.
+ */
 export default class App extends React.Component {
   constructor(props) {
     super(props);
