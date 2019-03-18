@@ -11,7 +11,8 @@ import {
     FETCH_USER,
     FETCH_USER_FULFILLED,
     REQUEST_REJECTED,
-    SET_USER_EMAIL
+    SET_USER_EMAIL,
+    NEW_ACCOUNT
     } from './types';
 
 /**
@@ -19,7 +20,7 @@ import {
  * @param {String} email The user's email
  * @param {String} password The user's password
  */
-export function createUser(email, password){
+export function createUser(name, email, password){
     return (dispatch) => {
         // Sets a "loading... " state
         dispatch({ type: CREATE_USER });
@@ -27,6 +28,14 @@ export function createUser(email, password){
         // Calls firebase function
         onRegister(email, password)
             .then((firebaseUser) => {
+                let userRef = db.ref('Accounts/' + firebaseUser.user.uid);
+                userRef.set({
+                        ...NEW_ACCOUNT,
+                        accountInfo: {
+                            email: email,
+                            name: name
+                        }
+                    });
                 // Sets state to successfully loaded
                 dispatch({ type: CREATE_USER_FULFILLED, payload: firebaseUser });
             })
