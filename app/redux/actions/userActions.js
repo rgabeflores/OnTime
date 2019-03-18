@@ -28,16 +28,23 @@ export function createUser(name, email, password){
         // Calls firebase function
         onRegister(email, password)
             .then((firebaseUser) => {
+                let account = {
+                    ...NEW_ACCOUNT,
+                    accountInfo: {
+                        email: email,
+                        name: name
+                    }
+                }
                 let userRef = db.ref('Accounts/' + firebaseUser.user.uid);
-                userRef.set({
-                        ...NEW_ACCOUNT,
-                        accountInfo: {
-                            email: email,
-                            name: name
-                        }
-                    });
+                userRef.set(account);
                 // Sets state to successfully loaded
-                dispatch({ type: CREATE_USER_FULFILLED, payload: firebaseUser });
+                dispatch({ 
+                    type: CREATE_USER_FULFILLED, 
+                    payload: {
+                        uid: firebaseUser.user.uid, // Save UID
+                        account: account
+                    } 
+                });
             })
             .catch((err) => {
                 // Sets state to failure to load
