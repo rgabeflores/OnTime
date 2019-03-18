@@ -29,7 +29,7 @@ export class TasksScreen extends React.Component {
     // the datasource(ds) is a listener checking if the data has been changed or not
     let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
-      longPressedTask: false,
+      deleteMode: false,
       modalVisible: false,
       taskDataSource: ds,
       tasks: [],
@@ -79,18 +79,20 @@ export class TasksScreen extends React.Component {
   renderRow(task) {
     return (
       <View>
-        <View style={{ flexDirection: "row", justifyContent: "flex-start" }}>
+        <View style={otherStyles.taskContainer}
+        >
           <Text style={styles.liText}>
             Task Name: {task.title} {"\n"}
             Required Time: {task.hours} {"\n"}
             Location: {task.address}
           </Text>
           <TouchableHighlight
-            style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-end"
-                  }
+            style={this.state.deleteMode ? {
+              display: "flex",
+            } :
+              {
+                display: "none"
+              }
             }
             onPress={() => {
               this.removeThisTask(task);
@@ -109,12 +111,12 @@ export class TasksScreen extends React.Component {
     );
   }
   // when the user presses the remove task button
-  updateView(){
-    this.setState({taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks)});
+  updateView() {
+    this.setState({ taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks) });
   }
-  removeThisTask = async(task) =>{
+  removeThisTask = async (task) => {
     var userRef = db.ref("tasks/" + this.props.user.uid);
-    var deleteReference = db.ref("tasks/" + this.props.user.uid+ "/"+task.title);
+    var deleteReference = db.ref("tasks/" + this.props.user.uid + "/" + task.title);
     deleteReference.remove();
     let data = [];
     userRef.once("value", snapshot => {
@@ -139,7 +141,7 @@ export class TasksScreen extends React.Component {
     });
   }
   // when the task is pressed, make a popup asking if the user wants to remove the task
-  pressRow(task) {}
+  pressRow(task) { }
   render() {
     if (__DEV__) console.log(this.props.user);
     // the first if does not seem to be useful
@@ -172,7 +174,7 @@ export class TasksScreen extends React.Component {
             </TouchableHighlight>
             <TouchableHighlight
               style={otherStyles.buttonContainer}
-              onPress={() => this.setState({longPressedTask: !this.state.longPressedTask})}
+              onPress={() => this.setState({ deleteMode: !this.state.deleteMode })}
               underlayColor="white"
             >
               {/* Remove a Task Button */}
