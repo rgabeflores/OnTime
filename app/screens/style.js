@@ -31,6 +31,15 @@ module.exports = StyleSheet.create({
     margin: 5,
     width: "100%",
     minWidth: "75%"
+  },textInputContainerTask: {
+    alignSelf: "center",
+    borderColor: "lightblue",
+    borderWidth: 0.5,
+    borderRadius: 30,
+    padding: 15,
+    margin: 5,
+    width: "70%",
+    minWidth: "75%"
   },
   Title: {
     color: "lightblue",
@@ -142,5 +151,12 @@ module.exports = StyleSheet.create({
   },
   calendar: {
     flex: 1
+  },
+  taskContainer: {
+    textAlign: "left",
+    borderBottomWidth: 5,
+    borderBottomColor: "lightblue",
+    flexDirection: "row",
+    justifyContent: "space-between"
   }
 });

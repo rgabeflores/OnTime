@@ -63,12 +63,12 @@ export class TimerScreen extends React.Component {
           getTime={this.getFormattedTime} />
 
         {/*Button that toggles between Start and Stop*/}
-        <TouchableHighlight onPress={this.toggleStopwatch}>
+        <TouchableHighlight onPress={this.toggleStopwatch} underlayColor='lightblue'>
           <Text style={{fontSize: 30,left:120,}}>{!this.state.stopwatchStart ? "Start" : "Stop"}</Text>
         </TouchableHighlight>
 
         {/*Button that resets stopwatch back down to zero*/}
-        <TouchableHighlight onPress={this.resetStopwatch}>
+        <TouchableHighlight onPress={this.resetStopwatch} underlayColor='lightblue'>
           <Text style={{fontSize: 30,left:120,}}>Reset</Text>
         </TouchableHighlight>
 
@@ -81,12 +81,12 @@ export class TimerScreen extends React.Component {
           getTime={this.getFormattedTime} />
 
         {/*Button that toggles between Start and Stop*/}
-        <TouchableHighlight onPress={this.toggleTimer}>
+        <TouchableHighlight onPress={this.toggleTimer} underlayColor='lightblue'>
           <Text style={{fontSize: 30,left:120,}}>{!this.state.timerStart ? "Start" : "Stop"}</Text>
         </TouchableHighlight>
 
         {/*Button that resets timer back up to set value*/}
-        <TouchableHighlight onPress={this.resetTimer}>
+        <TouchableHighlight onPress={this.resetTimer} underlayColor='lightblue'>
           <Text style={{fontSize: 30,left:120,}}>Reset</Text>
         </TouchableHighlight>
 
@@ -110,7 +110,6 @@ export class TimerScreen extends React.Component {
     color: '#FFF',
     textAlign: "center",
   },
-
 }
 // create map of "store" object passed from Provider to this component's props
 const mapStateToProps = (store) => {
