@@ -111,6 +111,7 @@ export class RegisterScreen extends React.Component {
    * Handles the register button click.
    */
   register = e => {
+    let name = this.state.name;
     let email = this.state.email;
     let password = this.state.password;
 
@@ -120,7 +121,7 @@ export class RegisterScreen extends React.Component {
     }
 
     // Dispatch register
-    this.props.createUser(email, password);
+    this.props.createUser(name, email, password);
   };
 
   /**
@@ -152,8 +153,8 @@ const mapStateToProps = (store) => {
 // create map of "dispatch" object passed from Provider to Redux action creators in this component's props
 const mapDispatchToProps = (dispatch) => {
   return {
-    createUser: (email, password) => {
-      dispatch(createUser(email, password));
+    createUser: (name, email, password) => {
+      dispatch(createUser(name, email, password));
     }
   }
 }
