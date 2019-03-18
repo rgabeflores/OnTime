@@ -79,20 +79,17 @@ export class TasksScreen extends React.Component {
   renderRow(task) {
     return (
       <View>
-        <View style={otherStyles.taskContainer}
-        >
+        <View style={otherStyles.taskContainer}>
           <Text style={styles.liText}>
             Task Name: {task.title} {"\n"}
             Required Time: {task.hours} {"\n"}
             Location: {task.address}
           </Text>
           <TouchableHighlight
-            style={this.state.deleteMode ? {
-              display: "flex",
-            } :
-              {
-                display: "none"
-              }
+            style={this.state.deleteMode? {
+                    display: "flex",
+                    alignItems: "center"
+                  }: {display: "none"}
             }
             onPress={() => {
               this.removeThisTask(task);
@@ -111,12 +108,12 @@ export class TasksScreen extends React.Component {
     );
   }
   // when the user presses the remove task button
-  updateView() {
-    this.setState({ taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks) });
+  updateView(){
+    this.setState({taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks)});
   }
-  removeThisTask = async (task) => {
+  removeThisTask = async(task) =>{
     var userRef = db.ref("tasks/" + this.props.user.uid);
-    var deleteReference = db.ref("tasks/" + this.props.user.uid + "/" + task.title);
+    var deleteReference = db.ref("tasks/" + this.props.user.uid+ "/"+task.title);
     deleteReference.remove();
     let data = [];
     userRef.once("value", snapshot => {
@@ -141,7 +138,7 @@ export class TasksScreen extends React.Component {
     });
   }
   // when the task is pressed, make a popup asking if the user wants to remove the task
-  pressRow(task) { }
+  pressRow(task) {}
   render() {
     if (__DEV__) console.log(this.props.user);
     // the first if does not seem to be useful
@@ -174,7 +171,7 @@ export class TasksScreen extends React.Component {
             </TouchableHighlight>
             <TouchableHighlight
               style={otherStyles.buttonContainer}
-              onPress={() => this.setState({ deleteMode: !this.state.deleteMode })}
+              onPress={() => this.setState({deleteMode: !this.state.deleteMode})}
               underlayColor="white"
             >
               {/* Remove a Task Button */}
