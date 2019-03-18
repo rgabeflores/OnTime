@@ -17,6 +17,7 @@ export class RegisterScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: "",
       email: "",
       password: "",
       isTyping: false
@@ -38,6 +39,18 @@ export class RegisterScreen extends React.Component {
             />
           </View>
           <Text style={styles.Title}> On Time </Text>
+          <View >
+            <View style={styles.textInputContainer}>
+              <TextInput
+                placeholder={"Name"}
+                onChangeText={name => this.setState({ name })}
+                editable={true}
+                maxLength={40}
+                onFocus={this.compressViews.bind(this)}
+                onBlur={this.decompressViews.bind(this)}
+              />
+            </View>
+          </View>
           <View style={styles.textInputContainer}>
             <TextInput
               placeholder={"Email"}
