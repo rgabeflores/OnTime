@@ -50,8 +50,19 @@ export function fetchUser(email, password){
         // Calls firebase function
         onLogin(email,password)
             .then((firebaseUser) => {
-                // Sets state to successfully loaded
-                dispatch({ type: FETCH_USER_FULFILLED, payload: firebaseUser });
+                let userRef = db.ref('Accounts/'+firebaseUser.user.uid);
+                // Load the user account info into state
+                userRef.once('value') 
+                    .then((dataSnapshot) =>{
+                        console.log(dataSnapshot.val())
+                        dispatch({
+                            type: FETCH_USER_FULFILLED, // Sets state to successfully loaded
+                            payload: { 
+                                uid: firebaseUser.user.uid, 
+                                account: dataSnapshot.val()
+                            }
+                        });
+                    });
             })
             .catch((err) => {
                 // Sets state to failure to load

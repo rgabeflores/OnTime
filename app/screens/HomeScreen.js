@@ -31,7 +31,7 @@ export class HomeScreen extends React.Component {
   }
 
   render() {
-    if(__DEV__) console.log(this.props.user.user.uid);
+    if(__DEV__) console.log(this.props.user.account);
     // let userRef = db.ref('Accounts/'+this.props.user.user.uid);
     // userRef.once('value')
     //   .then((dataSnapshot) =>{
