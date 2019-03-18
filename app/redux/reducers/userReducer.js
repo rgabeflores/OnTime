@@ -8,14 +8,15 @@ import {
     FETCH_USER,
     FETCH_USER_FULFILLED,
     REQUEST_REJECTED,
-    SET_USER_EMAIL
+    SET_USER_EMAIL,
+    NEW_ACCOUNT
     } from '../actions/types';
 
 // Used for the initial state of the application
 const INITIAL_STATE = {
     user: {
-        uid: "Re2ophJDDMX2yssltNZdCSz9gLz1",
-        email: "gabe@gabe.com",
+        NEW_ACCOUNT,
+        uid: "Re2ophJDDMX2yssltNZdCSz9gLz1"
     },
     isLoggedIn: false, // Keeps track of logged in status
     fetching: false, // Used to indicate async loading

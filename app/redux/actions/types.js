@@ -21,3 +21,45 @@ export const EDIT_TASK_FULFILLED = "EDIT_TASK_FULFILLED";
 
 // ASYNC ACTION TYPES
 export const REQUEST_REJECTED = "REQUEST_REJECTED";
+
+
+// DEFAULT ACCOUNT DATABSE ENTRY
+export const NEW_ACCOUNT = {
+        accountInfo: {
+          email: "gabe@gabe.com",
+          name: "Gabe",
+        },
+        accountSettings: {
+          isPremium: false,
+          loggedIn: false,
+          stayLoggedIn: true,
+        },
+        statistics: {
+          averageHours: 0,
+          numCompleteTasks: 0,
+          numIncompleteTasks: 0,
+          totalHours: 0,
+          totalTasks: 0,
+        },
+        tasks: {
+          task1: {
+            dateEnd: "end date",
+            dateStart: "start date",
+            description: "This is my first task.",
+            location: {
+              city: "Long Beach",
+              state: "CA",
+              streetAddress: "1250 Bellflower Blvd",
+              zipcode: 90840,
+            },
+            name: "My First Task",
+          },
+          task2: {
+            name: "My Second Task",
+          },
+          task3: {
+            description: "This is my third task",
+            name: "My Third Task",
+          },
+        },
+};
