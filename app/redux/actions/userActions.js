@@ -28,6 +28,10 @@ export function createUser(name, email, password){
         // Calls firebase function
         onRegister(email, password)
             .then((firebaseUser) => {
+                // Create new entry in Firebase for user account info
+                let userRef = db.ref('Accounts/' + firebaseUser.user.uid);
+
+                // Create account info
                 let account = {
                     ...NEW_ACCOUNT,
                     accountInfo: {
@@ -35,14 +39,15 @@ export function createUser(name, email, password){
                         name: name
                     }
                 }
-                let userRef = db.ref('Accounts/' + firebaseUser.user.uid);
+                // Save account info to Firebase
                 userRef.set(account);
+
                 // Sets state to successfully loaded
                 dispatch({ 
                     type: CREATE_USER_FULFILLED, 
                     payload: {
                         uid: firebaseUser.user.uid, // Save UID
-                        account: account
+                        account: account // Save new account info
                     } 
                 });
             })
@@ -63,7 +68,7 @@ export function fetchUser(email, password){
         // Sets a "loading... " state
         dispatch({ type: FETCH_USER });
 
-        // Calls firebase function
+        // Calls Firebase function
         onLogin(email,password)
             .then((firebaseUser) => {
                 let userRef = db.ref('Accounts/'+firebaseUser.user.uid);
