@@ -54,12 +54,11 @@ export function fetchUser(email, password){
                 // Load the user account info into state
                 userRef.once('value') 
                     .then((dataSnapshot) =>{
-                        console.log(dataSnapshot.val())
                         dispatch({
                             type: FETCH_USER_FULFILLED, // Sets state to successfully loaded
                             payload: { 
-                                uid: firebaseUser.user.uid, 
-                                account: dataSnapshot.val()
+                                uid: firebaseUser.user.uid, // Save UID
+                                account: dataSnapshot.val() // Save account info
                             }
                         });
                     });
