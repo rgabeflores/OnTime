@@ -140,8 +140,6 @@ export class TasksScreen extends React.Component {
   // when the task is pressed, make a popup asking if the user wants to remove the task
   pressRow(task) {}
   render() {
-    if (__DEV__) console.log(this.props.user);
-    // the first if does not seem to be useful
     if (this.state.taskDataSource.getRowCount === 0) {
       return (
         <View style={styles.container}>
