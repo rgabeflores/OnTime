@@ -113,12 +113,12 @@ export class HomeScreen extends React.Component {
             // Max amount of months allowed to scroll to the future. Default = 50
             futureScrollRange={50}
             // specify how each item should be rendered in agenda
-            renderItem={(item, firstItemInDay) => {
+            renderItem={() => {
               return <View />;
             }}
             // specify how each date should be rendered. day can be undefined if the item is not first in that day.
             renderDay={(day, item) => {
-              console.log(this.state.itmes);
+              console.log();
               return <View styles={{ marginTop: 100 }} />;
             }}
             // specify how empty date content with no items should be rendered
