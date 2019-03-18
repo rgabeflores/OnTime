@@ -112,13 +112,31 @@ export class TasksScreen extends React.Component {
   updateView(){
     this.setState({taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks)});
   }
-  removeThisTask(task) {
-    this.setState(prevState => ({
-      tasks: prevState.tasks.filter(i => i !== task),
-      taskDataSource: this.state.taskDataSource.cloneWithRows(
-        prevState.tasks.filter(i => i !== task)
-      )
-    }));
+  removeThisTask = async(task) =>{
+    var userRef = db.ref("tasks/" + this.props.user.uid);
+    var deleteReference = db.ref("tasks/" + this.props.user.uid+ "/"+task.title);
+    deleteReference.remove();
+    let data = [];
+    userRef.once("value", snapshot => {
+      snapshot.forEach(childSnapshot => {
+        var taskName = childSnapshot.key; // "task name"
+        var taskDetails = childSnapshot.val();
+        // console.log(taskName);
+        // console.log(taskDetails);
+        var temp = {
+          title: taskName,
+          hours: taskDetails.hours,
+          address: taskDetails.address
+        };
+        data.push(temp);
+        return false;
+      });
+      console.log(data);
+      this.setState({
+        tasks: data,
+        taskDataSource: this.state.taskDataSource.cloneWithRows(data)
+      });
+    });
   }
   // when the task is pressed, make a popup asking if the user wants to remove the task
   pressRow(task) {}
