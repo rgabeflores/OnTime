@@ -135,11 +135,14 @@ export class TasksScreen extends React.Component {
   longPressTask(task) {
     this.setState({ longPressedTask: true });
   }
+  _closeModal() {
+    setState({
+      modalVisible: false
+    });
+  }
   // when the task is pressed, make a popup asking if the user wants to remove the task
   pressRow(task) {}
   render() {
-    if (__DEV__) console.log(this.props.user);
-    // the first if does not seem to be useful
     if (this.state.taskDataSource.getRowCount === 0) {
       return (
         <View style={styles.container}>
@@ -179,25 +182,33 @@ export class TasksScreen extends React.Component {
             </TouchableHighlight>
           </View>
           {/* Prompt for Adding */}
-          <Modal animationType="slide" visible={this.state.modalVisible}>
+          <Modal
+            animationType="slide"
+            visible={this.state.modalVisible}
+            enableEmptySections={true}
+            onRequestClose={this._closeModal.bind(this)}
+          >
             <View style={otherStyles.container}>
               <TextInput
                 clearButtonMode="always"
                 style={otherStyles.textInputContainerTask}
                 placeholder="Task Title"
                 onChangeText={text => this.setState({ title: text })}
+                enableEmptySections={true}
               />
               <TextInput
                 clearButtonMode="always"
                 style={otherStyles.textInputContainerTask}
                 placeholder="Task Hours"
                 onChangeText={text => this.setState({ hours: text })}
+                enableEmptySections={true}
               />
               <TextInput
                 clearButtonMode="always"
                 style={otherStyles.textInputContainerTask}
                 placeholder="Task Address"
                 onChangeText={text => this.setState({ address: text })}
+                enableEmptySections={true}
               />
               <TouchableHighlight
                 style={otherStyles.buttonContainer}
@@ -210,9 +221,7 @@ export class TasksScreen extends React.Component {
               </TouchableHighlight>
               <TouchableHighlight
                 style={otherStyles.buttonContainer}
-                onPress={() => {
-                  this.setState({ modalVisible: false });
-                }}
+                onPress={this._closeModal}
                 underlayColor="white"
               >
                 <View style={otherStyles.button}>
@@ -280,14 +289,11 @@ const mapStateToProps = store => {
 };
 
 // create map of "dispatch" object passed from Provider to this component's props
-const mapDispatchToProps = dispatch => {
-  return {
-    dispatch
-  };
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     dispatch
+//   }
+// }
 
 // connect() applies maps to component's props
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TasksScreen);
+export default connect(mapStateToProps)(TasksScreen);

@@ -3,18 +3,11 @@ import { Calendar, Agenda, calendarTheme } from "react-native-calendars";
 import { Text, View, SafeAreaView, Button } from "react-native";
 
 import { connect } from "react-redux";
+import db from "../config/db";
 
 import styles from "./style";
 
 import { WebBrowser } from "expo";
-
-const today = new Date();
-date =
-  today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
-minDate =
-  today.getFullYear() - 5 + "-" + today.getMonth() + 1 + "-" + today.getDate();
-maxDate =
-  today.getFullYear() + 5 + "-" + today.getMonth() + 1 + "-" + today.getDate();
 
 export class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -38,9 +31,37 @@ export class HomeScreen extends React.Component {
   }
 
   render() {
-    if (__DEV__) console.log(this.props.user);
-
+    if (__DEV__) console.log(this.props.user.user.uid);
+    // let userRef = db.ref('Accounts/'+this.props.user.user.uid);
+    // userRef.once('value')
+    //   .then((dataSnapshot) =>{
+    //       console.log(dataSnapshot.val())
+    //   });
     if (this.state.calendarView === true) {
+      let today = new Date(); // Move to redux?
+      date =
+        today.getFullYear() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getDate();
+      minDate =
+        today.getFullYear() -
+        5 +
+        "-" +
+        today.getMonth() +
+        1 +
+        "-" +
+        today.getDate();
+      maxDate =
+        today.getFullYear() +
+        5 +
+        "-" +
+        today.getMonth() +
+        1 +
+        "-" +
+        today.getDate();
+
       return (
         <View>
           <Button title="Switch" onPress={() => this.handleClick()} />
