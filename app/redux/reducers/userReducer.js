@@ -3,24 +3,25 @@
  */
 
 import {
-  CREATE_USER,
-  CREATE_USER_FULFILLED,
-  FETCH_USER,
-  FETCH_USER_FULFILLED,
-  REQUEST_REJECTED,
-  SET_USER_EMAIL
-} from "../actions/types";
+    CREATE_USER,
+    CREATE_USER_FULFILLED,
+    FETCH_USER,
+    FETCH_USER_FULFILLED,
+    REQUEST_REJECTED,
+    SET_USER_EMAIL,
+    NEW_ACCOUNT
+    } from '../actions/types';
 
 // Used for the initial state of the application
 const INITIAL_STATE = {
-  user: {
-    uid: "Re2ophJDDMX2yssltNZdCSz9gLz1",
-    email: "gabe@gabe.com"
-  },
-  isLoggedIn: false, // Keeps track of logged in status
-  fetching: false, // Used to indicate async loading
-  fetched: false, // Indicates the status of an async request
-  error: null // Used for errors
+    user: {
+        NEW_ACCOUNT,
+        uid: "Re2ophJDDMX2yssltNZdCSz9gLz1"
+    },
+    isLoggedIn: false, // Keeps track of logged in status
+    fetching: false, // Used to indicate async loading
+    fetched: false, // Indicates the status of an async request
+    error: null, // Used for errors
 };
 
 /**

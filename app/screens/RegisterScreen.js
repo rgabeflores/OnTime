@@ -17,6 +17,7 @@ export class RegisterScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: "",
       email: "",
       password: "",
       isTyping: false
@@ -38,6 +39,18 @@ export class RegisterScreen extends React.Component {
             />
           </View>
           <Text style={styles.Title}> On Time </Text>
+          <View >
+            <View style={styles.textInputContainer}>
+              <TextInput
+                placeholder={"Name"}
+                onChangeText={name => this.setState({ name })}
+                editable={true}
+                maxLength={40}
+                onFocus={this.compressViews.bind(this)}
+                onBlur={this.decompressViews.bind(this)}
+              />
+            </View>
+          </View>
           <View style={styles.textInputContainer}>
             <TextInput
               placeholder={"Email"}
@@ -98,6 +111,7 @@ export class RegisterScreen extends React.Component {
    * Handles the register button click.
    */
   register = e => {
+    let name = this.state.name;
     let email = this.state.email;
     let password = this.state.password;
 
@@ -107,7 +121,7 @@ export class RegisterScreen extends React.Component {
     }
 
     // Dispatch register
-    this.props.createUser(email, password);
+    this.props.createUser(name, email, password);
   };
 
   /**
@@ -139,8 +153,8 @@ const mapStateToProps = (store) => {
 // create map of "dispatch" object passed from Provider to Redux action creators in this component's props
 const mapDispatchToProps = (dispatch) => {
   return {
-    createUser: (email, password) => {
-      dispatch(createUser(email, password));
+    createUser: (name, email, password) => {
+      dispatch(createUser(name, email, password));
     }
   }
 }

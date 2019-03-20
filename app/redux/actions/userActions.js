@@ -11,7 +11,8 @@ import {
     FETCH_USER,
     FETCH_USER_FULFILLED,
     REQUEST_REJECTED,
-    SET_USER_EMAIL
+    SET_USER_EMAIL,
+    NEW_ACCOUNT
     } from './types';
 
 /**
@@ -19,7 +20,7 @@ import {
  * @param {String} email The user's email
  * @param {String} password The user's password
  */
-export function createUser(email, password){
+export function createUser(name, email, password){
     return (dispatch) => {
         // Sets a "loading... " state
         dispatch({ type: CREATE_USER });
@@ -27,8 +28,28 @@ export function createUser(email, password){
         // Calls firebase function
         onRegister(email, password)
             .then((firebaseUser) => {
+                // Create new entry in Firebase for user account info
+                let userRef = db.ref('Accounts/' + firebaseUser.user.uid);
+
+                // Create account info
+                let account = {
+                    ...NEW_ACCOUNT,
+                    accountInfo: {
+                        email: email,
+                        name: name
+                    }
+                }
+                // Save account info to Firebase
+                userRef.set(account);
+
                 // Sets state to successfully loaded
-                dispatch({ type: CREATE_USER_FULFILLED, payload: firebaseUser });
+                dispatch({ 
+                    type: CREATE_USER_FULFILLED, 
+                    payload: {
+                        uid: firebaseUser.user.uid, // Save UID
+                        account: account // Save new account info
+                    } 
+                });
             })
             .catch((err) => {
                 // Sets state to failure to load
@@ -47,11 +68,21 @@ export function fetchUser(email, password){
         // Sets a "loading... " state
         dispatch({ type: FETCH_USER });
 
-        // Calls firebase function
+        // Calls Firebase function
         onLogin(email,password)
             .then((firebaseUser) => {
-                // Sets state to successfully loaded
-                dispatch({ type: FETCH_USER_FULFILLED, payload: firebaseUser });
+                let userRef = db.ref('Accounts/'+firebaseUser.user.uid);
+                // Load the user account info into state
+                userRef.once('value') 
+                    .then((dataSnapshot) =>{
+                        dispatch({
+                            type: FETCH_USER_FULFILLED, // Sets state to successfully loaded
+                            payload: { 
+                                uid: firebaseUser.user.uid, // Save UID
+                                account: dataSnapshot.val() // Save account info
+                            }
+                        });
+                    });
             })
             .catch((err) => {
                 // Sets state to failure to load

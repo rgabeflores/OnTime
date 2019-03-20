@@ -29,7 +29,7 @@ export class TasksScreen extends React.Component {
     // the datasource(ds) is a listener checking if the data has been changed or not
     let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
-      longPressedTask: false,
+      deleteMode: false,
       modalVisible: false,
       taskDataSource: ds,
       tasks: [],
@@ -52,18 +52,6 @@ export class TasksScreen extends React.Component {
   // get the items from the list view
   getItems = async () => {
     var userRef = db.ref("tasks/" + this.props.user.uid);
-
-    // hardcode values
-    // TODO: fetch data from firebase
-
-    // store each tasks to the database
-    // the key is the task name
-    // this.state.tasks.forEach(element => {
-    //   userRef.child(element.title).set({
-    //     hours: element.hours,
-    //     address: element.address
-    //   });
-    // });
     let data = [];
     userRef.once("value", snapshot => {
       snapshot.forEach(childSnapshot => {
@@ -81,6 +69,7 @@ export class TasksScreen extends React.Component {
       });
       console.log(data);
       this.setState({
+        tasks: data,
         taskDataSource: this.state.taskDataSource.cloneWithRows(data)
       });
     });
@@ -90,21 +79,17 @@ export class TasksScreen extends React.Component {
   renderRow(task) {
     return (
       <View>
-        <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
+        <View style={otherStyles.taskContainer}>
           <Text style={styles.liText}>
             Task Name: {task.title} {"\n"}
             Required Time: {task.hours} {"\n"}
             Location: {task.address}
           </Text>
           <TouchableHighlight
-            style={
-              this.state.longPressedTask
-                ? {
+            style={this.state.deleteMode? {
                     display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center"
-                  }
-                : { display: "none" }
+                    alignItems: "center"
+                  }: {display: "none"}
             }
             onPress={() => {
               this.removeThisTask(task);
@@ -123,17 +108,34 @@ export class TasksScreen extends React.Component {
     );
   }
   // when the user presses the remove task button
-  removeThisTask(task) {
-    this.setState(prevState => ({
-      tasks: prevState.tasks.filter(i => i !== task),
-      taskDataSource: this.state.taskDataSource.cloneWithRows(
-        prevState.tasks.filter(i => i !== task)
-      )
-    }));
+  updateView(){
+    this.setState({taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks)});
   }
-  // when a task is long pressed, this is what happens
-  longPressTask(task) {
-    this.setState({ longPressedTask: true });
+  removeThisTask = async(task) =>{
+    var userRef = db.ref("tasks/" + this.props.user.uid);
+    var deleteReference = db.ref("tasks/" + this.props.user.uid+ "/"+task.title);
+    deleteReference.remove();
+    let data = [];
+    userRef.once("value", snapshot => {
+      snapshot.forEach(childSnapshot => {
+        var taskName = childSnapshot.key; // "task name"
+        var taskDetails = childSnapshot.val();
+        // console.log(taskName);
+        // console.log(taskDetails);
+        var temp = {
+          title: taskName,
+          hours: taskDetails.hours,
+          address: taskDetails.address
+        };
+        data.push(temp);
+        return false;
+      });
+      console.log(data);
+      this.setState({
+        tasks: data,
+        taskDataSource: this.state.taskDataSource.cloneWithRows(data)
+      });
+    });
   }
   _closeModal() {
     setState({
@@ -172,7 +174,7 @@ export class TasksScreen extends React.Component {
             </TouchableHighlight>
             <TouchableHighlight
               style={otherStyles.buttonContainer}
-              onPress={this.removeTask.bind(this)}
+              onPress={() => this.setState({deleteMode: !this.state.deleteMode})}
               underlayColor="white"
             >
               {/* Remove a Task Button */}
@@ -277,9 +279,6 @@ export class TasksScreen extends React.Component {
       }));
     }
   };
-  removeTask = e => {
-    this.setState({ longPressedTask: !this.state.longPressedTask });
-  };
 }
 // create map of "store" object passed from Provider to this component's props
 const mapStateToProps = store => {
@@ -289,11 +288,14 @@ const mapStateToProps = store => {
 };
 
 // create map of "dispatch" object passed from Provider to this component's props
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     dispatch
-//   }
-// }
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch
+  };
+};
 
 // connect() applies maps to component's props
-export default connect(mapStateToProps)(TasksScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TasksScreen);

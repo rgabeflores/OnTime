@@ -151,5 +151,12 @@ module.exports = StyleSheet.create({
   },
   calendar: {
     flex: 1
+  },
+  taskContainer: {
+    textAlign: "left",
+    borderBottomWidth: 5,
+    borderBottomColor: "lightblue",
+    flexDirection: "row",
+    justifyContent: "space-between"
   }
 });
