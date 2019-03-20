@@ -23,7 +23,7 @@ HomeStack.navigationOptions = {
       focused={focused}
       name={
         Platform.OS === "ios"
-          ? `ios-calendar${focused ? "" : "-outline"}`
+          ? "ios-calendar"
           : "md-calendar"
       }
     />
