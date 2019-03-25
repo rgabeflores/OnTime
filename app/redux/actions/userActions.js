@@ -3,7 +3,12 @@
  */
 
 import { onLogin, onRegister } from '../../config/auth';
-import { setName } from '../../config/update';
+import { setName,
+    setEmail,
+    setPassword,
+    resetPassword,
+    deleteAccount
+ } from '../../config/update';
 import { db } from '../../config/db';
 
 import {
@@ -94,7 +99,13 @@ export function fetchUser(email, password){
             })
     }
 }
+export function setUserEmail(email){
+    return (dispatch) => {
+        dispatch({ type: SET_USER_EMAIL });
 
+
+    }
+}
 export function setUserName(name){
     return (dispatch) => {
         dispatch({ type: SET_USER_NAME });
