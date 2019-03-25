@@ -1,7 +1,7 @@
 import React from 'react';
 
 import firebase from 'firebase';
-import { db } from './config/db';
+import { db } from './db';
 
 export const onRegister = (email, password) => {
     return firebase.auth().createUserWithEmailAndPassword(email, password);

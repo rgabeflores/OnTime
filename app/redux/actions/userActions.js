@@ -2,7 +2,8 @@
  * User Actions
  */
 
-import { onLogin, onRegister } from '../../auth';
+import { onLogin, onRegister } from '../../config/auth';
+import { setName } from '../../config/update';
 import { db } from '../../config/db';
 
 import {
@@ -11,6 +12,10 @@ import {
     FETCH_USER,
     FETCH_USER_FULFILLED,
     REQUEST_REJECTED,
+    SET_USER_EMAIL,
+    SET_USER_EMAIL_FULFILLED,
+    SET_USER_NAME,
+    SET_USER_NAME_FULFILLED,
     NEW_ACCOUNT
     } from './types';
 
@@ -88,4 +93,25 @@ export function fetchUser(email, password){
                 dispatch({ type: REQUEST_REJECTED, payload: err});
             })
     }
+}
+
+export function setUserName(name){
+    return (dispatch) => {
+        dispatch({ type: SET_USER_NAME });
+
+        setName(name)
+            .then((response) => {
+                dispatch({
+                    type: SET_USER_NAME_FULFILLED,
+                    payload: name
+                })
+            })
+            .catch((err) => {
+                dispatch({
+                    type: REQUEST_REJECTED,
+                    payload: err
+                })
+            })
+    }
+    
 }

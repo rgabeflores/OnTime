@@ -8,6 +8,10 @@ import {
     FETCH_USER,
     FETCH_USER_FULFILLED,
     REQUEST_REJECTED,
+    SET_USER_EMAIL,
+    SET_USER_EMAIL_FULFILLED,
+    SET_USER_NAME,
+    SET_USER_NAME_FULFILLED,
     NEW_ACCOUNT
     } from '../actions/types';
 
@@ -64,6 +68,44 @@ export default function reducer( state = INITIAL_STATE, action){
                 ...state, 
                 fetching: false, 
                 error: action.payload
+            }
+        }
+        case SET_USER_EMAIL: {
+            return {
+                ...state, 
+                fetching: true
+            }
+        }
+        case SET_USER_EMAIL_FULFILLED: {
+            return {
+                ...state,
+                fetching: false,
+                user: {
+                    ...state.user, 
+                    email: action.payload
+                }
+            }
+        }
+        case SET_USER_NAME: {
+            return {
+                ...state, 
+                fetching: true
+            }
+        }
+        case SET_USER_NAME_FULFILLED: {
+            return {
+                ...state,
+                fetching: false,
+                user: {
+                    ...state.user, 
+                    account: {
+                        ...state.account,
+                        accountInfo: {
+                            ...accountInfo,
+                            name: action.payload
+                        }
+                    }
+                }
             }
         }
     }

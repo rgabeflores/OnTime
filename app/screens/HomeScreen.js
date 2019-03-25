@@ -12,7 +12,6 @@ import {
 } from "react-native";
 
 import { connect } from "react-redux";
-import db from '../config/db';
 
 import styles from "./style";
 
@@ -225,7 +224,9 @@ const mapStateToProps = (store) => {
 // create map of "dispatch" object passed from Provider to this component's props
 // const mapDispatchToProps = (dispatch) => {
 //   return {
-//     dispatch
+//     setUserName: (uid, name) => {
+//       dispatch(setUserName(uid, name));
+//     }
 //   }
 // }
 
