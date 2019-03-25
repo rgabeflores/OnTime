@@ -26,7 +26,7 @@ export class SettingsScreen extends React.Component {
           <SettingsList>
 
             {/*Inserts a header text called "My Account" */}
-          	<SettingsList.Header headerText='My Account' headerStyle={{color:'white'}}/>
+          	<SettingsList.Header headerText={this.props.user.account.accountInfo.name + '\'s Account'} headerStyle={{color:'white'}}/>
             {/*Inserts a button that displays user's account info */}
             <SettingsList.Item title='Account Info'/>
 
