@@ -8,7 +8,6 @@ import {
     FETCH_USER,
     FETCH_USER_FULFILLED,
     REQUEST_REJECTED,
-    SET_USER_EMAIL,
     NEW_ACCOUNT
     } from '../actions/types';
 
@@ -65,15 +64,6 @@ export default function reducer( state = INITIAL_STATE, action){
                 ...state, 
                 fetching: false, 
                 error: action.payload
-            }
-        }
-        case SET_USER_EMAIL: {
-            return {
-                ...state, 
-                user: {
-                    ...state.user, 
-                    email: action.payload
-                }
             }
         }
     }

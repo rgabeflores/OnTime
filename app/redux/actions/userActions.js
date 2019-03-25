@@ -11,7 +11,6 @@ import {
     FETCH_USER,
     FETCH_USER_FULFILLED,
     REQUEST_REJECTED,
-    SET_USER_EMAIL,
     NEW_ACCOUNT
     } from './types';
 
@@ -88,13 +87,5 @@ export function fetchUser(email, password){
                 // Sets state to failure to load
                 dispatch({ type: REQUEST_REJECTED, payload: err});
             })
-    }
-}
-
-
-export function setUserEmail(email){
-    return {
-        type: SET_USER_EMAIL,
-        payload: email
     }
 }
