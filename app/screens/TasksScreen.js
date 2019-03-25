@@ -51,7 +51,7 @@ export class TasksScreen extends React.Component {
   }
   // get the items from the list view
   getItems = async () => {
-    var userRef = db.ref("tasks/" + this.props.user.uid);
+    var userRef = db.ref("Accounts/" + this.props.user.uid+"/tasks/");
     let data = [];
     userRef.once("value", snapshot => {
       snapshot.forEach(childSnapshot => {
@@ -112,8 +112,8 @@ export class TasksScreen extends React.Component {
     this.setState({taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks)});
   }
   removeThisTask = async(task) =>{
-    var userRef = db.ref("tasks/" + this.props.user.uid);
-    var deleteReference = db.ref("tasks/" + this.props.user.uid+ "/"+task.title);
+    var userRef = db.ref("Accounts/" + this.props.user.uid+ "/tasks/");
+    var deleteReference = db.ref("Accounts/" + this.props.user.uid+ "/tasks/"+task.title);
     deleteReference.remove();
     let data = [];
     userRef.once("value", snapshot => {
@@ -232,7 +232,7 @@ export class TasksScreen extends React.Component {
   };
   addTask = e => {
     // user's database reference
-    var userRef = db.ref("/tasks/" + this.props.user.uid);
+    var userRef = db.ref("/Accounts/" + this.props.user.uid + "/tasks/");
     if (this.state.title.length === 0) {
       alert("Title can not be empty!");
     } else {
