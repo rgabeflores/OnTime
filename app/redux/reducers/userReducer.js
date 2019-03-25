@@ -1,5 +1,5 @@
 /**
- * User Reducer 
+ * User Reducer
  */
 
 import {
@@ -29,7 +29,7 @@ const INITIAL_STATE = {
 
 /**
  * This is the reducer for the user actions.
- * 
+ *
  */
 export default function reducer( state = INITIAL_STATE, action){
     switch(action.type){
@@ -109,5 +109,6 @@ export default function reducer( state = INITIAL_STATE, action){
             }
         }
     }
-    return state;
+  }
+  return state;
 }
