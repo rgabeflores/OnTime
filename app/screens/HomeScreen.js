@@ -31,7 +31,7 @@ export class HomeScreen extends React.Component {
   }
 
   render() {
-    if(__DEV__) console.log(this.props.user.account);
+    if(__DEV__) console.log(this.props.user.account.accountInfo.name);
     
     if (this.state.calendarView === true) {
       let today = new Date(); // Move to redux?

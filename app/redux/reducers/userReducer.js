@@ -15,7 +15,7 @@ import {
 // Used for the initial state of the application
 const INITIAL_STATE = {
     user: {
-        NEW_ACCOUNT,
+        account: NEW_ACCOUNT,
         uid: "Re2ophJDDMX2yssltNZdCSz9gLz1"
     },
     isLoggedIn: false, // Keeps track of logged in status
