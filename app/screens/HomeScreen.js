@@ -3,10 +3,6 @@ import { Calendar, Agenda, calendarTheme } from "react-native-calendars";
 import { Text, View, SafeAreaView, Button } from "react-native";
 
 import { connect } from "react-redux";
-<<<<<<< HEAD
-=======
-import db from "../config/db";
->>>>>>> master
 
 import styles from "./style";
 
