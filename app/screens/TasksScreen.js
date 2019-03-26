@@ -67,7 +67,7 @@ export class TasksScreen extends React.Component {
         data.push(temp);
         return false;
       });
-      console.log(data);
+      // console.log(data);
       this.setState({
         tasks: data,
         taskDataSource: this.state.taskDataSource.cloneWithRows(data)

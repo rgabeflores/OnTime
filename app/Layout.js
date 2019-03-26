@@ -7,7 +7,7 @@ import { connect } from "react-redux";
  */
 export class Layout extends React.Component {
   render() {
-    // const Layout = createRootNavigator(this.props.isLoggedIn);
+    //const Layout = createRootNavigator(this.props.isLoggedIn);
     const Layout = createRootNavigator(true);
     return <Layout />;
   }
