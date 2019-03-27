@@ -10,9 +10,10 @@ import styles from './style';
 
 import { db } from "../config/db";
 import {
-  StackedBarChart
+  StackedBarChart,
+  XAxis,
+  Grid
 } from 'react-native-svg-charts'
-
 export class StatisticsScreen extends React.Component {
 
   static navigationOptions = {
@@ -25,16 +26,20 @@ export class StatisticsScreen extends React.Component {
     super();
     this.state = {
       tasks: [],
+      titles: [],
       colors: [],
       data: [],
-      keys: [],
+      // keys is what the label is in the task
+      keys: ['hours'],
       finishedFetch: false
     };
   }
+  // fetch the data from the database
   componentDidMount() {
     this.getItems();
   }
-  // get the items from the list view
+
+  // fetching the data from the database
   getItems = async () => {
     var userRef = db.ref("Accounts/" + this.props.user.uid + "/tasks/");
     let dbData = [];
@@ -56,13 +61,10 @@ export class StatisticsScreen extends React.Component {
         this.setState(prevState => ({
           data: [...prevState.data, dbData[i].hours],
           colors: [...prevState.colors, ('#' + (Math.random() * 0xFFFFFF << 0).toString(16) + '000000').slice(0, 7)],
-          keys: [...prevState.keys, dbData[i].title]
+          titles: [...prevState.titles, dbData[i].title]
+          //keys: [...prevState.keys, dbData[i].title]
         }))
       }
-      console.log(dbData)
-      console.log("keys: " + this.state.keys)
-      console.log("Data: " + this.state.data);
-      console.log("Colors: " + this.state.colors);
       this.setState({
         tasks: dbData,
       });
@@ -72,19 +74,31 @@ export class StatisticsScreen extends React.Component {
   render() {
     return (
       <View>
-        <Text>{"Statistics for " + this.props.user.account.accountInfo.name}</Text>
+        <Text>{"Planned Tasks for " + this.props.user.account.accountInfo.name}</Text>
         <View style={
           this.state.finishedFetch ?
-            { display: "flex" }
+            { display: "flex", height: 200, padding: 20 }
             : { display: "none" }}>
-          {/* <StackedBarChart
-            style={{ height: '100%' }}
+          <StackedBarChart
+            style={{ height: '80%' }}
             keys={this.state.keys}
             colors={this.state.colors}
             data={this.state.tasks}
             showGrid={false}
             contentInset={{ top: 30, bottom: 30 }}
-          /> */}
+          >
+            <Grid />
+          </StackedBarChart>
+          <XAxis
+            style={{ marginHorizontal: -20 }}
+            data={this.state.titles}
+            formatLabel={(value) => value + 1}
+            contentInset={{ left: 50, right: 50 }}
+          />
+          <Text>Legend</Text>
+          {this.state.titles.map((title,idx) => (
+            <Text key={title}>{idx+1}) {title}</Text>
+          ))}
         </View>
       </View>
     );
