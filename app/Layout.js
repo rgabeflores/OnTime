@@ -19,7 +19,7 @@ const mapStateToProps = (store) => {
       isLoggedIn: store.user.isLoggedIn, // Enables login status and redirection from login/register screens to home page
       error: store.user.error
     }
-  };
+};
 
 // connect() applies maps to component's props
 export default connect(mapStateToProps)(Layout);

@@ -1,5 +1,5 @@
 /**
- * User Reducer 
+ * User Reducer
  */
 
 import {
@@ -9,6 +9,9 @@ import {
     FETCH_USER_FULFILLED,
     REQUEST_REJECTED,
     SET_USER_EMAIL,
+    SET_USER_EMAIL_FULFILLED,
+    SET_USER_NAME,
+    SET_USER_NAME_FULFILLED,
     NEW_ACCOUNT
     } from '../actions/types';
 
@@ -26,7 +29,7 @@ const INITIAL_STATE = {
 
 /**
  * This is the reducer for the user actions.
- * 
+ *
  */
 export default function reducer( state = INITIAL_STATE, action){
     switch(action.type){
@@ -70,9 +73,38 @@ export default function reducer( state = INITIAL_STATE, action){
         case SET_USER_EMAIL: {
             return {
                 ...state, 
+                fetching: true
+            }
+        }
+        case SET_USER_EMAIL_FULFILLED: {
+            return {
+                ...state,
+                fetching: false,
                 user: {
                     ...state.user, 
                     email: action.payload
+                }
+            }
+        }
+        case SET_USER_NAME: {
+            return {
+                ...state, 
+                fetching: true
+            }
+        }
+        case SET_USER_NAME_FULFILLED: {
+            return {
+                ...state,
+                fetching: false,
+                user: {
+                    ...state.user, 
+                    account: {
+                        ...state.account,
+                        accountInfo: {
+                            ...accountInfo,
+                            name: action.payload
+                        }
+                    }
                 }
             }
         }

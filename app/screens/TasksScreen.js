@@ -19,6 +19,10 @@ import styles from "../components/style";
 import otherStyles from "./style";
 import { db } from "../config/db";
 import firebase from "firebase";
+
+import TaskRow from "./components/TaskRow";
+
+
 export class TasksScreen extends React.Component {
   static navigationOptions = {
     title: "Tasks"
@@ -137,6 +141,11 @@ export class TasksScreen extends React.Component {
       });
     });
   }
+  _closeModal() {
+    setState({
+      modalVisible: false
+    });
+  }
   // when the task is pressed, make a popup asking if the user wants to remove the task
   pressRow(task) {}
   render() {
@@ -153,9 +162,10 @@ export class TasksScreen extends React.Component {
           <View style={styles.container}>
             <Toolbar />
             {/* Task List Toolbar */}
+            {/* NOTE: ListView is deprecated */}
             <ListView
               dataSource={this.state.taskDataSource}
-              renderRow={this.renderRow}
+              renderRow={ (task) => { return <TaskRow task={task} press={()=>{this.removeThisTask(task)}} deleteMode={this.state.deleteMode} />} }
             />
             {/* Add a Task button */}
             <TouchableHighlight
@@ -179,25 +189,33 @@ export class TasksScreen extends React.Component {
             </TouchableHighlight>
           </View>
           {/* Prompt for Adding */}
-          <Modal animationType="slide" visible={this.state.modalVisible}>
+          <Modal
+            animationType="slide"
+            visible={this.state.modalVisible}
+            enableEmptySections={true}
+            onRequestClose={this._closeModal.bind(this)}
+          >
             <View style={otherStyles.container}>
               <TextInput
                 clearButtonMode="always"
                 style={otherStyles.textInputContainerTask}
                 placeholder="Task Title"
                 onChangeText={text => this.setState({ title: text })}
+                enableEmptySections={true}
               />
               <TextInput
                 clearButtonMode="always"
                 style={otherStyles.textInputContainerTask}
                 placeholder="Task Hours"
                 onChangeText={text => this.setState({ hours: text })}
+                enableEmptySections={true}
               />
               <TextInput
                 clearButtonMode="always"
                 style={otherStyles.textInputContainerTask}
                 placeholder="Task Address"
                 onChangeText={text => this.setState({ address: text })}
+                enableEmptySections={true}
               />
               <TouchableHighlight
                 style={otherStyles.buttonContainer}
@@ -210,9 +228,7 @@ export class TasksScreen extends React.Component {
               </TouchableHighlight>
               <TouchableHighlight
                 style={otherStyles.buttonContainer}
-                onPress={() => {
-                  this.setState({ modalVisible: false });
-                }}
+                onPress={this._closeModal}
                 underlayColor="white"
               >
                 <View style={otherStyles.button}>

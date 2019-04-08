@@ -1,18 +1,8 @@
 import React from "react";
-import {
-  Calendar,
-  Agenda,
-  calendarTheme
-} from "react-native-calendars";
-import {
-  Text,
-  View,
-  SafeAreaView,
-  Button
-} from "react-native";
+import { Calendar, Agenda, calendarTheme } from "react-native-calendars";
+import { Text, View, SafeAreaView, Button } from "react-native";
 
 import { connect } from "react-redux";
-import db from '../config/db';
 
 import styles from "./style";
 
@@ -26,7 +16,16 @@ export class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      calendarView: true
+      calendarView: true,
+      items: {
+        "2019-03-06": [{ text: "item 1 - any js object" }],
+        "2019-03-06": [{ text: "item 2 - any js object" }],
+        "2018-05-24": [],
+        "2018-05-25": [
+          { text: "item 3 - any js object" },
+          { text: "any js object" }
+        ]
+      }
     };
   }
 
@@ -34,14 +33,29 @@ export class HomeScreen extends React.Component {
     if(__DEV__) console.log(this.props.user.account.accountInfo.name);
     
     if (this.state.calendarView === true) {
-
       let today = new Date(); // Move to redux?
       date =
-        today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+        today.getFullYear() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getDate();
       minDate =
-        today.getFullYear() - 5 + "-" + today.getMonth() + 1 + "-" + today.getDate();
+        today.getFullYear() -
+        5 +
+        "-" +
+        today.getMonth() +
+        1 +
+        "-" +
+        today.getDate();
       maxDate =
-        today.getFullYear() + 5 + "-" + today.getMonth() + 1 + "-" + today.getDate();
+        today.getFullYear() +
+        5 +
+        "-" +
+        today.getMonth() +
+        1 +
+        "-" +
+        today.getDate();
 
       return (
         <View>
@@ -85,15 +99,7 @@ export class HomeScreen extends React.Component {
             // the list of items that have to be displayed in agenda. If you want to render item as empty date
             // the value of date key kas to be an empty array []. If there exists no value for date key it is
             // considered that the date in question is not yet loaded
-            items={{
-              "2012-05-22": [{ text: "item 1 - any js object" }],
-              "2012-05-23": [{ text: "item 2 - any js object" }],
-              "2012-05-24": [],
-              "2012-05-25": [
-                { text: "item 3 - any js object" },
-                { text: "any js object" }
-              ]
-            }}
+
             // callback that gets called when items for a certain month should be loaded (month became visible)
             loadItemsForMonth={month => {
               console.log("trigger items loading");
@@ -104,7 +110,9 @@ export class HomeScreen extends React.Component {
             }}
             // callback that gets called on day press
             onDayPress={day => {
-              console.log("day pressed");
+              <View styles={{ marginTop: 100 }}>
+                <Text>{this.state.items}</Text>
+              </View>;
             }}
             // callback that gets called when day changes while scrolling agenda list
             onDayChange={day => {
@@ -121,12 +129,13 @@ export class HomeScreen extends React.Component {
             // Max amount of months allowed to scroll to the future. Default = 50
             futureScrollRange={50}
             // specify how each item should be rendered in agenda
-            renderItem={(item, firstItemInDay) => {
+            renderItem={() => {
               return <View />;
             }}
             // specify how each date should be rendered. day can be undefined if the item is not first in that day.
             renderDay={(day, item) => {
-              return <View />;
+              console.log();
+              return <View styles={{ marginTop: 100 }} />;
             }}
             // specify how empty date content with no items should be rendered
             renderEmptyDate={() => {
@@ -216,16 +225,18 @@ export class HomeScreen extends React.Component {
 }
 
 // create map of "store" object passed from Provider to this component's props
-const mapStateToProps = (store) => {
+const mapStateToProps = store => {
   return {
-    user: store.user.user, // store.user == reducer, store.user.user == reducer.state.user
-  }
+    user: store.user.user // store.user == reducer, store.user.user == reducer.state.user
+  };
 };
 
 // create map of "dispatch" object passed from Provider to this component's props
 // const mapDispatchToProps = (dispatch) => {
 //   return {
-//     dispatch
+//     setUserName: (uid, name) => {
+//       dispatch(setUserName(uid, name));
+//     }
 //   }
 // }
 
