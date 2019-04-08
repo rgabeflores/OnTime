@@ -19,6 +19,10 @@ import styles from "../components/style";
 import otherStyles from "./style";
 import { db } from "../config/db";
 import firebase from "firebase";
+
+import TaskRow from "./components/TaskRow";
+
+
 export class TasksScreen extends React.Component {
   static navigationOptions = {
     title: "Tasks"
@@ -158,9 +162,10 @@ export class TasksScreen extends React.Component {
           <View style={styles.container}>
             <Toolbar />
             {/* Task List Toolbar */}
+            {/* NOTE: ListView is deprecated */}
             <ListView
               dataSource={this.state.taskDataSource}
-              renderRow={this.renderRow}
+              renderRow={ (task) => { return <TaskRow task={task} press={this.removeThisTask.bind(this)} deleteMode={this.state.deleteMode} />} }
             />
             {/* Add a Task button */}
             <TouchableHighlight
