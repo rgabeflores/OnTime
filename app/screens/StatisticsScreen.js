@@ -1,18 +1,21 @@
 import React from 'react';
 import {
   Text,
-  View
+  View,
+  Button,
+  TouchableHighlight,
+  Modal
 } from 'react-native';
 
 
 import { connect } from "react-redux";
-import styles from './style';
-
+import otherStyles from "./style";
 import { db } from "../config/db";
 import {
   StackedBarChart,
   XAxis,
-  Grid
+  Grid,
+  PieChart
 } from 'react-native-svg-charts'
 export class StatisticsScreen extends React.Component {
 
@@ -31,16 +34,26 @@ export class StatisticsScreen extends React.Component {
       data: [],
       // keys is what the label is in the task
       keys: ['hours'],
-      finishedFetch: false
+      finishedFetch: false,
+      ptModalVisible: false,
     };
   }
   // fetch the data from the database
   componentDidMount() {
     this.getItems();
   }
-
   // fetching the data from the database
   getItems = async () => {
+    // clear the current state
+    this.setState({
+      tasks: [],
+      titles: [],
+      colors: [],
+      data: [],
+      keys: ['hours'],
+      finishedFetch: false,
+    })
+    // fetch items from db
     var userRef = db.ref("Accounts/" + this.props.user.uid + "/tasks/");
     let dbData = [];
     userRef.once("value", snapshot => {
@@ -61,7 +74,7 @@ export class StatisticsScreen extends React.Component {
         this.setState(prevState => ({
           data: [...prevState.data, dbData[i].hours],
           colors: [...prevState.colors, ('#' + (Math.random() * 0xFFFFFF << 0).toString(16) + '000000').slice(0, 7)],
-          titles: [...prevState.titles, dbData[i].title]
+          titles: [...prevState.titles, dbData[i].title],
           //keys: [...prevState.keys, dbData[i].title]
         }))
       }
@@ -71,35 +84,75 @@ export class StatisticsScreen extends React.Component {
       this.setState({ finishedFetch: true })
     });
   };
+  closePTModal = () => {
+    this.setState({
+      ptModalVisible: false
+    });
+  }
+  openPTModal = () => {
+    this.getItems()
+    this.setState({
+      ptModalVisible: true
+    });
+  }
   render() {
+    var pieData = this.state.data
+      .filter(value => value > 0)
+      .map((value, index) => ({
+        value,
+        svg: {
+          fill: this.state.colors[index]
+        },
+        key: `pie-${index}`
+      }))
     return (
       <View>
-        <Text>{"Planned Tasks for " + this.props.user.account.accountInfo.name}</Text>
-        <View style={
-          this.state.finishedFetch ?
-            { display: "flex", height: 200, padding: 20 }
-            : { display: "none" }}>
-          <StackedBarChart
-            style={{ height: '80%' }}
-            keys={this.state.keys}
-            colors={this.state.colors}
-            data={this.state.tasks}
-            showGrid={false}
-            contentInset={{ top: 30, bottom: 30 }}
-          >
-            <Grid />
-          </StackedBarChart>
-          <XAxis
-            style={{ marginHorizontal: -20 }}
-            data={this.state.titles}
-            formatLabel={(value) => value + 1}
-            contentInset={{ left: 50, right: 50 }}
-          />
-          <Text>Legend</Text>
-          {this.state.titles.map((title,idx) => (
-            <Text key={title}>{idx+1}) {title}</Text>
-          ))}
-        </View>
+        <TouchableHighlight
+          style={otherStyles.buttonContainer}
+          onPress={this.openPTModal.bind(this)}
+          underlayColor="white"
+        >
+          <View style={otherStyles.button}>
+            <Text style={otherStyles.buttonText}>
+              {"Display Planned Tasks for " + this.props.user.account.accountInfo.name}
+            </Text>
+          </View>
+        </TouchableHighlight>
+        <Modal
+          animationType="slide"
+          visible={this.state.ptModalVisible}
+          enableEmptySections={true}
+          onRequestClose={this.closePTModal.bind(this)}
+        >
+          <View style = {{flex: 1, justifyContent: 'center'}}>
+            
+            <Text style={{ fontSize: 20 }}>Planned Tasks for {this.props.user.account.accountInfo.name}</Text>
+            <PieChart
+              style={{ height: 200 }}
+              data={pieData}
+            />
+            <Text>Legend</Text>
+            {this.state.titles.map((title, idx) => (
+              <View>
+                <Text
+                  style={{ color: `${this.state.colors[idx]}` }}>
+                  {title}
+                </Text>
+              </View>
+            ))}
+            <TouchableHighlight
+              style={otherStyles.buttonContainer}
+              onPress={this.closePTModal}
+              underlayColor="white"
+            >
+              <View style={otherStyles.button}>
+                <Text style={otherStyles.buttonText}>
+                  Close Planned Tasks
+                </Text>
+              </View>
+            </TouchableHighlight>
+          </View>
+        </Modal>
       </View>
     );
   }

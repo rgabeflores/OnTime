@@ -124,8 +124,6 @@ export class TasksScreen extends React.Component {
       snapshot.forEach(childSnapshot => {
         var taskName = childSnapshot.key; // "task name"
         var taskDetails = childSnapshot.val();
-        // console.log(taskName);
-        // console.log(taskDetails);
         var temp = {
           title: taskName,
           hours: taskDetails.hours,
