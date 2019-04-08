@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, TouchableHighlight } from "react-native";
+import { Text, View, TouchableHighlight,Linking } from "react-native";
 import SettingsList from "react-native-settings-list";
 import firebase from "firebase";
 import { db } from "../config/db.js";
@@ -54,6 +54,13 @@ export class SettingsScreen extends React.Component {
               switchOnValueChange={this.onValueChange}
               hasSwitch={true}
               title="Push Notifications"
+            />
+            <SettingsList.Header
+              headerText="Contact Us"
+              headerStyle={{ color: "white", marginTop: 15 }}
+            />
+            <SettingsList.Item title="Contact Us"
+            onPress={()=>{Linking.openURL('https://github.com/rgabeflores/OnTime')}}
             />
             <SettingsList.Header
               headerText="Logout"
