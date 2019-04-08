@@ -165,7 +165,7 @@ export class TasksScreen extends React.Component {
             {/* NOTE: ListView is deprecated */}
             <ListView
               dataSource={this.state.taskDataSource}
-              renderRow={ (task) => { return <TaskRow task={task} press={this.removeThisTask.bind(this)} deleteMode={this.state.deleteMode} />} }
+              renderRow={ (task) => { return <TaskRow task={task} press={()=>{this.removeThisTask(task)}} deleteMode={this.state.deleteMode} />} }
             />
             {/* Add a Task button */}
             <TouchableHighlight
