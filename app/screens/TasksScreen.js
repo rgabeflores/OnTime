@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import Icon from "../components/TabBarIcon";
 import { connect } from "react-redux";
+import { addTask } from "../redux/actions/userActions";
 
 import Toolbar from "../components/Toolbar";
 import styles from "../components/style";
@@ -27,6 +28,7 @@ export class TasksScreen extends React.Component {
   static navigationOptions = {
     title: "Tasks"
   };
+  
   // constructor of the class, this stores the data(what it displays) for TaskScreen
   constructor() {
     super();
@@ -41,28 +43,21 @@ export class TasksScreen extends React.Component {
       hours: "",
       address: ""
     };
-    this.renderRow = this.renderRow.bind(this);
-    this.pressRow = this.pressRow.bind(this);
-    // this.getItems = this.getItems.bind(this);
+    
   }
-  // call it before the component mounts, debugging
-  // componentWillMount() {
-  //   this.getItems();
-  // }
-  // get called
+
   componentDidMount() {
     this.getItems();
   }
   // get the items from the list view
   getItems = async () => {
+    console.log(this.props.user);
     var userRef = db.ref("Accounts/" + this.props.user.uid+"/tasks/");
     let data = [];
     userRef.once("value", snapshot => {
       snapshot.forEach(childSnapshot => {
         var taskName = childSnapshot.key; // "task name"
         var taskDetails = childSnapshot.val();
-        // console.log(taskName);
-        // console.log(taskDetails);
         var temp = {
           title: taskName,
           hours: taskDetails.hours,
@@ -79,43 +74,75 @@ export class TasksScreen extends React.Component {
     });
     // update the view
   };
-  // display task
-  renderRow(task) {
-    return (
-      <View>
-        <View style={otherStyles.taskContainer}>
-          <Text style={styles.liText}>
-            Task Name: {task.title} {"\n"}
-            Required Time: {task.hours} {"\n"}
-            Location: {task.address}
-          </Text>
-          <TouchableHighlight
-            style={this.state.deleteMode? {
-                    display: "flex",
-                    alignItems: "center"
-                  }: {display: "none"}
-            }
-            onPress={() => {
-              this.removeThisTask(task);
-            }}
-          >
-            <Icon
-              name={
-                Platform.OS === "ios"
-                  ? "ios-close-circle-outline"
-                  : "md-close-circle-outline"
-              }
-            />
-          </TouchableHighlight>
-        </View>
-      </View>
-    );
-  }
+  
   // when the user presses the remove task button
   updateView(){
     this.setState({taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks)});
   }
-  removeThisTask = async(task) =>{
+  
+  _closeModal() {
+    setState({
+      modalVisible: false
+    });
+  }
+
+  showAddTask = e => {
+    this.setState(prevState => ({
+      modalVisible: true
+    }));
+  };
+  showRemoveTask = e => {
+    this.setState(prevState => ({
+      deleteMode: !this.state.deleteMode
+    }));
+  };
+  addTask = e => {
+    // user's database reference
+    var userRef = db.ref("/Accounts/" + this.props.user.uid + "/tasks/");
+    if (this.state.title.length === 0) {
+      alert("Title can not be empty!");
+    } else {
+      // update the database
+      userRef.child(this.state.title).set({
+        hours: this.state.hours,
+        address: this.state.address
+      });
+      this.setState(prevState => ({
+        // clear the current inputs
+        title: "",
+        hours: "",
+        address: "",
+        // add a new set of tasks
+        tasks: [
+          ...prevState.tasks,
+          {
+            title: this.state.title,
+            hours: this.state.hours,
+            address: this.state.address
+          }
+        ],
+        taskDataSource: this.state.taskDataSource.cloneWithRows([
+          ...prevState.tasks,
+          {
+            title: this.state.title,
+            hours: this.state.hours,
+            address: this.state.address
+          }
+        ]),
+        // remove the modal
+        modalVisible: false
+      }));
+    }
+    // Redux
+    this.props.addTask(
+      this.props.user.uid,
+      {
+        title: this.state.title,
+        hours: this.state.hours,
+        address: this.state.address 
+      });
+  };
+  removeTask = async(task) =>{
     var userRef = db.ref("Accounts/" + this.props.user.uid+ "/tasks/");
     var deleteReference = db.ref("Accounts/" + this.props.user.uid+ "/tasks/"+task.title);
     deleteReference.remove();
@@ -124,8 +151,7 @@ export class TasksScreen extends React.Component {
       snapshot.forEach(childSnapshot => {
         var taskName = childSnapshot.key; // "task name"
         var taskDetails = childSnapshot.val();
-        // console.log(taskName);
-        // console.log(taskDetails);
+
         var temp = {
           title: taskName,
           hours: taskDetails.hours,
@@ -141,13 +167,6 @@ export class TasksScreen extends React.Component {
       });
     });
   }
-  _closeModal() {
-    setState({
-      modalVisible: false
-    });
-  }
-  // when the task is pressed, make a popup asking if the user wants to remove the task
-  pressRow(task) {}
   render() {
     if (this.state.taskDataSource.getRowCount === 0) {
       return (
@@ -165,12 +184,12 @@ export class TasksScreen extends React.Component {
             {/* NOTE: ListView is deprecated */}
             <ListView
               dataSource={this.state.taskDataSource}
-              renderRow={ (task) => { return <TaskRow task={task} press={this.removeThisTask.bind(this)} deleteMode={this.state.deleteMode} />} }
+              renderRow={ (task) => { return <TaskRow task={task} press={this.removeTask.bind(this)} deleteMode={this.state.deleteMode} />} }
             />
             {/* Add a Task button */}
             <TouchableHighlight
               style={otherStyles.buttonContainer}
-              onPress={this.showAddTask}
+              onPress={this.showAddTask.bind(this)}
               underlayColor="white"
             >
               <View style={otherStyles.button}>
@@ -179,7 +198,7 @@ export class TasksScreen extends React.Component {
             </TouchableHighlight>
             <TouchableHighlight
               style={otherStyles.buttonContainer}
-              onPress={() => this.setState({deleteMode: !this.state.deleteMode})}
+              onPress={this.showRemoveTask.bind(this)}
               underlayColor="white"
             >
               {/* Remove a Task Button */}
@@ -241,49 +260,6 @@ export class TasksScreen extends React.Component {
       );
     }
   }
-  showAddTask = e => {
-    this.setState(prevState => ({
-      modalVisible: true
-    }));
-  };
-  addTask = e => {
-    // user's database reference
-    var userRef = db.ref("/Accounts/" + this.props.user.uid + "/tasks/");
-    if (this.state.title.length === 0) {
-      alert("Title can not be empty!");
-    } else {
-      // update the database
-      userRef.child(this.state.title).set({
-        hours: this.state.hours,
-        address: this.state.address
-      });
-      this.setState(prevState => ({
-        // clear the current inputs
-        title: "",
-        hours: "",
-        address: "",
-        // add a new set of tasks
-        tasks: [
-          ...prevState.tasks,
-          {
-            title: this.state.title,
-            hours: this.state.hours,
-            address: this.state.address
-          }
-        ],
-        taskDataSource: this.state.taskDataSource.cloneWithRows([
-          ...prevState.tasks,
-          {
-            title: this.state.title,
-            hours: this.state.hours,
-            address: this.state.address
-          }
-        ]),
-        // remove the modal
-        modalVisible: false
-      }));
-    }
-  };
 }
 // create map of "store" object passed from Provider to this component's props
 const mapStateToProps = store => {
@@ -295,12 +271,11 @@ const mapStateToProps = store => {
 // create map of "dispatch" object passed from Provider to this component's props
 const mapDispatchToProps = dispatch => {
   return {
-    dispatch
+    addTask: (uid, task) => {
+      dispatch(addTask(uid, task));
+    }
   };
 };
 
 // connect() applies maps to component's props
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TasksScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(TasksScreen);
