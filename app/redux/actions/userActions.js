@@ -2,8 +2,13 @@
  * User Actions
  */
 
-import { onLogin, onRegister } from '../../config/auth';
-import { setName,
+import { 
+    onLogin,
+    onRegister,
+    createTask
+ } from '../util/util';
+import {
+    setName,
     setEmail,
     setPassword,
     resetPassword,
@@ -21,7 +26,9 @@ import {
     SET_USER_EMAIL_FULFILLED,
     SET_USER_NAME,
     SET_USER_NAME_FULFILLED,
-    NEW_ACCOUNT
+    NEW_ACCOUNT,
+    ADD_TASK,
+    ADD_TASK_FULFILLED
     } from './types';
 
 /**
@@ -88,7 +95,7 @@ export function fetchUser(email, password){
                             type: FETCH_USER_FULFILLED, // Sets state to successfully loaded
                             payload: { 
                                 uid: firebaseUser.user.uid, // Save UID
-                                account: dataSnapshot.val() // Save account info
+                                account: dataSnapshot.val(), // Save account info
                             }
                         });
                     });
@@ -99,6 +106,30 @@ export function fetchUser(email, password){
             })
     }
 }
+
+export function addTask(uid, task){
+    return (dispatch) => {
+        // Sets a "loading... " state
+        dispatch({ type: ADD_TASK });
+
+        // TO-DO: Implement Firebase Calls
+        createTask(uid, task)
+            .then((response) => {
+                dispatch({ type: ADD_TASK_FULFILLED, payload: task });
+            })
+            .catch((err) => {
+                // Sets state to failure to load
+                dispatch({ type: REQUEST_REJECTED, payload: err});
+            })
+        /* 
+        
+
+        dispatch({ type: REQUEST_REJECTED, payload: err});
+        */
+    }
+}
+
+
 export function setUserEmail(email){
     return (dispatch) => {
         dispatch({ type: SET_USER_EMAIL });
