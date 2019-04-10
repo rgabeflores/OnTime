@@ -17,6 +17,7 @@ import {
   Grid,
   PieChart
 } from 'react-native-svg-charts'
+import PlannedTask from '../screens/components/PlannedTask';
 export class StatisticsScreen extends React.Component {
 
   static navigationOptions = {
@@ -107,6 +108,7 @@ export class StatisticsScreen extends React.Component {
       }))
     return (
       <View>
+        <PlannedTask/>
         <TouchableHighlight
           style={otherStyles.buttonContainer}
           onPress={this.openPTModal.bind(this)}
