@@ -152,11 +152,48 @@ module.exports = StyleSheet.create({
   calendar: {
     flex: 1
   },
+  // For TaskScreen
   taskContainer: {
     textAlign: "left",
     borderBottomWidth: 5,
     borderBottomColor: "lightblue",
     flexDirection: "row",
     justifyContent: "space-between"
-  }
+  },
+  // For HomeScreen
+  calendarTaskContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+    marginTop: 17,
+    backgroundColor: "white"
+  },
+  calendarTaskTitle:{
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#00adf5"
+  },
+  calendarTaskDescription:{
+    color: "lightgrey"
+  },
+  calendarTaskButtonContainer: {
+    margin: 5,
+    minWidth: "25%"
+  },
+  calendarTaskButton: {
+    alignItems: "center",
+    backgroundColor: "#00adf5",
+    borderRadius: 5
+  },
+  calendarTaskButtonText: {
+    color: "white",
+    paddingTop: 8,
+    paddingBottom: 8,
+    fontSize: 14,
+    fontWeight: "200"
+  },
 });

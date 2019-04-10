@@ -26,9 +26,7 @@ export default TaskRow = (props) => {
                       alignItems: "center"
                     }: {display: "none"}
               }
-              onPress={(task) => {
-                props.press(task);
-              }}
+              onPress={() => { props.press(props.task) } }
             >
               <Icon
                 name={

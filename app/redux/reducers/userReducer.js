@@ -12,7 +12,9 @@ import {
     SET_USER_EMAIL_FULFILLED,
     SET_USER_NAME,
     SET_USER_NAME_FULFILLED,
-    NEW_ACCOUNT
+    NEW_ACCOUNT,
+    ADD_TASK,
+    ADD_TASK_FULFILLED
     } from '../actions/types';
 
 // Used for the initial state of the application
@@ -61,6 +63,25 @@ export default function reducer( state = INITIAL_STATE, action){
                 fetched: true, 
                 isLoggedIn: true,
                 user: action.payload,
+            }
+        }
+        case ADD_TASK: {
+            return {
+                ...state,
+                fetching: true
+            }
+        }
+        case ADD_TASK_FULFILLED: {
+            return {
+                ...state, 
+                fetching: false, 
+                fetched: true,
+                user: {
+                    account: {
+                        ...account,
+                        taskDates: [...taskDates, action.payload]
+                    }
+                }
             }
         }
         case REQUEST_REJECTED: {
