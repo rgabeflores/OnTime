@@ -22,7 +22,9 @@ export class HomeScreen extends React.Component {
   }
   renderEmptyDate() {
     return (
-      <View><Text>This is empty date!</Text></View>
+      <View>
+        <Text>Nothing saved for this date</Text>
+      </View>
     );
   }
   rowHasChanged(r1, r2) {
@@ -33,11 +35,9 @@ export class HomeScreen extends React.Component {
     // if(__DEV__) console.log(this.props.user.account.accountInfo.name);
     return(
       <Agenda
-        items={this.props.user.taskDates} // List of items to display
+        items={this.props.user.account.taskDates} // List of items to display
         // callback that gets called on day press
         onDayPress={day => { console.log(day.dateString + " opened") }}
-        // callback that gets called when day changes while scrolling agenda list
-        onDayChange={day => { console.log("day changed"); }}
         // initially selected day
         selected={this.date}
         // specify how each item should be rendered in agenda
@@ -46,19 +46,8 @@ export class HomeScreen extends React.Component {
         // renderDay={(day, {items}) => { return <AgendaTasksView day={day} items={items} /> }}
         // specify how empty date content with no items should be rendered
         renderEmptyDate={this.renderEmptyDate.bind(this)}
-        // specify how agenda knob should look like
-        // renderKnob={() => { return <View/>; }}
         // specify your item comparison function for increased performance
         rowHasChanged={this.rowHasChanged.bind(this)}
-        onRefresh={() => console.log("refreshing...")}
-        refreshing={false}
-        refreshControl={null}
-        theme={{
-          ...calendarTheme,
-          agendaDayTextColor: "yellow",
-          agendaDayNumColor: "green",
-          agendaTodayColor: "red",
-        }}
       />
     );
   }
