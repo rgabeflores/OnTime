@@ -193,7 +193,7 @@ module.exports = StyleSheet.create({
     color: "white",
     paddingTop: 8,
     paddingBottom: 8,
-    fontSize: 10,
+    fontSize: 14,
     fontWeight: "200"
   },
 });
