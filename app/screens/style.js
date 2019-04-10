@@ -21,16 +21,17 @@ module.exports = StyleSheet.create({
     justifyContent: "flex-start"
   },
   textInputContainer: {
-    borderColor: "lightblue",
+    borderColor: "black",
     borderWidth: 1,
     borderRadius: 30,
     padding: 15,
     margin: 5,
     width: "100%",
     minWidth: "75%"
-  },textInputContainerTask: {
+  },
+  textInputContainerTask: {
     alignSelf: "center",
-    borderColor: "lightblue",
+    borderColor: "black",
     borderWidth: 0.5,
     borderRadius: 30,
     padding: 15,
@@ -195,5 +196,28 @@ module.exports = StyleSheet.create({
     paddingBottom: 8,
     fontSize: 14,
     fontWeight: "200"
+  },
+  // Modal Styles
+  modalContainer: {
+    flex: 1,
+    width: "100%",
+    height: "100%"
+  },
+  modalButtonContainer: {
+    margin: 5,
+    minWidth: "50%"
+  },
+  modalButton: {
+    alignItems: "center",
+    backgroundColor: "white",
+    borderColor: "#00adf5",
+    borderWidth: 1,
+    borderRadius: 10
+  },
+  modalButtonText: {
+    fontSize: 24,
+    fontWeight: "200",
+    padding: 10,
+    color: "#00adf5"
   },
 });

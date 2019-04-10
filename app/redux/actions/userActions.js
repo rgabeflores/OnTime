@@ -17,6 +17,7 @@ import {
 import { db } from '../../config/db';
 
 import {
+    TOGGLE_MODAL,
     CREATE_USER,
     CREATE_USER_FULFILLED,
     FETCH_USER,
@@ -29,7 +30,13 @@ import {
     NEW_ACCOUNT,
     ADD_TASK,
     ADD_TASK_FULFILLED
-    } from './types';
+} from './types';
+
+export function toggleModal(){
+    return (dispatch) => {
+        dispatch({type: TOGGLE_MODAL})
+    }
+}
 
 /**
  * This action creates a Firebase user account.
