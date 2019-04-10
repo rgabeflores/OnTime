@@ -1,5 +1,6 @@
 import React from "react";
-import { Text, View, TouchableHighlight } from "react-native";
+import {Text, View, TouchableHighlight,Linking } from "react-native";
+import {Avatar} from "react-native-elements";
 import SettingsList from "react-native-settings-list";
 import firebase from "firebase";
 import { db } from "../config/db.js";
@@ -30,18 +31,22 @@ export class SettingsScreen extends React.Component {
     return (
       <View style={{ backgroundColor: "lightblue", flex: 1 }}>
         <View style={{ flex: 1, marginTop: 15 }}>
-          <SettingsList>
-            {/*Inserts a header text called "My Account" */}
-            <SettingsList.Header
-              headerText={
-                this.props.user.account.accountInfo.name + "'s Account"
-              }
-              headerStyle={{ color: "white" }}
+          <View style={{position: 'absolute', top: 0, left: 0, right: 0,
+           bottom: 0, alignItems: 'center'}}>
+            <Avatar
+            size = "large"
+            overlayContainerStyle={{backgroundColor: 'blue'}}
+            rounded title={this.props.user.account.accountInfo.name[0]}
             />
-            {/*Inserts a button that displays user's account info */}
-            <SettingsList.Item title="Account Info" />
+            <Text style={{fontWeight:'bold',fontSize:22,padding:10}}>
+            {this.props.user.account.accountInfo.name}</Text>
+          </View>
 
-            {/*Inserts a header text called "My Account" */}
+          <SettingsList>
+            <SettingsList.Header
+              headerStyle={{ color: "white", marginTop: 95 }}
+            />
+            {/*Inserts a header text called "Notifications" */}
             <SettingsList.Header
               headerText="Notifications"
               headerStyle={{ color: "white", marginTop: 15 }}
@@ -54,6 +59,13 @@ export class SettingsScreen extends React.Component {
               switchOnValueChange={this.onValueChange}
               hasSwitch={true}
               title="Push Notifications"
+            />
+            <SettingsList.Header
+              headerText="Contact Us"
+              headerStyle={{ color: "white", marginTop: 15 }}
+            />
+            <SettingsList.Item title="Contact Us"
+            onPress={()=>{Linking.openURL('https://github.com/rgabeflores/OnTime')}}
             />
             <SettingsList.Header
               headerText="Logout"
