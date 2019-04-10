@@ -44,6 +44,94 @@ export const NEW_ACCOUNT = {
           totalHours: 0,
           totalTasks: 0,
         },
+        taskDates: {
+          "2019-03-06": [
+            { 
+              name: "My First Task",
+              description: "This is my first task.",
+              location: {
+                city: "Long Beach",
+                state: "CA",
+                streetAddress: "1250 Bellflower Blvd",
+                zipcode: 90840,
+              }
+             },
+            { 
+              name: "My Second Task",
+              description: "This is my second task.",
+              location: {
+                city: "Long Beach",
+                state: "CA",
+                streetAddress: "1250 Bellflower Blvd",
+                zipcode: 90840,
+              }
+            },
+            { 
+              name: "My Third Task",
+              description: "This is my third task.",
+              location: {
+                city: "Long Beach",
+                state: "CA",
+                streetAddress: "1250 Bellflower Blvd",
+                zipcode: 90840,
+              }
+            }
+          ],
+          "2019-04-24": [
+            { 
+              name: "My First Task",
+              description: "This is my first task.",
+              location: {
+                city: "Long Beach",
+                state: "CA",
+                streetAddress: "1250 Bellflower Blvd",
+                zipcode: 90840,
+              }
+             },
+            { 
+              name: "My Second Task",
+              description: "This is my second task.",
+              location: {
+                city: "Long Beach",
+                state: "CA",
+                streetAddress: "1250 Bellflower Blvd",
+                zipcode: 90840,
+              }
+            },
+            { 
+              name: "My Third Task",
+              description: "This is my third task.",
+              location: {
+                city: "Long Beach",
+                state: "CA",
+                streetAddress: "1250 Bellflower Blvd",
+                zipcode: 90840,
+              }
+            }
+          ],
+          "2019-04-25": [
+            { 
+              name: "My First Task",
+              description: "This is my first task.",
+              location: {
+                city: "Long Beach",
+                state: "CA",
+                streetAddress: "1250 Bellflower Blvd",
+                zipcode: 90840,
+              }
+             },
+            { 
+              name: "My Second Task",
+              description: "This is my second task.",
+              location: {
+                city: "Long Beach",
+                state: "CA",
+                streetAddress: "1250 Bellflower Blvd",
+                zipcode: 90840,
+              }
+            }
+          ]
+        },
         tasks: {
           task1: {
             dateEnd: "end date",
