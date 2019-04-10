@@ -16,6 +16,7 @@ export const onLogin = (email, password) => {
 }
 
 export const createTask = (uid, task) => {
+    // TO-DO: Update data format to satisfy calendar format
     return db.ref("/Accounts/" + uid + "/tasks/")
         .child(task.title)
         .set({

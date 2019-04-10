@@ -112,7 +112,6 @@ export function addTask(uid, task){
         // Sets a "loading... " state
         dispatch({ type: ADD_TASK });
 
-        // TO-DO: Implement Firebase Calls
         createTask(uid, task)
             .then((response) => {
                 dispatch({ type: ADD_TASK_FULFILLED, payload: task });
@@ -121,14 +120,12 @@ export function addTask(uid, task){
                 // Sets state to failure to load
                 dispatch({ type: REQUEST_REJECTED, payload: err});
             })
-        /* 
-        
-
-        dispatch({ type: REQUEST_REJECTED, payload: err});
-        */
     }
 }
 
+/*
+    TO-DO: These methods need to be implemented
+*/
 
 export function setUserEmail(email){
     return (dispatch) => {

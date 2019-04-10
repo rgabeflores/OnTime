@@ -77,8 +77,10 @@ export default function reducer( state = INITIAL_STATE, action){
                 fetching: false, 
                 fetched: true,
                 user: {
-                    ...user,
-                    tasks: [...tasks, action.payload]
+                    account: {
+                        ...account,
+                        taskDates: [...taskDates, action.payload]
+                    }
                 }
             }
         }
