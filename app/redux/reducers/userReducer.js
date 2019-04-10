@@ -21,7 +21,21 @@ import {
 const INITIAL_STATE = {
     user: {
         account: NEW_ACCOUNT,
-        tasks: [],
+        taskDates: {
+            "2019-03-06": [
+              { title: "this is the title", text: "item 1 - any js object" },
+              { title: "this is the title", text: "item 2 - any js object" }
+            ],
+            "2019-04-24": [
+              { title: "this is the title1", text: "item 1 - any js object" },
+              { title: "this is the title2", text: "item 2 - any js object" },
+              { title: "this is the title3", text: "item 3 - any js object" },
+            ],
+            "2019-04-25": [
+              { text: "item 3 - any js object" },
+              { text: "any js object" }
+            ]
+          },
         uid: "Re2ophJDDMX2yssltNZdCSz9gLz1"
     },
     isLoggedIn: false, // Keeps track of logged in status
