@@ -9,11 +9,12 @@ import {
   ScrollView,
   TextInput,
   Modal,
-  Platform
+  Platform,
+  DatePickerIOS,
+  DatePickerAndroid
 } from "react-native";
 import Icon from "../components/TabBarIcon";
 import { connect } from "react-redux";
-
 import Toolbar from "../components/Toolbar";
 import styles from "../components/style";
 import otherStyles from "./style";
@@ -39,7 +40,10 @@ export class TasksScreen extends React.Component {
       tasks: [],
       title: "",
       hours: "",
-      address: ""
+      address: "",
+      yyyymmdd: "",
+      date: new Date(),
+      selectDateModal: false
     };
     this.renderRow = this.renderRow.bind(this);
     this.pressRow = this.pressRow.bind(this);
@@ -55,11 +59,11 @@ export class TasksScreen extends React.Component {
   }
   // get the items from the list view
   getItems = async () => {
-    var userRef = db.ref("Accounts/" + this.props.user.uid+"/tasks/");
+    var userRef = db.ref("Accounts/" + this.props.user.uid + "/taskDates/");
     let data = [];
     userRef.once("value", snapshot => {
       snapshot.forEach(childSnapshot => {
-        var taskName = childSnapshot.key; // "task name"
+        var taskName = childSnapshot.key; // "date"
         var taskDetails = childSnapshot.val();
         // console.log(taskName);
         // console.log(taskDetails);
@@ -90,10 +94,10 @@ export class TasksScreen extends React.Component {
             Location: {task.address}
           </Text>
           <TouchableHighlight
-            style={this.state.deleteMode? {
-                    display: "flex",
-                    alignItems: "center"
-                  }: {display: "none"}
+            style={this.state.deleteMode ? {
+              display: "flex",
+              alignItems: "center"
+            } : { display: "none" }
             }
             onPress={() => {
               this.removeThisTask(task);
@@ -112,12 +116,13 @@ export class TasksScreen extends React.Component {
     );
   }
   // when the user presses the remove task button
-  updateView(){
-    this.setState({taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks)});
+  updateView() {
+    this.setState({ taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks) });
   }
-  removeThisTask = async(task) =>{
-    var userRef = db.ref("Accounts/" + this.props.user.uid+ "/tasks/");
-    var deleteReference = db.ref("Accounts/" + this.props.user.uid+ "/tasks/"+task.title);
+  // remove the task that is selected on the remove task UI
+  removeThisTask = async (task) => {
+    var userRef = db.ref("Accounts/" + this.props.user.uid + "/tasks/");
+    var deleteReference = db.ref("Accounts/" + this.props.user.uid + "/tasks/" + task.title);
     deleteReference.remove();
     let data = [];
     userRef.once("value", snapshot => {
@@ -139,14 +144,29 @@ export class TasksScreen extends React.Component {
       });
     });
   }
+  // close the modal (the form to add a task)
   _closeModal() {
-    setState({
+    this.setState({
       modalVisible: false
     });
   }
+  _openDateModal() {
+    this.setState({ selectDateModal: true });
+  }
+  _closeDateModal() {
+    var date = JSON.stringify(this.state.date)
+    date = date.substring(1, 11)
+    console.log(date)
+
+    this.setState({ selectDateModal: false, yyyymmdd: date });
+  }
+  setDate(newDate) {
+    this.setState({ date: newDate });
+  }
   // when the task is pressed, make a popup asking if the user wants to remove the task
-  pressRow(task) {}
+  pressRow(task) { }
   render() {
+    // return 'loading' if there is no data that was fetched
     if (this.state.taskDataSource.getRowCount === 0) {
       return (
         <View style={styles.container}>
@@ -163,7 +183,7 @@ export class TasksScreen extends React.Component {
             {/* NOTE: ListView is deprecated */}
             <ListView
               dataSource={this.state.taskDataSource}
-              renderRow={ (task) => { return <TaskRow task={task} press={()=>{this.removeThisTask(task)}} deleteMode={this.state.deleteMode} />} }
+              renderRow={(task) => { return <TaskRow task={task} press={() => { this.removeThisTask(task) }} deleteMode={this.state.deleteMode} /> }}
             />
             {/* Add a Task button */}
             <TouchableHighlight
@@ -177,7 +197,7 @@ export class TasksScreen extends React.Component {
             </TouchableHighlight>
             <TouchableHighlight
               style={otherStyles.buttonContainer}
-              onPress={() => this.setState({deleteMode: !this.state.deleteMode})}
+              onPress={() => this.setState({ deleteMode: !this.state.deleteMode })}
               underlayColor="white"
             >
               {/* Remove a Task Button */}
@@ -215,6 +235,42 @@ export class TasksScreen extends React.Component {
                 onChangeText={text => this.setState({ address: text })}
                 enableEmptySections={true}
               />
+              {/* Choose a date */}
+              
+              <Text>Chosen Date: {this.state.yyyymmdd}</Text>
+              <TouchableHighlight
+                style={otherStyles.buttonContainer}
+                onPress={this._openDateModal.bind(this)}
+                underlayColor="white"
+              >
+                <View style={otherStyles.button}>
+                  <Text style={otherStyles.buttonText}>Choose a Date</Text>
+                </View>
+              </TouchableHighlight>
+              <Modal
+                animationType="slide"
+                visible={this.state.selectDateModal}
+                enableEmptySections={true}
+                onRequestClose={this._closeModal.bind(this)}
+              >
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+                  <DatePickerIOS
+                    mode='date'
+                    date={this.state.date}
+                    onDateChange={this.setDate.bind(this)}
+                  />
+
+                  <TouchableHighlight
+                    style={otherStyles.buttonContainer}
+                    onPress={this._closeDateModal.bind(this)}
+                    underlayColor="white"
+                  >
+                    <View style={otherStyles.button}>
+                      <Text style={otherStyles.buttonText}>Choose Date</Text>
+                    </View>
+                  </TouchableHighlight>
+                </View>
+              </Modal>
               <TouchableHighlight
                 style={otherStyles.buttonContainer}
                 onPress={this.addTask.bind(this)}
@@ -226,7 +282,7 @@ export class TasksScreen extends React.Component {
               </TouchableHighlight>
               <TouchableHighlight
                 style={otherStyles.buttonContainer}
-                onPress={this._closeModal}
+                onPress={this._closeModal.bind(this)}
                 underlayColor="white"
               >
                 <View style={otherStyles.button}>
