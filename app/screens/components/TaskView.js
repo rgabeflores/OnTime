@@ -2,18 +2,17 @@ import React from "react";
 import {
     Text,
     View,
-    FlatList
 } from "react-native";
-import { List, ListItem } from "react-native-elements";
 
 import styles from "../style";
 
 export default TaskView = (props) => {
     console.log(props);
+    // TO-DO: Add modal for additional information?
     return (
-        <View style={styles.taskContainer}>
-            <Text>{props.item.title}</Text>
-            <Text>{props.item.text}</Text>
+        <View style={styles.taskCalendarContainer}>
+            <Text>{props.item.name}</Text>
+            <Text>{props.item.description}</Text>
         </View>
     );
 }

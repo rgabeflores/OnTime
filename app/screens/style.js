@@ -158,5 +158,13 @@ module.exports = StyleSheet.create({
     borderBottomColor: "lightblue",
     flexDirection: "row",
     justifyContent: "space-between"
+  },
+  taskCalendarContainer: {
+    flex: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+    marginTop: 17,
+    backgroundColor: "white"
   }
 });
