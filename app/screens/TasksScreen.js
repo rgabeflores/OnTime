@@ -55,7 +55,7 @@ export class TasksScreen extends React.Component {
   }
   // get the items from the list view
   getItems = async () => {
-    console.log(this.props.user);
+    //console.log(this.props.user);
     var userRef = db.ref("Accounts/" + this.props.user.uid+"/tasks/");
     let data = [];
     userRef.once("value", snapshot => {
