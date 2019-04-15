@@ -142,25 +142,4 @@ export const NEW_ACCOUNT = {
             }
           ]
         },
-        tasks: {
-          task1: {
-            dateEnd: "end date",
-            dateStart: "start date",
-            description: "This is my first task.",
-            location: {
-              city: "Long Beach",
-              state: "CA",
-              streetAddress: "1250 Bellflower Blvd",
-              zipcode: 90840,
-            },
-            name: "My First Task",
-          },
-          task2: {
-            name: "My Second Task",
-          },
-          task3: {
-            description: "This is my third task",
-            name: "My Third Task",
-          },
-        },
 };

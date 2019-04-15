@@ -5,6 +5,10 @@ const constants = {
   actionColor: "#ffff"
 };
 
+const MAIN_COLOR = "#00adf5";
+const MAIN_TEXT_COLOR = "black";
+const SECOND_TEXT_COLOR = "lightgrey";
+
 //create style sheets
 module.exports = StyleSheet.create({
   container: {
@@ -21,16 +25,17 @@ module.exports = StyleSheet.create({
     justifyContent: "flex-start"
   },
   textInputContainer: {
-    borderColor: "lightblue",
+    borderColor: "black",
     borderWidth: 1,
     borderRadius: 30,
     padding: 15,
     margin: 5,
     width: "100%",
     minWidth: "75%"
-  },textInputContainerTask: {
+  },
+  textInputContainerTask: {
     alignSelf: "center",
-    borderColor: "lightblue",
+    borderColor: "black",
     borderWidth: 0.5,
     borderRadius: 30,
     padding: 15,
@@ -196,4 +201,38 @@ module.exports = StyleSheet.create({
     fontSize: 14,
     fontWeight: "200"
   },
+  // Modal Styles
+  modalContainer: {
+    flex: 1,
+    width: "100%",
+    height: "100%"
+  },
+  modalButtonContainer: {
+    margin: 5,
+    minWidth: "50%"
+  },
+  modalButton: {
+    alignItems: "center",
+    backgroundColor: "white",
+    borderColor: "#00adf5",
+    borderWidth: 1,
+    borderRadius: 10
+  },
+  modalButtonText: {
+    fontSize: 24,
+    fontWeight: "200",
+    padding: 10,
+    color: "#00adf5"
+  },
+  statePicker: {
+    alignSelf: "center",
+    borderColor: "black",
+    borderWidth: 0.5,
+    borderRadius: 30,
+    padding: 15,
+    margin: 5,
+    height: "auto",
+    width: "20%",
+    height: 25
+  }
 });
