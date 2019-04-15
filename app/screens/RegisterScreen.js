@@ -4,13 +4,14 @@ import {
   View,
   Image,
   TextInput,
-  TouchableHighlight
+  TouchableHighlight,
+  Modal
 } from "react-native";
 
 import { connect } from "react-redux";
-import { createUser } from "../redux/actions/userActions";
+import { createUser, toggleModal } from "../redux/actions/userActions";
 
-
+import LoginScreen from "./LoginScreen";
 import styles from "./style";
 
 export class RegisterScreen extends React.Component {
@@ -85,7 +86,7 @@ export class RegisterScreen extends React.Component {
           </TouchableHighlight>
           <View>
             <TouchableHighlight
-              onPress={this.goToLogin.bind(this)}
+              onPress={this.props.toggleModal.bind(this)}
               underlayColor="white"
             >
               <View>
@@ -96,6 +97,14 @@ export class RegisterScreen extends React.Component {
             </TouchableHighlight>
           </View>
         </View>
+        <Modal
+            animationType="slide"
+            visible={this.props.modalVisible}
+            enableEmptySections={true}
+            onRequestClose={this.props.toggleModal.bind(this)}
+          >
+            <LoginScreen/>
+          </Modal>
       </View>
     );
   }
@@ -146,6 +155,7 @@ const mapStateToProps = (store) => {
   return {
     user: store.user.user, // store.user == userReducer
     isLoggedIn: store.user.isLoggedIn,
+    modalVisible: store.user.modalVisible,
     fetching: store.user.fetching
   }
 };
@@ -155,6 +165,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     createUser: (name, email, password) => {
       dispatch(createUser(name, email, password));
+    },
+    toggleModal: () => {
+      dispatch(toggleModal());
     }
   }
 }
