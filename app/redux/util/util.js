@@ -15,14 +15,14 @@ export const onLogin = (email, password) => {
     return firebase.auth().signInWithEmailAndPassword(email,password);        
 }
 
-export const createTask = (uid, task) => {
+export const createTask = (uid, date, task) => {
     // TO-DO: Update data format to satisfy calendar format
-    return db.ref("/Accounts/" + uid + "/tasks/")
-        .child(task.title)
+    return db.ref("/Accounts/" + uid + "/taskDates/")
+        .child(date)
         .set({
-            hours: task.hours,
-            address: task.address
-      });
+            ...date,
+            
+        });
 }
 
 export default firebase.auth();
