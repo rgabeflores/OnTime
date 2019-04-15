@@ -2,6 +2,8 @@
  * Action Types
  */
 
+export const TOGGLE_MODAL = "TOGGLE_MODAL";
+
 // USER ACTION TYPES
 export const CREATE_USER = "CREATE_USER";
 export const CREATE_USER_FULFILLED = "CREATE_USER_FULFILLED";
@@ -48,6 +50,7 @@ export const NEW_ACCOUNT = {
           "2019-03-06": [
             { 
               name: "My First Task",
+              time: "21:00",
               description: "This is my first task.",
               location: {
                 city: "Long Beach",
@@ -58,6 +61,7 @@ export const NEW_ACCOUNT = {
              },
             { 
               name: "My Second Task",
+              time: "12:00",
               description: "This is my second task.",
               location: {
                 city: "Long Beach",
@@ -68,6 +72,7 @@ export const NEW_ACCOUNT = {
             },
             { 
               name: "My Third Task",
+              time: "14:00",
               description: "This is my third task.",
               location: {
                 city: "Long Beach",
@@ -80,6 +85,7 @@ export const NEW_ACCOUNT = {
           "2019-04-24": [
             { 
               name: "My First Task",
+              time: "14:00",
               description: "This is my first task.",
               location: {
                 city: "Long Beach",
@@ -90,6 +96,7 @@ export const NEW_ACCOUNT = {
              },
             { 
               name: "My Second Task",
+              time: "16:00",
               description: "This is my second task.",
               location: {
                 city: "Long Beach",
@@ -100,6 +107,7 @@ export const NEW_ACCOUNT = {
             },
             { 
               name: "My Third Task",
+              time: "21:00",
               description: "This is my third task.",
               location: {
                 city: "Long Beach",
@@ -112,6 +120,7 @@ export const NEW_ACCOUNT = {
           "2019-04-25": [
             { 
               name: "My First Task",
+              time: "16:00",
               description: "This is my first task.",
               location: {
                 city: "Long Beach",
@@ -122,6 +131,7 @@ export const NEW_ACCOUNT = {
              },
             { 
               name: "My Second Task",
+              time: "13:00",
               description: "This is my second task.",
               location: {
                 city: "Long Beach",
