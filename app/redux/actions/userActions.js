@@ -105,6 +105,7 @@ export function fetchUser(email, password){
                                 account: dataSnapshot.val(), // Save account info
                             }
                         });
+                        dispatch({type: TOGGLE_MODAL})
                     });
             })
             .catch((err) => {
