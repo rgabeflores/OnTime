@@ -5,6 +5,10 @@ const constants = {
   actionColor: "#ffff"
 };
 
+const MAIN_COLOR = "#00adf5";
+const MAIN_TEXT_COLOR = "black";
+const SECOND_TEXT_COLOR = "lightgrey";
+
 //create style sheets
 module.exports = StyleSheet.create({
   container: {
@@ -220,4 +224,15 @@ module.exports = StyleSheet.create({
     padding: 10,
     color: "#00adf5"
   },
+  statePicker: {
+    alignSelf: "center",
+    borderColor: "black",
+    borderWidth: 0.5,
+    borderRadius: 30,
+    padding: 15,
+    margin: 5,
+    height: "auto",
+    width: "20%",
+    height: 25
+  }
 });

@@ -30,6 +30,17 @@ export class HomeScreen extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      name: "",
+      description: "",
+      location: {
+        city: "",
+        state: "",
+        streetAddress: "",
+        zipcode: "",
+      },
+      time: "",
+    }
   }
 
   componentDidMount() {
@@ -90,7 +101,8 @@ export class HomeScreen extends React.Component {
 
   render() {
     // if(__DEV__) console.log(this.props.user.account.accountInfo.name);
-    console.log(this.props.modalVisible)
+    console.log(this.props.modalVisible);
+    console.log(this.state);
     return(
       <View style={{width: "100%", height: "100%"}}>
         <Agenda
@@ -110,6 +122,7 @@ export class HomeScreen extends React.Component {
           // specify your item comparison function for increased performance
           rowHasChanged={this.rowHasChanged.bind(this)}
         />
+
         <Modal
             animationType="slide"
             visible={this.props.modalVisible}
@@ -120,22 +133,71 @@ export class HomeScreen extends React.Component {
               <TextInput
                 clearButtonMode="always"
                 style={styles.textInputContainerTask}
-                placeholder="Task Name"
+                placeholder="Name"
                 onChangeText={text => this.setState({ name: text })}
                 enableEmptySections={true}
               />
               <TextInput
                 clearButtonMode="always"
                 style={styles.textInputContainerTask}
-                placeholder="Task Hours"
-                onChangeText={text => this.setState({ hours: text })}
+                placeholder="Description"
+                onChangeText={text => this.setState({ description: text })}
                 enableEmptySections={true}
               />
               <TextInput
                 clearButtonMode="always"
                 style={styles.textInputContainerTask}
-                placeholder="Task Address"
-                onChangeText={text => this.setState({ address: text })}
+                placeholder="Street Address"
+                onChangeText={text => this.setState(prevState => ({
+                  location: {
+                    ...prevState.location,
+                    streetAddress: text 
+                  }
+                }))}
+                enableEmptySections={true}
+              />
+              <TextInput
+                clearButtonMode="always"
+                style={styles.textInputContainerTask}
+                placeholder="City"
+                onChangeText={text => this.setState(prevState => ({
+                  location: {
+                    ...prevState.location,
+                    city: text
+                  } }))}
+                enableEmptySections={true}
+              />
+              <TextInput
+                clearButtonMode="always"
+                style={styles.textInputContainerTask}
+                placeholder="State"
+                onChangeText={text => this.setState(prevState => ({ 
+                  location: {
+                    ...prevState.location,
+                    state: text 
+                  }
+                }))}
+                enableEmptySections={true}
+              />
+              <TextInput
+                clearButtonMode="always"
+                style={styles.textInputContainerTask}
+                placeholder="Zipcode"
+                onChangeText={text => this.setState(prevState => ({ 
+                  location: {
+                    ...prevState.location,
+                    zipcode: text 
+                  }
+                }))}
+                enableEmptySections={true}
+              />
+              <TextInput
+                clearButtonMode="always"
+                style={styles.textInputContainerTask}
+                placeholder="Zipcode"
+                onChangeText={text => this.setState({ 
+                  time: text
+                })}
                 enableEmptySections={true}
               />
               <TouchableHighlight
