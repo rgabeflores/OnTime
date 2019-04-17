@@ -16,8 +16,9 @@ export default TaskRow = (props) => {
         <View>
           <View style={otherStyles.taskContainer}>
             <Text style={styles.liText}>
+              Date: {props.task.date} {"\n"}
               Task Name: {props.task.title} {"\n"}
-              Required Time: {props.task.hours} {"\n"}
+              Time: {props.task.hours} {"\n"}
               Location: {props.task.address}
             </Text>
             <TouchableHighlight

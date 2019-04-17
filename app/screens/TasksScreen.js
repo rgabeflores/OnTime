@@ -29,7 +29,7 @@ export class TasksScreen extends React.Component {
   static navigationOptions = {
     title: "Tasks"
   };
-  
+
   // constructor of the class, this stores the data(what it displays) for TaskScreen
   constructor() {
     super();
@@ -43,11 +43,15 @@ export class TasksScreen extends React.Component {
       title: "",
       hours: "",
       address: "",
+      city: "",
+      state: "",
+      streetAddress: "",
+      zipcode: "",
       yyyymmdd: "",
       date: new Date(),
       selectDateModal: false
     };
-    
+
   }
 
   componentDidMount() {
@@ -55,19 +59,25 @@ export class TasksScreen extends React.Component {
   }
   // get the items from the list view
   getItems = async () => {
-    //console.log(this.props.user);
-    var userRef = db.ref("Accounts/" + this.props.user.uid+"/tasks/");
+    // user's database reference
+    var userRef = db.ref("/Accounts/" + this.props.user.uid + "/taskDates/" + this.state.yyyymmdd + "/");
     let data = [];
     userRef.once("value", snapshot => {
       snapshot.forEach(childSnapshot => {
-        var taskName = childSnapshot.key; // "date"
-        var taskDetails = childSnapshot.val();
-        var temp = {
-          title: taskName,
-          hours: taskDetails.hours,
-          address: taskDetails.address
-        };
-        data.push(temp);
+        var date = childSnapshot.key; // "date"
+        console.log(date);
+        var taskList = childSnapshot.val();
+        console.log(taskList);
+        // this breaks because of the hashed ID
+        // taskList.forEach(task => {
+        //   var temp = {
+        //     date: date,
+        //     title: task.name,
+        //     hours: task.time,
+        //     address: task.location.streetAddress+"\n\t\t\t"+task.location.city+", " +task.location.state + " " + task.location.zipcode ,
+        //   };
+        //   data.push(temp);
+        // })
         return false;
       });
       // console.log(data);
@@ -78,12 +88,12 @@ export class TasksScreen extends React.Component {
     });
     // update the view
   };
-  
+
   // when the user presses the remove task button
   updateView() {
     this.setState({ taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks) });
   }
-  
+
   _closeModal() {
     setState({
       modalVisible: false
@@ -102,14 +112,20 @@ export class TasksScreen extends React.Component {
   };
   addTask = e => {
     // user's database reference
-    var userRef = db.ref("/Accounts/" + this.props.user.uid + "/tasks/");
-    if (this.state.title.length === 0) {
-      alert("Title can not be empty!");
+    var userRef = db.ref("/Accounts/" + this.props.user.uid + "/taskDates/" + this.state.yyyymmdd + "/");
+    if (this.state.title.length === 0 || this.state.hours.length === 0) {
+      alert("Title and hours can not be empty!");
     } else {
       // update the database
-      userRef.child(this.state.title).set({
-        hours: this.state.hours,
-        address: this.state.address
+      userRef.push({
+        time: this.state.hours,
+        name: this.state.title,
+        location: {
+          city: this.state.city,
+          state: this.state.state,
+          streetAddress: this.state.streetAddress,
+          zipcode: this.state.zipcode
+        }
       });
       this.setState(prevState => ({
         // clear the current inputs
@@ -143,12 +159,12 @@ export class TasksScreen extends React.Component {
       {
         title: this.state.title,
         hours: this.state.hours,
-        address: this.state.address 
+        address: this.state.address
       });
   };
-  removeTask = async(task) =>{
-    var userRef = db.ref("Accounts/" + this.props.user.uid+ "/tasks/");
-    var deleteReference = db.ref("Accounts/" + this.props.user.uid+ "/tasks/"+task.title);
+  removeTask = async (task) => {
+    var userRef = db.ref("Accounts/" + this.props.user.uid + "/tasks/");
+    var deleteReference = db.ref("Accounts/" + this.props.user.uid + "/tasks/" + task.title);
     deleteReference.remove();
     let data = [];
     userRef.once("value", snapshot => {
@@ -187,6 +203,27 @@ export class TasksScreen extends React.Component {
 
     this.setState({ selectDateModal: false, yyyymmdd: date });
   }
+  androidDatePick = async () => {
+    try {
+      const { action, year, month, day } = await DatePickerAndroid.open({ mode: 'spinner' })
+      if (action !== DatePickerAndroid.dismissedAction) {
+        var dateChosen = new Date(year, month, day)
+        if (month < 10) {
+          var dateString = year + "-0" + month + "-" + day
+          this.setState({ yyyymmdd: dateString })
+        }
+        else {
+          var dateString = year + "-" + month + "-" + day
+          this.setState({ yyyymmdd: dateString })
+        }
+
+        console.log(dateString)
+        // returned undefined, try fixing it tomorrow TODO
+      }
+    } catch ({ code, message }) {
+      console.warn('Cannot open date picker', message)
+    }
+  }
   setDate(newDate) {
     this.setState({ date: newDate });
   }
@@ -210,7 +247,7 @@ export class TasksScreen extends React.Component {
             {/* NOTE: ListView is deprecated */}
             <ListView
               dataSource={this.state.taskDataSource}
-              renderRow={ (task) => { return <TaskRow task={task} press={this.removeTask.bind(this)} deleteMode={this.state.deleteMode} />} }
+              renderRow={(task) => { return <TaskRow task={task} press={this.removeTask.bind(this)} deleteMode={this.state.deleteMode} /> }}
             />
             {/* Add a Task button */}
             <TouchableHighlight
@@ -258,16 +295,39 @@ export class TasksScreen extends React.Component {
               <TextInput
                 clearButtonMode="always"
                 style={otherStyles.textInputContainerTask}
-                placeholder="Task Address"
-                onChangeText={text => this.setState({ address: text })}
+                placeholder="Task City"
+                onChangeText={text => this.setState({ city: text })}
+                enableEmptySections={true}
+              />
+              <TextInput
+                clearButtonMode="always"
+                style={otherStyles.textInputContainerTask}
+                placeholder="Task State"
+                onChangeText={text => this.setState({ state: text })}
+                enableEmptySections={true}
+              />
+              
+              <TextInput
+                clearButtonMode="always"
+                style={otherStyles.textInputContainerTask}
+                placeholder="Task Street Address"
+                onChangeText={text => this.setState({ streetAddress: text })}
+                enableEmptySections={true}
+              />
+              
+              <TextInput
+                clearButtonMode="always"
+                style={otherStyles.textInputContainerTask}
+                placeholder="Task Zipcode"
+                onChangeText={text => this.setState({ zipcode: text })}
                 enableEmptySections={true}
               />
               {/* Choose a date */}
-              
+
               <Text>Chosen Date: {this.state.yyyymmdd}</Text>
               <TouchableHighlight
                 style={otherStyles.buttonContainer}
-                onPress={this._openDateModal.bind(this)}
+                onPress={Platform.OS === "ios" ? this._openDateModal.bind(this) : this.androidDatePick.bind(this)}
                 underlayColor="white"
               >
                 <View style={otherStyles.button}>
@@ -281,21 +341,22 @@ export class TasksScreen extends React.Component {
                 onRequestClose={this._closeModal.bind(this)}
               >
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                  <DatePickerIOS
-                    mode='date'
-                    date={this.state.date}
-                    onDateChange={this.setDate.bind(this)}
-                  />
-
-                  <TouchableHighlight
-                    style={otherStyles.buttonContainer}
-                    onPress={this._closeDateModal.bind(this)}
-                    underlayColor="white"
-                  >
-                    <View style={otherStyles.button}>
-                      <Text style={otherStyles.buttonText}>Choose Date</Text>
-                    </View>
-                  </TouchableHighlight>
+                  <View style={Platform.OS === "ios" ? { flex: 1, justifyContent: 'center' } : { flex: 'None' }}>
+                    <DatePickerIOS
+                      mode='date'
+                      date={this.state.date}
+                      onDateChange={this.setDate.bind(this)}
+                    />
+                    <TouchableHighlight
+                      style={otherStyles.buttonContainer}
+                      onPress={this._closeDateModal.bind(this)}
+                      underlayColor="white"
+                    >
+                      <View style={otherStyles.button}>
+                        <Text style={otherStyles.buttonText}>Choose Date</Text>
+                      </View>
+                    </TouchableHighlight>
+                  </View>
                 </View>
               </Modal>
               <TouchableHighlight
