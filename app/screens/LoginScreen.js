@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 import { connect } from "react-redux";
-import { fetchUser } from "../redux/actions/userActions";
+import { fetchUser, toggleModal } from "../redux/actions/userActions";
 
 import styles from "./style";
 
@@ -75,8 +75,8 @@ export class LoginScreen extends React.Component {
               underlayColor="white"
             >
               <View>
-                <Text style={styles.linkText}>
-                  Dont have an account? Register Here
+                <Text style={{textAlign: "center", color: "lightblue"}}>
+                  Back to Register
                 </Text>
               </View>
             </TouchableHighlight>
@@ -90,7 +90,8 @@ export class LoginScreen extends React.Component {
    * Navigates to the Register screen.
    */
   goToRegister = e => {
-    this.props.navigation.navigate("Register");
+    // this.props.navigation.navigate("Register");
+    this.props.toggleModal();
   };
 
   /**
@@ -140,6 +141,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchUser: (email, password) => {
       dispatch(fetchUser(email, password));
+    },
+    toggleModal: () => {
+      dispatch(toggleModal());
     }
   }
 }

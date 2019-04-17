@@ -3,6 +3,7 @@
  */
 
 import {
+    TOGGLE_MODAL,
     CREATE_USER,
     CREATE_USER_FULFILLED,
     FETCH_USER,
@@ -23,6 +24,7 @@ const INITIAL_STATE = {
         account: NEW_ACCOUNT,
         uid: "Re2ophJDDMX2yssltNZdCSz9gLz1"
     },
+    modalVisible: false,
     isLoggedIn: false, // Keeps track of logged in status
     fetching: false, // Used to indicate async loading
     fetched: false, // Indicates the status of an async request
@@ -127,6 +129,12 @@ export default function reducer( state = INITIAL_STATE, action){
                         }
                     }
                 }
+            }
+        }
+        case TOGGLE_MODAL: {
+            return {
+                ...state,
+                modalVisible: !state.modalVisible
             }
         }
     }
