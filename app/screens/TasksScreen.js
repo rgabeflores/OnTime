@@ -68,16 +68,16 @@ export class TasksScreen extends React.Component {
         console.log(date);
         var taskList = childSnapshot.val();
         console.log(taskList);
-        // this breaks because of the hashed ID
-        // taskList.forEach(task => {
-        //   var temp = {
-        //     date: date,
-        //     title: task.name,
-        //     hours: task.time,
-        //     address: task.location.streetAddress+"\n\t\t\t"+task.location.city+", " +task.location.state + " " + task.location.zipcode ,
-        //   };
-        //   data.push(temp);
-        // })
+        //this breaks because of the hashed ID
+        taskList.forEach(task => {
+          var temp = {
+            date: date,
+            title: task.name,
+            hours: task.time,
+            address: task.location.streetAddress + "\n\t\t\t" + task.location.city + ", " + task.location.state + " " + task.location.zipcode,
+          };
+          data.push(temp);
+        })
         return false;
       });
       // console.log(data);
@@ -116,17 +116,38 @@ export class TasksScreen extends React.Component {
     if (this.state.title.length === 0 || this.state.hours.length === 0) {
       alert("Title and hours can not be empty!");
     } else {
-      // update the database
-      userRef.push({
-        time: this.state.hours,
-        name: this.state.title,
-        location: {
-          city: this.state.city,
-          state: this.state.state,
-          streetAddress: this.state.streetAddress,
-          zipcode: this.state.zipcode
-        }
-      });
+      // if the date has no tasks 
+      if (typeof this.props.user.account.taskDates[this.state.yyyymmdd] === 'undefined') {
+        // update the task list at index of 0 on that date
+        userRef.child(0).set({
+          time: this.state.hours,
+          name: this.state.title,
+          location: {
+            city: this.state.city,
+            state: this.state.state,
+            streetAddress: this.state.streetAddress,
+            zipcode: this.state.zipcode
+          }
+        });
+      } else { // else, add an object at index (length) of the size of the list
+        var tasksInTheDay = []
+        // for each date in the object check that date
+        Object.keys(this.props.user.account.taskDates).forEach(date => {
+          tasksInTheDay.push(this.props.user.account.taskDates[date])
+        });
+        console.log(tasksInTheDay.length)
+        // update the task list at index of the length of the task array on that date
+        userRef.child(tasksInTheDay.length).set({
+          time: this.state.hours,
+          name: this.state.title,
+          location: {
+            city: this.state.city,
+            state: this.state.state,
+            streetAddress: this.state.streetAddress,
+            zipcode: this.state.zipcode
+          }
+        })
+      }
       this.setState(prevState => ({
         // clear the current inputs
         title: "",
@@ -153,18 +174,19 @@ export class TasksScreen extends React.Component {
         modalVisible: false
       }));
     }
-    // Redux
-    this.props.addTask(
-      this.props.user.uid,
-      {
-        title: this.state.title,
-        hours: this.state.hours,
-        address: this.state.address
-      });
+    // // Redux
+    // this.props.addTask(
+    //   this.props.user.uid,
+    //   {
+    //     title: this.state.title,
+    //     hours: this.state.hours,
+    //     address: this.state.address
+    //   });
   };
   removeTask = async (task) => {
     var userRef = db.ref("Accounts/" + this.props.user.uid + "/tasks/");
-    var deleteReference = db.ref("Accounts/" + this.props.user.uid + "/tasks/" + task.title);
+    // var deleteReference = db.ref("Accounts/" + this.props.user.uid + "/tasks/" + task.title);
+    var deleteReference = db.ref("/Accounts/" + this.props.user.uid + "/taskDates/" + this.state.yyyymmdd + "/");
     deleteReference.remove();
     let data = [];
     userRef.once("value", snapshot => {
@@ -306,7 +328,7 @@ export class TasksScreen extends React.Component {
                 onChangeText={text => this.setState({ state: text })}
                 enableEmptySections={true}
               />
-              
+
               <TextInput
                 clearButtonMode="always"
                 style={otherStyles.textInputContainerTask}
@@ -314,7 +336,7 @@ export class TasksScreen extends React.Component {
                 onChangeText={text => this.setState({ streetAddress: text })}
                 enableEmptySections={true}
               />
-              
+
               <TextInput
                 clearButtonMode="always"
                 style={otherStyles.textInputContainerTask}
