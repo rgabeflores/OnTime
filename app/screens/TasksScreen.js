@@ -64,11 +64,8 @@ export class TasksScreen extends React.Component {
     let data = [];
     userRef.once("value", snapshot => {
       snapshot.forEach(childSnapshot => {
-        var date = childSnapshot.key; // "date"
-        console.log(date);
-        var taskList = childSnapshot.val();
-        console.log(taskList);
-        //this breaks because of the hashed ID
+        var date = childSnapshot.key; // the key is the date (?)
+        var taskList = childSnapshot.val(); // 
         taskList.forEach(task => {
           var temp = {
             date: date,
@@ -80,13 +77,11 @@ export class TasksScreen extends React.Component {
         })
         return false;
       });
-      // console.log(data);
       this.setState({
         tasks: data,
         taskDataSource: this.state.taskDataSource.cloneWithRows(data)
       });
     });
-    // update the view
   };
 
   // when the user presses the remove task button
@@ -110,14 +105,20 @@ export class TasksScreen extends React.Component {
       deleteMode: !this.state.deleteMode
     }));
   };
-  addTask = e => {
+  addTask = async () => {
     // user's database reference
     var userRef = db.ref("/Accounts/" + this.props.user.uid + "/taskDates/" + this.state.yyyymmdd + "/");
+    var date
+    await userRef.once("value", snapshot => {
+      snapshot.forEach(childSnapshot => {
+        date = childSnapshot.val
+      })
+    })
     if (this.state.title.length === 0 || this.state.hours.length === 0) {
       alert("Title and hours can not be empty!");
     } else {
       // if the date has no tasks 
-      if (typeof this.props.user.account.taskDates[this.state.yyyymmdd] === 'undefined') {
+      if (typeof date === 'undefined') {
         // update the task list at index of 0 on that date
         userRef.child(0).set({
           time: this.state.hours,
@@ -130,14 +131,25 @@ export class TasksScreen extends React.Component {
           }
         });
       } else { // else, add an object at index (length) of the size of the list
-        var tasksInTheDay = []
-        // for each date in the object check that date
-        Object.keys(this.props.user.account.taskDates).forEach(date => {
-          tasksInTheDay.push(this.props.user.account.taskDates[date])
-        });
-        console.log(tasksInTheDay.length)
+        var data = [];
+        // fetch data from db
+        await userRef.once("value", snapshot => {
+          var date = snapshot.key; // "date"
+          var taskList = snapshot.val();
+          taskList.forEach(task => {
+            var temp = {
+              date: date,
+              title: task.name,
+              hours: task.time,
+              address: task.location.streetAddress + "\n\t\t\t" + task.location.city + ", " + task.location.state + " " + task.location.zipcode,
+            };
+            data.push(temp);
+          })
+          return false;
+        })
+        //console.log(tasksInTheDay.length)
         // update the task list at index of the length of the task array on that date
-        userRef.child(tasksInTheDay.length).set({
+        userRef.child(data.length).set({
           time: this.state.hours,
           name: this.state.title,
           location: {
@@ -153,21 +165,26 @@ export class TasksScreen extends React.Component {
         title: "",
         hours: "",
         address: "",
+        yyyymmdd: "",
         // add a new set of tasks
         tasks: [
           ...prevState.tasks,
           {
+            date: this.state.yyyymmdd,
             title: this.state.title,
             hours: this.state.hours,
-            address: this.state.address
+            address: this.state.streetAddress + "\n\t\t\t" + this.state.city
+              + ", " + this.state.state + " " + this.state.zipcode,
           }
         ],
         taskDataSource: this.state.taskDataSource.cloneWithRows([
           ...prevState.tasks,
           {
+            date: this.state.yyyymmdd,
             title: this.state.title,
             hours: this.state.hours,
-            address: this.state.address
+            address: this.state.streetAddress + "\n\t\t\t" + this.state.city
+              + ", " + this.state.state + " " + this.state.zipcode,
           }
         ]),
         // remove the modal
@@ -184,30 +201,55 @@ export class TasksScreen extends React.Component {
     //   });
   };
   removeTask = async (task) => {
-    var userRef = db.ref("/Accounts/" + this.props.user.uid + "/taskDates/" + this.state.yyyymmdd + "/");
-    // var deleteReference = db.ref("Accounts/" + this.props.user.uid + "/tasks/" + task.title);
-    var deleteReference = db.ref("/Accounts/" + this.props.user.uid + "/taskDates/" + this.state.yyyymmdd + "/");
-    deleteReference.remove();
-    let data = [];
-    userRef.once("value", snapshot => {
-      snapshot.forEach(childSnapshot => {
-        var taskName = childSnapshot.key; // "task name"
-        var taskDetails = childSnapshot.val();
-
+    var userRef = db.ref("/Accounts/" + this.props.user.uid + "/taskDates/" + task.date + "/");
+    var data = [];
+    // fetch data from db
+    await userRef.once("value", snapshot => {
+      var date = snapshot.key; // "date"
+      var taskList = snapshot.val();
+      taskList.forEach(task => {
         var temp = {
-          title: taskName,
-          hours: taskDetails.hours,
-          address: taskDetails.address
+          date: date,
+          title: task.name,
+          hours: task.time,
+          address: task.location.streetAddress + "\n\t\t\t" + task.location.city + ", " + task.location.state + " " + task.location.zipcode,
         };
         data.push(temp);
-        return false;
-      });
-      console.log(data);
-      this.setState({
-        tasks: data,
-        taskDataSource: this.state.taskDataSource.cloneWithRows(data)
-      });
+      })
+      return false;
+    })
+    // look for the index of the task to be deleted
+    // assume key is equal to task name and time
+    var index = -1
+    var lookForTask = data.find(function (item, i) {
+      if (item.name === task.name && item.time == task.time) {
+        index = i;
+        return i;
+      }
     });
+    var localIndex = -1
+    var lookForTaskLocal = this.state.tasks.find(function (item, i){
+      if(item === task){
+        localIndex = i
+        return i;
+      }
+    })
+    // if the index is found, remove the said task
+    if (index !== -1) {
+      var deleteReference = db.ref("/Accounts/" + this.props.user.uid + "/taskDates/" + task.date + "/" + index);
+      await deleteReference.remove();
+      // update the view
+      var taskListNew = this.state.tasks
+      var removedTaskArray = taskListNew.splice(localIndex, 1)
+      console.log(localIndex);
+      this.setState(prevState => ({
+        // remove the task at the local index
+        tasks: taskListNew,
+        taskDataSource: this.state.taskDataSource.cloneWithRows(taskListNew),
+      }));
+    } else { // error handling
+      alert("The Task To Be Removed Cannot Be Found! Look at TasksScreen.js")
+    }
   }
   // close the modal (the form to add a task)
   _closeModal() {
