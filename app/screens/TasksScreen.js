@@ -184,7 +184,7 @@ export class TasksScreen extends React.Component {
     //   });
   };
   removeTask = async (task) => {
-    var userRef = db.ref("Accounts/" + this.props.user.uid + "/tasks/");
+    var userRef = db.ref("/Accounts/" + this.props.user.uid + "/taskDates/" + this.state.yyyymmdd + "/");
     // var deleteReference = db.ref("Accounts/" + this.props.user.uid + "/tasks/" + task.title);
     var deleteReference = db.ref("/Accounts/" + this.props.user.uid + "/taskDates/" + this.state.yyyymmdd + "/");
     deleteReference.remove();
