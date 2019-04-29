@@ -5,6 +5,8 @@ import { TouchableHighlight } from "react-native";
 
 import { connect } from "react-redux";
 
+import styles from './style'
+
 export class TimerScreen extends React.Component {
   static navigationOptions = {
     title: "Timer"
@@ -54,69 +56,85 @@ export class TimerScreen extends React.Component {
 
   render() {
     return (
-      <SafeAreaView>
-        <Text style={{ fontSize: 15 }}>Stopwatch</Text>
+        <View style={styles.container}>
+          <View style={styles.container}>
+            <Text style={styles.smallTitle}>Stopwatch</Text>
+            <SafeAreaView>
+              {/*Component which shows current value of stopwatch */}
+              <Stopwatch
+                laps
+                msecs
+                start={this.state.stopwatchStart}
+                reset={this.state.stopwatchReset}
+                options={options}
+                getTime={this.getFormattedTime}
+              />
+            </SafeAreaView>
 
-        {/*Component which shows current value of stopwatch */}
-        <Stopwatch
-          laps
-          msecs
-          start={this.state.stopwatchStart}
-          reset={this.state.stopwatchReset}
-          options={options}
-          getTime={this.getFormattedTime}
-        />
+            {/*Button that toggles between Start and Stop*/}
+            <TouchableHighlight style={styles.buttonContainer} onPress={this.toggleStopwatch} underlayColor='lightblue'>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>{!this.state.stopwatchStart ? "Start" : "Stop"}</Text>
+              </View>
+            </TouchableHighlight>
+            {/*Button that resets stopwatch back down to zero*/}
+            <TouchableHighlight style={styles.buttonContainer} onPress={this.resetStopwatch} underlayColor='lightblue'>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Reset</Text>
+              </View>
+            </TouchableHighlight>
+          </View>
 
-        {/*Button that toggles between Start and Stop*/}
-        <TouchableHighlight onPress={this.toggleStopwatch} underlayColor='lightblue'>
-          <Text style={{fontSize: 15,left:120,}}>{!this.state.stopwatchStart ? "Start" : "Stop"}</Text>
-        </TouchableHighlight>
+          
+          <View style={styles.container}>
+            <Text style={styles.smallTitle}>Timer</Text>
+            <SafeAreaView>
+              {/*Component which shows current value of timer*/}
+              <Timer
+                totalDuration={this.state.totalDuration}
+                msecs
+                start={this.state.timerStart}
+                reset={this.state.timerReset}
+                options={options}
+                getTime={this.getFormattedTime}
+              />
+            </SafeAreaView>
 
-        {/*Button that resets stopwatch back down to zero*/}
-        <TouchableHighlight onPress={this.resetStopwatch} underlayColor='lightblue'>
-          <Text style={{fontSize: 15,left:120,}}>Reset</Text>
-        </TouchableHighlight>
+            {/*Button that toggles between Start and Stop*/}
+            <TouchableHighlight style={styles.buttonContainer} onPress={this.toggleTimer} underlayColor='lightblue'>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>{!this.state.timerStart ? "Start" : "Stop"}</Text>
+              </View>
+            </TouchableHighlight>
 
-        <Text style={{ fontSize: 15 }}>Timer</Text>
-
-        {/*Component which shows current value of timer*/}
-        <Timer
-          totalDuration={this.state.totalDuration}
-          msecs
-          start={this.state.timerStart}
-          reset={this.state.timerReset}
-          options={options}
-          getTime={this.getFormattedTime}
-        />
-
-        {/*Button that toggles between Start and Stop*/}
-        <TouchableHighlight onPress={this.toggleTimer} underlayColor='lightblue'>
-          <Text style={{fontSize: 15,left:120,}}>{!this.state.timerStart ? "Start" : "Stop"}</Text>
-        </TouchableHighlight>
-
-        {/*Button that resets timer back up to set value*/}
-        <TouchableHighlight onPress={this.resetTimer} underlayColor='lightblue'>
-          <Text style={{fontSize: 15,left:120,}}>Reset</Text>
-        </TouchableHighlight>
-      </SafeAreaView>
+            {/*Button that resets timer back up to set value*/}
+            <TouchableHighlight style={styles.buttonContainer} onPress={this.resetTimer} underlayColor='lightblue'>
+              <View style={styles.button}> 
+                <Text style={styles.buttonText}>Reset</Text>
+              </View>
+            </TouchableHighlight>
+          </View>
+        </View>
     );
   }
 }
 //style for timer screen
 const options = {
-  container: {
-    backgroundColor: "lightblue",
-    padding: 5,
-    borderRadius: 5,
-    width: 220,
-    position: "relative",
-    left: 50
-  },
-  text: {
-    fontSize: 30,
-    color: '#FFF',
-    textAlign: "center",
-  },
+  // container: {
+  //   backgroundColor: "lightblue",
+  //   padding: 5,
+  //   borderRadius: 5,
+  //   width: 220,
+  //   position: "relative",
+  //   left: 50
+  // },
+  // text: {
+  //   fontSize: 30,
+  //   color: '#FFF',
+  //   textAlign: "center",
+  // },
+  container: styles.stopwatchContainer,
+  text: styles.stopwatchText
 }
 // create map of "store" object passed from Provider to this component's props
 const mapStateToProps = store => {

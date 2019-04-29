@@ -61,7 +61,13 @@ module.exports = StyleSheet.create({
   Title: {
     color: SECOND_TEXT_COLOR,
     fontSize: 64,
+    textAlign: "center"
     // ...DEFAULT_TEXT_SHADOW_SETTINGS
+  },
+  smallTitle: {
+    color: MAIN_TEXT_COLOR,
+    fontSize: 48,
+    textAlign: "center"
   },
   image: {
     width: 150,
@@ -271,5 +277,19 @@ module.exports = StyleSheet.create({
     height: "auto",
     width: "20%",
     height: 25
+  },
+  // Timer Styles
+  stopwatchContainer: {
+    backgroundColor: "white",
+    borderWidth: 2,
+    borderColor: SECOND_TEXT_COLOR,
+    borderRadius: 2,
+    width: "85%",
+    minWidth: "75%",
+  },
+  stopwatchText: {
+    textAlign: "center",
+    fontSize: 32,
+    color: MAIN_TEXT_COLOR,
   }
 });
