@@ -6,6 +6,8 @@ import firebase from "firebase";
 import { db } from "../config/db.js";
 import { connect } from "react-redux";
 
+import { logoutUser } from "../redux/actions/userActions";
+
 import styles from "./style";
 
 export class SettingsScreen extends React.Component {
@@ -19,12 +21,13 @@ export class SettingsScreen extends React.Component {
   }
 
   logout = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        this.props.navigation.navigate("Login");
-      });
+    // firebase
+    //   .auth()
+    //   .signOut()
+    //   .then(() => {
+        
+    //     this.props.navigation.navigate("Login");
+    //   });
   };
 
   render() {
@@ -71,7 +74,7 @@ export class SettingsScreen extends React.Component {
               headerText="Logout"
               headerStyle={{ color: "white", marginTop: 15 }}
             />
-            <SettingsList.Item onPress={this.logout} title="Logout" />
+            <SettingsList.Item onPress={this.props.logoutUser.bind(this)} title="Logout" />
           </SettingsList>
         </View>
       </View>
@@ -86,16 +89,19 @@ export class SettingsScreen extends React.Component {
 // create map of "store" object passed from Provider to this component's props
 const mapStateToProps = store => {
   return {
+    isLoggedIn: store.user.isLoggedIn,
     user: store.user.user // store.user == reducer, store.user.user == reducer.state.user
   };
 };
 
 // create map of "dispatch" object passed from Provider to this component's props
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     dispatch
-//   }
-// }
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logoutUser: () => {
+      dispatch(logoutUser());
+    },
+  }
+}
 
 // connect() applies maps to component's props
-export default connect(mapStateToProps)(SettingsScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen);
