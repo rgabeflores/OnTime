@@ -50,9 +50,9 @@ module.exports = StyleSheet.create({
   },
   textInputContainerTask: {
     alignSelf: "center",
-    borderColor: MAIN_TEXT_COLOR,
-    borderWidth: 0.5,
-    borderRadius: 30,
+    borderColor: SECOND_TEXT_COLOR,
+    borderWidth: 1,
+    borderRadius: 3,
     padding: 15,
     margin: 5,
     width: "70%",
@@ -89,6 +89,9 @@ module.exports = StyleSheet.create({
     padding: 5,
     minWidth: "50%",
     color: MAIN_COLOR,
+    textAlign: "center",
+    textDecorationLine: 'underline',
+    fontStyle: "italic",
   },
   developmentModeText: {
     marginBottom: 20,
