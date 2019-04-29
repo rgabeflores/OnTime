@@ -30,10 +30,10 @@ export class LoginScreen extends React.Component {
       >
         <View style={styles.container}>
           <View>
-            <Image
+            {/* <Image
               source={require("../assets/stopwatch_vector.png")}
               style={styles.image}
-            />
+            /> */}
           </View>
 
           <Text style={styles.Title}> On Time </Text>
@@ -75,7 +75,7 @@ export class LoginScreen extends React.Component {
               underlayColor="white"
             >
               <View>
-                <Text style={{textAlign: "center", color: "lightblue"}}>
+                <Text style={styles.linkText}>
                   Back to Register
                 </Text>
               </View>

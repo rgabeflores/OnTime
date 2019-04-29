@@ -5,9 +5,23 @@ const constants = {
   actionColor: "#ffff"
 };
 
+
 const MAIN_COLOR = "#00adf5";
 const MAIN_TEXT_COLOR = "black";
 const SECOND_TEXT_COLOR = "lightgrey";
+
+const DEFAULT_SHADOW_SETTINGS = {
+    shadowOffset: { width: 1, height: 1,  },
+    shadowRadius: 3,
+    shadowColor: SECOND_TEXT_COLOR,
+    shadowOpacity: 0.5,
+};
+
+const DEFAULT_TEXT_SHADOW_SETTINGS = {
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 1,
+    textShadowColor: 'rgba(0, 0, 0, 0.5)',
+}
 
 //create style sheets
 module.exports = StyleSheet.create({
@@ -25,17 +39,18 @@ module.exports = StyleSheet.create({
     justifyContent: "flex-start"
   },
   textInputContainer: {
-    borderColor: "black",
+    borderColor: SECOND_TEXT_COLOR,
     borderWidth: 1,
-    borderRadius: 30,
+    borderRadius: 3,
     padding: 15,
     margin: 5,
     width: "100%",
-    minWidth: "75%"
+    minWidth: "75%",
+    ...DEFAULT_SHADOW_SETTINGS
   },
   textInputContainerTask: {
     alignSelf: "center",
-    borderColor: "black",
+    borderColor: MAIN_TEXT_COLOR,
     borderWidth: 0.5,
     borderRadius: 30,
     padding: 15,
@@ -44,8 +59,9 @@ module.exports = StyleSheet.create({
     minWidth: "75%"
   },
   Title: {
-    color: "lightblue",
-    fontSize: 50
+    color: SECOND_TEXT_COLOR,
+    fontSize: 64,
+    // ...DEFAULT_TEXT_SHADOW_SETTINGS
   },
   image: {
     width: 150,
@@ -53,11 +69,12 @@ module.exports = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    backgroundColor: "lightblue",
-    borderRadius: 30
+    backgroundColor: MAIN_COLOR,
+    borderRadius: 5,
+    ...DEFAULT_SHADOW_SETTINGS
   },
   buttonText: {
-    padding: 20,
+    padding: 10,
     color: "white"
   },
   settingsButton: {
@@ -65,12 +82,13 @@ module.exports = StyleSheet.create({
   },
   buttonContainer: {
     margin: 5,
-    minWidth: "50%"
+    minWidth: "50%",
+    ...DEFAULT_SHADOW_SETTINGS
   },
   linkText: {
     padding: 5,
     minWidth: "50%",
-    color: "lightblue"
+    color: MAIN_COLOR,
   },
   developmentModeText: {
     marginBottom: 20,
@@ -122,7 +140,7 @@ module.exports = StyleSheet.create({
     right: 0,
     ...Platform.select({
       ios: {
-        shadowColor: "black",
+        shadowColor: MAIN_TEXT_COLOR,
         shadowOffset: { height: -3 },
         shadowOpacity: 0.1,
         shadowRadius: 3
@@ -174,7 +192,6 @@ module.exports = StyleSheet.create({
     width: "100%"
   },
   calendarEmptyTask:{
-
     height: "95%",
     // padding: 10,
     marginTop: 17,
@@ -191,15 +208,16 @@ module.exports = StyleSheet.create({
     padding: 10,
     marginRight: 10,
     marginTop: 17,
-    backgroundColor: "white"
+    backgroundColor: "white",
+    ...DEFAULT_SHADOW_SETTINGS,
   },
   calendarTaskTitle:{
     fontSize: 16,
     fontWeight: "bold",
-    color: "#00adf5"
+    color: MAIN_COLOR
   },
   calendarTaskDescription:{
-    color: "lightgrey"
+    color: SECOND_TEXT_COLOR
   },
   calendarTaskButtonContainer: {
     margin: 5,
@@ -207,7 +225,7 @@ module.exports = StyleSheet.create({
   },
   calendarTaskButton: {
     alignItems: "center",
-    backgroundColor: "#00adf5",
+    backgroundColor: MAIN_COLOR,
     borderRadius: 5
   },
   calendarTaskButtonText: {
@@ -230,7 +248,7 @@ module.exports = StyleSheet.create({
   modalButton: {
     alignItems: "center",
     backgroundColor: "white",
-    borderColor: "#00adf5",
+    borderColor: MAIN_COLOR,
     borderWidth: 1,
     borderRadius: 10
   },
@@ -238,11 +256,11 @@ module.exports = StyleSheet.create({
     fontSize: 24,
     fontWeight: "200",
     padding: 10,
-    color: "#00adf5"
+    color: MAIN_COLOR
   },
   statePicker: {
     alignSelf: "center",
-    borderColor: "black",
+    borderColor: MAIN_TEXT_COLOR,
     borderWidth: 0.5,
     borderRadius: 30,
     padding: 15,
