@@ -5,14 +5,15 @@
 import { 
     onLogin,
     onRegister,
-    createTask
+    createTask,
+    logout,
  } from '../util/util';
 import {
     setName,
     setEmail,
     setPassword,
     resetPassword,
-    deleteAccount
+    deleteAccount,
  } from '../../config/update';
 import { db } from '../../config/db';
 
@@ -29,7 +30,8 @@ import {
     SET_USER_NAME_FULFILLED,
     NEW_ACCOUNT,
     ADD_TASK,
-    ADD_TASK_FULFILLED
+    ADD_TASK_FULFILLED,
+    LOGOUT
 } from './types';
 
 export function toggleModal(){
@@ -115,14 +117,14 @@ export function fetchUser(email, password){
     }
 }
 
-export function addTask(uid, task){
+export function addTask(uid, date, tasks, newTask){
     return (dispatch) => {
         // Sets a "loading... " state
         dispatch({ type: ADD_TASK });
 
-        createTask(uid, task)
+        createTask(uid, date, tasks, newTask)
             .then((response) => {
-                dispatch({ type: ADD_TASK_FULFILLED, payload: task });
+                dispatch({ type: ADD_TASK_FULFILLED, payload: newTask });
             })
             .catch((err) => {
                 // Sets state to failure to load
@@ -161,4 +163,13 @@ export function setUserName(name){
             })
     }
     
+}
+
+export function logoutUser(){
+    return (dispatch) => {
+        logout()
+            .then(() => {
+                dispatch({type: LOGOUT });
+            })
+    }
 }
