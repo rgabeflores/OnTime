@@ -166,6 +166,22 @@ module.exports = StyleSheet.create({
     justifyContent: "space-between"
   },
   // For HomeScreen
+  calendarEmptyTaskContainer:{
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%"
+  },
+  calendarEmptyTask:{
+
+    height: "95%",
+    // padding: 10,
+    marginTop: 17,
+    marginRight:10,
+    backgroundColor: "#F1F1F1",
+    width: "100%"
+  },
   calendarTaskContainer: {
     flex: 1,
     flexDirection: "row",
