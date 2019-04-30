@@ -54,32 +54,34 @@ export class PlannedTask extends React.Component {
         })
     }
     render() {
+        let pieCharts = this.state.dates.map((val, idx) => {
+            var keyValue = `pie-${idx}`;
+            var pieData = this.state.timeData[idx]
+                .filter(value => value > 0)
+                .map((value, index) => ({
+                    value,
+                    svg: {
+                        fill: ('#' + (Math.random() * 0xFFFFFF << 0).toString(16) + '000000').slice(0, 7)
+                    },
+                    key: keyValue + index
+                }))
+            
+            return (
+                <View key={keyValue}>
+                    <Text style={{ fontSize: 20 }}>
+                        Planned Tasks for {this.state.dates[idx]}
+                    </Text>
+                    <PieChart
+                        style={{ height: 200 }}
+                        data={pieData}
+                    />
+                </View>
+            )
+        });
+
         return (
             <View>
-                {
-                    this.state.dates.map((val, idx) => {
-                        var pieData = this.state.timeData[idx]
-                            .filter(value => value > 0)
-                            .map((value, index) => ({
-                                value,
-                                svg: {
-                                    fill: ('#' + (Math.random() * 0xFFFFFF << 0).toString(16) + '000000').slice(0, 7)
-                                },
-                                key: `pie-${idx}-${index}`
-                            }))
-                        return (
-                            <View>
-                                <Text style={{ fontSize: 20 }}>
-                                    Planned Tasks for {this.state.dates[idx]}
-                                </Text>
-                                <PieChart
-                                    style={{ height: 200 }}
-                                    data={pieData}
-                                />
-                            </View>
-                        )
-                    })
-                }
+                { pieCharts }
             </View>
         );
     }
