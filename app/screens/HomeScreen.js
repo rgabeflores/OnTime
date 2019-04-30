@@ -59,6 +59,11 @@ export class HomeScreen extends React.Component {
       <EmptyDateView />
     )
   }
+  renderEmptyData(day){
+    return(
+      <EmptyDateView />
+    )
+  }
   rowHasChanged(r1, r2) {
     return r1.name !== r2.name;
   }
@@ -139,6 +144,7 @@ export class HomeScreen extends React.Component {
           // renderDay={(day, {items}) => { return <AgendaTasksView day={day} items={items} /> }}
           // specify how empty date content with no items should be rendered
           renderEmptyDate={this.renderEmptyDate.bind(this)}
+          renderEmptyData={this.renderEmptyData.bind(this)}
           // specify what should be rendered instead of ActivityIndicator
           // specify your item comparison function for increased performance
           rowHasChanged={this.rowHasChanged.bind(this)}
