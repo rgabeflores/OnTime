@@ -23,6 +23,12 @@ export class AddTaskModal extends React.Component {
   // constructor of the class, this stores the data(what it displays) for TaskScreen
   constructor() {
     super();
+    var date = new Date();
+    var dateString = this.formatDate(
+      date.getUTCFullYear(),
+      date.getUTCMonth() + 1,
+      date.getUTCDate(),
+    )
     this.state = {
       title: "",
       hours: "",
@@ -31,8 +37,8 @@ export class AddTaskModal extends React.Component {
       state: "",
       streetAddress: "",
       zipcode: "",
-      yyyymmdd: "",
-      date: new Date(),
+      yyyymmdd: dateString,
+      date: date,
       selectDateModal: false
     };
   }
@@ -117,22 +123,26 @@ export class AddTaskModal extends React.Component {
 
     this.setState({ selectDateModal: false, yyyymmdd: date });
   }
+
+  formatDate(year, month, day){
+    var dateString;
+    if (month < 10) {
+      dateString = year + "-0" + month + "-" + day
+    }
+    else {
+      dateString = year + "-" + month + "-" + day
+    }
+    return dateString;
+  }
+  
   androidDatePick = async () => {
     try {
       const { action, year, month, day } = await DatePickerAndroid.open({ mode: 'spinner' })
       if (action !== DatePickerAndroid.dismissedAction) {
-        var dateChosen = new Date(year, month, day)
-        if (month < 10) {
-          var dateString = year + "-0" + month + "-" + day
-          this.setState({ yyyymmdd: dateString })
-        }
-        else {
-          var dateString = year + "-" + month + "-" + day
-          this.setState({ yyyymmdd: dateString })
-        }
-
-        console.log(dateString)
-        // returned undefined, try fixing it tomorrow TODO
+        var dateChosen = new Date(year, month, day);
+        var dateString = this.formatDate(year, month, day);
+        
+        this.setState({ yyyymmdd: dateString });
       }
     } catch ({ code, message }) {
       console.warn('Cannot open date picker', message)
@@ -150,7 +160,8 @@ export class AddTaskModal extends React.Component {
         onRequestClose={this.props.toggleModal.bind(this)}
       >
 
-        <View style={styles.container}>
+        <View style={styles.modalContainer}>
+          <Text style={styles.smallTitle}>{this.state.yyyymmdd}</Text>
           <TextInput
             clearButtonMode="always"
             style={styles.textInputContainerTask}
@@ -196,15 +207,13 @@ export class AddTaskModal extends React.Component {
             enableEmptySections={true}
           />
           {/* Choose a date */}
-
-          <Text style={styles}>Chosen Date: {this.state.yyyymmdd}</Text>
           <TouchableHighlight
             style={styles.buttonContainer}
             onPress={Platform.OS === "ios" ? this._openDateModal.bind(this) : this.androidDatePick.bind(this)}
             underlayColor="white"
           >
             <View style={styles.button}>
-              <Text style={styles.buttonText}>Choose a Date</Text>
+              <Text style={styles.buttonText}>Change Date</Text>
             </View>
           </TouchableHighlight>
           <Modal
