@@ -8,8 +8,6 @@ import {
 import styles from "../style";
 
 export default TaskView = (props) => {
-    console.log(props);
-
     // Parse time NOTE: format time when saved to database?
     let time = props.item.time.split(":");
     let hours = Number(time[0]);
@@ -33,7 +31,7 @@ export default TaskView = (props) => {
             </View>
             <TouchableHighlight
                 style={styles.calendarTaskButtonContainer}
-                onPress={() => console.log("Task Button Pressed")}
+                onPress={() => { props.action(props.item) }}
                 underlayColor="white"
             >
                 <View style={styles.calendarTaskButton}>

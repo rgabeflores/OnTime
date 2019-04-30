@@ -4,6 +4,8 @@
 
 import {
     TOGGLE_MODAL,
+    TOGGLE_EDIT_MODAL,
+    SET_DAY,
     CREATE_USER,
     CREATE_USER_FULFILLED,
     FETCH_USER,
@@ -26,6 +28,8 @@ const INITIAL_STATE = {
         uid: "Re2ophJDDMX2yssltNZdCSz9gLz1"
     },
     modalVisible: false,
+    editModalVisible: false,
+    currentDay: "",
     isLoggedIn: false, // Keeps track of logged in status
     fetching: false, // Used to indicate async loading
     fetched: false, // Indicates the status of an async request
@@ -138,10 +142,22 @@ export default function reducer( state = INITIAL_STATE, action){
                 isLoggedIn: false
             }
         }
+        case SET_DAY: {
+            return {
+                ...state,
+                currentDay: action.payload
+            }
+        }
         case TOGGLE_MODAL: {
             return {
                 ...state,
                 modalVisible: !state.modalVisible
+            }
+        }
+        case TOGGLE_EDIT_MODAL: {
+            return {
+                ...state,
+                editModalVisible: !state.editModalVisible
             }
         }
     }

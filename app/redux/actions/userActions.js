@@ -19,6 +19,8 @@ import { db } from '../../config/db';
 
 import {
     TOGGLE_MODAL,
+    TOGGLE_EDIT_MODAL,
+    SET_DAY,
     CREATE_USER,
     CREATE_USER_FULFILLED,
     FETCH_USER,
@@ -36,7 +38,19 @@ import {
 
 export function toggleModal(){
     return (dispatch) => {
-        dispatch({type: TOGGLE_MODAL})
+        dispatch({type: TOGGLE_MODAL});
+    }
+}
+
+export function toggleEditModal(){
+    return (dispatch) => {
+        dispatch({type: TOGGLE_EDIT_MODAL});
+    }
+}
+
+export function setDay(){
+    return (dispatch) => {
+        dispatch({type: SET_DAY});
     }
 }
 
@@ -133,6 +147,18 @@ export function addTask(uid, date, tasks, newTask){
     }
 }
 
+/**
+ * Log out the user
+ */
+export function logoutUser(){
+    return (dispatch) => {
+        logout()
+            .then(() => {
+                dispatch({type: LOGOUT });
+            })
+    }
+}
+
 /*
     TO-DO: These methods need to be implemented
 */
@@ -165,11 +191,3 @@ export function setUserName(name){
     
 }
 
-export function logoutUser(){
-    return (dispatch) => {
-        logout()
-            .then(() => {
-                dispatch({type: LOGOUT });
-            })
-    }
-}

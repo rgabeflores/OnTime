@@ -3,6 +3,7 @@
  */
 
 export const TOGGLE_MODAL = "TOGGLE_MODAL";
+export const TOGGLE_EDIT_MODAL = "TOGGLE_EDIT_MODAL";
 
 // USER ACTION TYPES
 export const CREATE_USER = "CREATE_USER";
@@ -23,6 +24,8 @@ export const REMOVE_TASK = "REMOVE_TASK";
 export const REMOVE_TASK_FULFILLED = "REMOVE_TASK_FULFILLED";
 export const EDIT_TASK = "EDIT_TASK";
 export const EDIT_TASK_FULFILLED = "EDIT_TASK_FULFILLED";
+
+export const SET_DAY = "SET_DAY";
 
 
 // ASYNC ACTION TYPES
