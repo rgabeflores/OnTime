@@ -14,7 +14,7 @@ const DEFAULT_SHADOW_SETTINGS = {
     shadowOffset: { width: 1, height: 1,  },
     shadowRadius: 3,
     shadowColor: SECOND_TEXT_COLOR,
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.75,
 };
 
 const DEFAULT_TEXT_SHADOW_SETTINGS = {
@@ -69,6 +69,12 @@ module.exports = StyleSheet.create({
     fontSize: 48,
     textAlign: "center"
   },
+  miniTitle: {
+    color: MAIN_TEXT_COLOR,
+    fontSize: 32,
+    textAlign: "center",
+  }
+  ,
   image: {
     width: 150,
     height: 150
@@ -83,13 +89,17 @@ module.exports = StyleSheet.create({
     padding: 10,
     color: "white"
   },
-  settingsButton: {
-    width: "white"
-  },
   buttonContainer: {
     margin: 5,
     minWidth: "50%",
     ...DEFAULT_SHADOW_SETTINGS
+  },
+  switch: {
+    width: 15,
+    borderColor: "lightgrey",
+  },
+  settingsButton: {
+    width: "white"
   },
   linkText: {
     padding: 5,
@@ -247,8 +257,10 @@ module.exports = StyleSheet.create({
   // Modal Styles
   modalContainer: {
     flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   modalButtonContainer: {
     margin: 5,
@@ -291,5 +303,34 @@ module.exports = StyleSheet.create({
     textAlign: "center",
     fontSize: 32,
     color: MAIN_TEXT_COLOR,
+    padding: 5,
+  },
+  settingsHeader: {
+    paddingVertical: 5,
+    borderBottomColor: "lightgrey",
+    borderBottomWidth: 1,
+    height: "30%",
+    alignItems: "center",
+    ...DEFAULT_SHADOW_SETTINGS
+  }, 
+
+  // Test Code
+  settingsRow: {
+    flexDirection: "row",
+    ...DEFAULT_SHADOW_SETTINGS
+  },
+  settingsRowLabel: {
+    flex: 1,
+    width: "50%"
+  },
+  settingsRowLabelText: {
+    fontSize: 18,
+    textAlign: "center",
+  },
+  settingsRowAction: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "50%",
   }
 });
