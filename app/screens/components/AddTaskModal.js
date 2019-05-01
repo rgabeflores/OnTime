@@ -44,6 +44,16 @@ export class AddTaskModal extends React.Component {
   }
 
   addTask = async () => {
+    // Form Validation
+    if (this.state.title.length === 0 || this.state.hours.length === 0){
+      alert("Title and hours can not be empty!");
+      return false;
+    }
+    let newTask = {
+
+    }
+    // this.props.addTask(this.props.user.uid, newTask)
+
     // user's database reference
     var userRef = db.ref("/Accounts/" + this.props.user.uid + "/taskDates/" + this.state.yyyymmdd + "/");
     var date
@@ -52,53 +62,41 @@ export class AddTaskModal extends React.Component {
         date = childSnapshot.val
       })
     })
-    if (this.state.title.length === 0 || this.state.hours.length === 0) {
-      alert("Title and hours can not be empty!");
+
+    // if the date has no tasks 
+    if (typeof date === 'undefined') {
+      // update the task list at index of 0 on that date
+      userRef.child(0).set({
+        time: this.state.hours,
+        name: this.state.title,
+        location: {
+          city: this.state.city,
+          state: this.state.state,
+          streetAddress: this.state.streetAddress,
+          zipcode: this.state.zipcode
+        }
+      });
     } else {
-      // if the date has no tasks 
-      if (typeof date === 'undefined') {
-        // update the task list at index of 0 on that date
-        userRef.child(0).set({
-          time: this.state.hours,
-          name: this.state.title,
-          location: {
-            city: this.state.city,
-            state: this.state.state,
-            streetAddress: this.state.streetAddress,
-            zipcode: this.state.zipcode
-          }
-        });
-      } else { // else, add an object at index (length) of the size of the list
-        var data = [];
-        // fetch data from db
-        await userRef.once("value", snapshot => {
-          var date = snapshot.key; // "date"
-          var taskList = snapshot.val();
-          taskList.forEach(task => {
-            var temp = {
-              date: date,
-              title: task.name,
-              hours: task.time,
-              address: task.location.streetAddress + "\n\t\t\t" + task.location.city + ", " + task.location.state + " " + task.location.zipcode,
-            };
-            data.push(temp);
-          })
-          return false;
-        })
-        //console.log(tasksInTheDay.length)
-        // update the task list at index of the length of the task array on that date
-        userRef.child(data.length).set({
-          time: this.state.hours,
-          name: this.state.title,
-          location: {
-            city: this.state.city,
-            state: this.state.state,
-            streetAddress: this.state.streetAddress,
-            zipcode: this.state.zipcode
-          }
-        })
-      }
+      // else, add an object at index (length) of the size of the list
+      var taskList;
+      await userRef.once("value", snapshot => {
+        taskList = snapshot.val();
+        return false;
+      })
+      //console.log(tasksInTheDay.length)
+      // update the task list at index of the length of the task array on that date
+      userRef.child(taskList.length).set({
+        time: this.state.hours,
+        name: this.state.title,
+        location: {
+          city: this.state.city,
+          state: this.state.state,
+          streetAddress: this.state.streetAddress,
+          zipcode: this.state.zipcode
+        }
+      })
     }
+    
     this.props.toggleModal();
     // // Redux
     // this.props.addTask(
