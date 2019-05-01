@@ -9,7 +9,9 @@ import styles from "../style";
 export default EmptyDateView = (props) => {
     return (
         <View style={styles.calendarEmptyTaskContainer}>
-            <View style={styles.calendarEmptyTask}></View>
+            <View style={styles.calendarEmptyTask}>
+                {props.children}
+            </View>
         </View>
     );
 }
