@@ -211,6 +211,8 @@ module.exports = StyleSheet.create({
     width: "100%"
   },
   calendarEmptyTask:{
+    justifyContent: "center",
+    alignItems: "center",
     height: "95%",
     // padding: 10,
     marginTop: 17,

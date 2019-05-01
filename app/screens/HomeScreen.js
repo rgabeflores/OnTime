@@ -76,7 +76,9 @@ export class HomeScreen extends React.Component {
   }
   renderEmptyData(day){
     return(
-      <EmptyDateView />
+      <EmptyDateView>
+        <Text style={{...styles.smallTitle, color:"lightgrey", width: "95%"}}>Select a date to view your tasks.</Text>
+      </EmptyDateView>
     )
   }
   rowHasChanged(r1, r2) {
