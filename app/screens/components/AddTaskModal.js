@@ -115,7 +115,7 @@ export class AddTaskModal extends React.Component {
         enableEmptySections={true}
         onRequestClose={this.props.toggleModal.bind(this)}
       > 
-        <KeyboardAvoidingView style={styles.modalContainer} behavoir="padding" enabled>
+        <KeyboardAvoidingView style={styles.modalContainer} behavior={Platform.OS === "ios" ? "padding" : ""} enabled>
           <Text style={styles.smallTitle}>{this.state.yyyymmdd}</Text>
           <TextInput
             clearButtonMode="always"
