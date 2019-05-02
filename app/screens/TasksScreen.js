@@ -77,10 +77,11 @@ export class TasksScreen extends React.Component {
         })
         return false;
       });
-      this.setState({
+      this.setState(prevState => ({
+        ...prevState,
         tasks: data,
         taskDataSource: this.state.taskDataSource.cloneWithRows(data)
-      });
+      }));
     });
   };
 
@@ -102,6 +103,7 @@ export class TasksScreen extends React.Component {
 
   showRemoveTask = e => {
     this.setState(prevState => ({
+      ...prevState,
       deleteMode: !this.state.deleteMode
     }));
   };
