@@ -23,8 +23,8 @@ export class SettingsScreen extends React.Component {
         'Logout',
         'Are you sure you want to logout?',
         [
-          { text: "Logout", onPress: () => (resolve(true)) },
-          { text: "Cancel", onPress: () => (resolve(false)) }
+          { text: "Logout", onPress: () => (this.props.logoutUser()) },
+          { text: "Cancel", style: 'cancel', onPress: () => (resolve(1)) }
         ],
         { cancelable: false }
       )
@@ -32,9 +32,7 @@ export class SettingsScreen extends React.Component {
   }
 
   logout() {
-    if (this.AsyncAlert()) this.props.logoutUser();
-
-    return false;
+    return this.AsyncAlert()
   };
 
   render() {
