@@ -385,6 +385,9 @@ module.exports = StyleSheet.create({
     backgroundColor: "white",
     ...DEFAULT_SHADOW_SETTINGS,
   },
+  settingsAvatarContainer:{
+    ...DEFAULT_SHADOW_SETTINGS,
+  },
   settingsRowText: {
     fontSize: 18,
     fontWeight: "500",

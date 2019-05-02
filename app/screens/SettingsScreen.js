@@ -41,12 +41,14 @@ export class SettingsScreen extends React.Component {
     return (
       <View>
         <View style={styles.settingsHeader}>
-          <Avatar
-            size={"large"}
-            overlayContainerStyle={{ backgroundColor: '#00adf5' }}
-            rounded
-            title={this.props.user.account.accountInfo.name[0]}
-          />
+          <View style={styles.settingsAvatarContainer}>
+            <Avatar
+              size={"large"}
+              overlayContainerStyle={{ backgroundColor: '#00adf5'}}
+              rounded
+              title={this.props.user.account.accountInfo.name[0]}
+            />
+          </View>
           <Text style={styles.smallTitle}>
             {this.props.user.account.accountInfo.name}
           </Text>
