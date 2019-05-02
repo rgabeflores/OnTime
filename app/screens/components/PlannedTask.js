@@ -2,9 +2,6 @@ import React from 'react';
 import {
     Text,
     View,
-    Button,
-    TouchableHighlight,
-    Modal
 } from 'react-native';
 import {
     PieChart
@@ -36,7 +33,6 @@ export class PlannedTask extends React.Component {
         tasksInADay.forEach(day => {
             // for each task in the day, store it in an array
             var i = 0
-            var len = day.length
             // add the time on each index of the array
             day.forEach(task => {
                 time[y][i] = task.time.replace(/\D/g, '')
@@ -73,7 +69,7 @@ export class PlannedTask extends React.Component {
             var pieData = this.state.timeData[index]
                 .filter(value => value > 0)
                 .map((value, index) => ({
-                    value,
+                    value: Number(value),
                     svg: {
                         fill: this.randomColor()
                     },
