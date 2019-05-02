@@ -202,7 +202,6 @@ module.exports = StyleSheet.create({
     padding: 5,
     margin: 5,
     borderRadius: 5,
-    borderColor: SECOND_TEXT_COLOR,
     backgroundColor: "white",
     ...DEFAULT_SHADOW_SETTINGS,
     shadowColor: MAIN_COLOR,
@@ -223,7 +222,7 @@ module.exports = StyleSheet.create({
   taskTitle:{
     fontSize: 22,
     fontWeight: "800",
-    color: MAIN_COLOR
+    color: MAIN_COLOR,
   },
   taskDate: {
     fontSize: 18,
@@ -236,7 +235,8 @@ module.exports = StyleSheet.create({
     color: MAIN_TEXT_COLOR    
   },
   taskAddress:{
-    fontSize: 14,
+    fontSize: 18,
+    fontStyle: "italic",
     color: MAIN_TEXT_COLOR
   },
   // For HomeScreen
@@ -351,8 +351,32 @@ module.exports = StyleSheet.create({
     height: "30%",
     alignItems: "center",
     ...DEFAULT_SHADOW_SETTINGS
-  }, 
-
+  },
+  // Statistics Styles
+  pieChartContainer:{
+    flex: 1,
+    justifyContent: "space-between",
+    width: "90%",
+    padding: 5,
+    margin: 5,
+    borderRadius: 5,
+    
+    backgroundColor: "white",
+  },
+  pieChartTitle:{
+    marginVertical: 5,
+    textAlign: "center",
+    color: SECOND_TEXT_COLOR,
+    fontSize: 20,
+  },
+  pieChart:{
+    marginVertical: 5,
+    paddingVertical: 10,
+    minHeight: 200,
+    maxHeight: 400,
+    borderTopWidth: 1,
+    borderColor: SECOND_TEXT_COLOR,
+  },
   // Test Code
   settingsRow: {
     flexDirection: "row",

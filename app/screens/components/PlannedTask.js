@@ -9,10 +9,11 @@ import {
 import {
     PieChart
 } from "react-native-svg-charts";
-
 import { connect } from "react-redux";
-export class PlannedTask extends React.Component {
 
+import styles from '../style';
+
+export class PlannedTask extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -26,7 +27,6 @@ export class PlannedTask extends React.Component {
         var tasksInADay = []
         var time = [[]]
         keyDates.forEach(date => {
-            //console.log(date)
             // the date e.g. '2019-04-20' is pushed into one array 
             dates.push(date)
             // the array of tasks on a given date is stored on a new array
@@ -53,26 +53,40 @@ export class PlannedTask extends React.Component {
             timeData: time
         })
     }
+
+    // generates a random color hexcode
+    randomColor() {
+        /*
+            Uncomment for random shades of blue
+
+            h = 215;
+            s = Math.floor(Math.random() * 100);
+            l = 60 // Math.floor(Math.random() * 100);
+            return 'hsl(' + h + ', ' + s + '%, ' + l + '%)';
+        */
+        return ('#' + (Math.random() * 0xFFFFFF << 0).toString(16) + '000000').slice(0, 7);
+    }
+
     render() {
-        let pieCharts = this.state.dates.map((val, idx) => {
-            var keyValue = `pie-${idx}`;
-            var pieData = this.state.timeData[idx]
+        let pieCharts = this.state.dates.map((val, index) => {
+            var keyValue = `pie-${index}`;
+            var pieData = this.state.timeData[index]
                 .filter(value => value > 0)
                 .map((value, index) => ({
                     value,
                     svg: {
-                        fill: ('#' + (Math.random() * 0xFFFFFF << 0).toString(16) + '000000').slice(0, 7)
+                        fill: this.randomColor()
                     },
                     key: keyValue + index
                 }))
             
             return (
-                <View key={keyValue}>
-                    <Text style={{ fontSize: 20 }}>
-                        Planned Tasks for {this.state.dates[idx]}
+                <View style={styles.pieChartContainer} key={keyValue}>
+                    <Text style={styles.pieChartTitle}>
+                        Planned Tasks for {this.state.dates[index]}
                     </Text>
                     <PieChart
-                        style={{ height: 200 }}
+                        style={styles.pieChart}
                         data={pieData}
                     />
                 </View>
@@ -80,7 +94,7 @@ export class PlannedTask extends React.Component {
         });
 
         return (
-            <View>
+            <View style={styles.container}>
                 { pieCharts }
             </View>
         );
