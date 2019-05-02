@@ -2,10 +2,11 @@ import React from "react";
 import {
   Text,
   View,
-  Image,
+  Platform,
   TextInput,
   TouchableHighlight,
-  Modal
+  Modal,
+  KeyboardAvoidingView
 } from "react-native";
 
 import { connect } from "react-redux";
@@ -21,24 +22,17 @@ export class RegisterScreen extends React.Component {
       name: "",
       email: "",
       password: "",
-      isTyping: false
     };
   }
 
   render() {
     return (
-      <View
-        style={
-          this.state.isTyping ? styles.containerCompressed : styles.container
-        }
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : ""}
+        enabled
+        style={styles.container}
       >
         <View style={styles.container}>
-          <View>
-            {/* <Image
-              source={require("../assets/stopwatch_vector.png")}
-              style={styles.image}
-            /> */}
-          </View>
           <Text style={styles.Title}> On Time </Text>
           <View >
             <View style={styles.textInputContainer}>
@@ -47,8 +41,6 @@ export class RegisterScreen extends React.Component {
                 onChangeText={name => this.setState({ name })}
                 editable={true}
                 maxLength={40}
-                onFocus={this.compressViews.bind(this)}
-                onBlur={this.decompressViews.bind(this)}
               />
             </View>
           </View>
@@ -59,8 +51,6 @@ export class RegisterScreen extends React.Component {
               editable={true}
               maxLength={40}
               keyboardType={"email-address"}
-              onFocus={this.compressViews.bind(this)}
-              onBlur={this.decompressViews.bind(this)}
             />
           </View>
           <View style={styles.textInputContainer}>
@@ -71,8 +61,6 @@ export class RegisterScreen extends React.Component {
               editable={true}
               maxLength={40}
               secureTextEntry
-              onFocus={this.compressViews.bind(this)}
-              onBlur={this.decompressViews.bind(this)}
             />
           </View>
           <TouchableHighlight
@@ -105,7 +93,7 @@ export class RegisterScreen extends React.Component {
           >
             <LoginScreen/>
           </Modal>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 
@@ -133,21 +121,6 @@ export class RegisterScreen extends React.Component {
     this.props.createUser(name, email, password);
   };
 
-  /**
-   * Compresses the screen elements when the user types. This allows
-   * the visual elements to fit the device screen when the keyboard is open.
-   */
-  compressViews = e => {
-    this.setState({ isTyping: true });
-  };
-
-  /**
-   * Decompresses the screen elements when the user stops typing. This returns
-   * the screen to its normal size.
-   */
-  decompressViews = e => {
-    this.setState({ isTyping: false });
-  };
 }
 
 // create map of  "store" object passed from Provider to this component's props

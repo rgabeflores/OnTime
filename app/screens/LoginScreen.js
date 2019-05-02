@@ -2,9 +2,10 @@ import React from "react";
 import {
   Text,
   View,
-  Image,
+  Platform,
   TextInput,
-  TouchableHighlight
+  TouchableHighlight,
+  KeyboardAvoidingView
 } from "react-native";
 
 import { connect } from "react-redux";
@@ -23,19 +24,12 @@ export class LoginScreen extends React.Component {
   }
   render() {
     return (
-      <View
-        style={
-          this.state.isTyping ? styles.containerCompressed : styles.container
-        }
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : ""}
+        enabled
+        style={styles.container}
       >
         <View style={styles.container}>
-          <View>
-            {/* <Image
-              source={require("../assets/stopwatch_vector.png")}
-              style={styles.image}
-            /> */}
-          </View>
-
           <Text style={styles.Title}> On Time </Text>
           <View style={styles.textInputContainer}>
             <TextInput
@@ -44,8 +38,8 @@ export class LoginScreen extends React.Component {
               editable={true}
               maxLength={40}
               keyboardType={"email-address"}
-              onFocus={this.compressViews.bind(this)}
-              onBlur={this.decompressViews.bind(this)}
+            // onFocus={this.compressViews.bind(this)}
+            // onBlur={this.decompressViews.bind(this)}
             />
           </View>
           <View style={styles.textInputContainer}>
@@ -56,8 +50,8 @@ export class LoginScreen extends React.Component {
               editable={true}
               maxLength={40}
               secureTextEntry
-              onFocus={this.compressViews.bind(this)}
-              onBlur={this.decompressViews.bind(this)}
+            // onFocus={this.compressViews.bind(this)}
+            // onBlur={this.decompressViews.bind(this)}
             />
           </View>
           <TouchableHighlight
@@ -82,7 +76,7 @@ export class LoginScreen extends React.Component {
             </TouchableHighlight>
           </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 
@@ -101,7 +95,7 @@ export class LoginScreen extends React.Component {
     let email = this.state.email;
     let password = this.state.password;
 
-    if(__DEV__){
+    if (__DEV__) {
       console.log("Email: " + email);
       console.log("Password: " + password);
     }
