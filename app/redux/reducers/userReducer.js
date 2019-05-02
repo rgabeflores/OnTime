@@ -79,16 +79,24 @@ export default function reducer( state = INITIAL_STATE, action){
             }
         }
         case ADD_TASK_FULFILLED: {
+            var date = action.position
+            var newTaskDates = state.user.account.taskDates;
+
+            var newTaskDate = newTaskDates[date];
+            if (newTaskDate == null) newTaskDate = [];
+            newTaskDate = newTaskDate.concat([action.payload])
+            newTaskDates[date] = newTaskDate;
+            
             return {
                 ...state, 
                 fetching: false, 
                 fetched: true,
                 user: {
                     account: {
-                        ...account,
-                        taskDates: [...taskDates, action.payload]
+                        ...state.user.account,
+                        taskDates: newTaskDates
                     }
-                }
+                },
             }
         }
         case REQUEST_REJECTED: {

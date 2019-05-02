@@ -1,17 +1,15 @@
 import React from "react";
 
 import {
-  AppRegistry,
   Text,
   View,
-  ListView,
   TouchableHighlight,
-  ScrollView,
   TextInput,
   Modal,
   Platform,
   DatePickerIOS,
-  DatePickerAndroid
+  DatePickerAndroid,
+  KeyboardAvoidingView
 } from "react-native";
 import styles from '../style'
 import { connect } from "react-redux";
@@ -25,9 +23,9 @@ export class AddTaskModal extends React.Component {
     super();
     var date = new Date();
     var dateString = this.formatDate(
-      date.getUTCFullYear(),
-      date.getUTCMonth() + 1,
-      date.getUTCDate(),
+      date.getFullYear(),
+      date.getMonth() + 1,
+      date.getDate(),
     )
     this.state = {
       title: "",
@@ -45,67 +43,24 @@ export class AddTaskModal extends React.Component {
 
   addTask = async () => {
     // Form Validation
-    if (this.state.title.length === 0 || this.state.hours.length === 0){
+    if (this.state.title.length === 0 || this.state.hours.length === 0) {
       alert("Title and hours can not be empty!");
       return false;
     }
+
     let newTask = {
+      name: this.state.title,
+      time: this.state.hours,
+      location: {
+        city: this.state.city,
+        state: this.state.state,
+        streetAddress: this.state.streetAddress,
+        zipcode: this.state.zipcode
+      }
+    };
 
-    }
-    // this.props.addTask(this.props.user.uid, newTask)
-
-    // user's database reference
-    var userRef = db.ref("/Accounts/" + this.props.user.uid + "/taskDates/" + this.state.yyyymmdd + "/");
-    var date
-    await userRef.once("value", snapshot => {
-      snapshot.forEach(childSnapshot => {
-        date = childSnapshot.val
-      })
-    })
-
-    // if the date has no tasks 
-    if (typeof date === 'undefined') {
-      // update the task list at index of 0 on that date
-      userRef.child(0).set({
-        time: this.state.hours,
-        name: this.state.title,
-        location: {
-          city: this.state.city,
-          state: this.state.state,
-          streetAddress: this.state.streetAddress,
-          zipcode: this.state.zipcode
-        }
-      });
-    } else {
-      // else, add an object at index (length) of the size of the list
-      var taskList;
-      await userRef.once("value", snapshot => {
-        taskList = snapshot.val();
-        return false;
-      })
-      //console.log(tasksInTheDay.length)
-      // update the task list at index of the length of the task array on that date
-      userRef.child(taskList.length).set({
-        time: this.state.hours,
-        name: this.state.title,
-        location: {
-          city: this.state.city,
-          state: this.state.state,
-          streetAddress: this.state.streetAddress,
-          zipcode: this.state.zipcode
-        }
-      })
-    }
-    
+    this.props.addTask(this.props.user.uid, this.state.yyyymmdd, newTask)
     this.props.toggleModal();
-    // // Redux
-    // this.props.addTask(
-    //   this.props.user.uid,
-    //   {
-    //     title: this.state.title,
-    //     hours: this.state.hours,
-    //     address: this.state.address
-    //   });
   };
   // close the modal (the form to add a task)
   _closeModal() {
@@ -115,31 +70,30 @@ export class AddTaskModal extends React.Component {
     this.setState({ selectDateModal: true });
   }
   _closeDateModal() {
-    var date = JSON.stringify(this.state.date)
-    date = date.substring(1, 11)
-    console.log(date)
-
-    this.setState({ selectDateModal: false, yyyymmdd: date });
+    var date = this.state.date;
+    // var date = JSON.stringify(this.state.date)
+    // date = date.substring(1, 11)
+    this.setState(prevState => ({
+      ...prevState,
+      selectDateModal: false,
+      yyyymmdd: this.formatDate(date.getFullYear(), date.getMonth() + 1, date.getDate())
+    }));
   }
 
-  formatDate(year, month, day){
-    var dateString;
-    if (month < 10) {
-      dateString = year + "-0" + month + "-" + day
-    }
-    else {
-      dateString = year + "-" + month + "-" + day
-    }
-    return dateString;
+  formatDate(year, month, day) {
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    return year + "-" + month + "-" + day;
   }
-  
+
   androidDatePick = async () => {
     try {
       const { action, year, month, day } = await DatePickerAndroid.open({ mode: 'spinner' })
       if (action !== DatePickerAndroid.dismissedAction) {
         var dateChosen = new Date(year, month, day);
         var dateString = this.formatDate(year, month, day);
-        
+
         this.setState({ yyyymmdd: dateString });
       }
     } catch ({ code, message }) {
@@ -147,7 +101,11 @@ export class AddTaskModal extends React.Component {
     }
   }
   setDate(newDate) {
-    this.setState({ date: newDate });
+    this.setState(prevState => ({
+      ...prevState,
+      date: newDate,
+      yyyymmdd: this.formatDate(newDate.getFullYear(), newDate.getMonth() + 1, newDate.getDate())
+    }));
   }
   render() {
     return (
@@ -156,9 +114,8 @@ export class AddTaskModal extends React.Component {
         visible={this.props.modalVisible}
         enableEmptySections={true}
         onRequestClose={this.props.toggleModal.bind(this)}
-      >
-
-        <View style={styles.modalContainer}>
+      > 
+        <KeyboardAvoidingView style={styles.modalContainer} behavoir="padding" enabled>
           <Text style={styles.smallTitle}>{this.state.yyyymmdd}</Text>
           <TextInput
             clearButtonMode="always"
@@ -177,6 +134,13 @@ export class AddTaskModal extends React.Component {
           <TextInput
             clearButtonMode="always"
             style={styles.textInputContainerTask}
+            placeholder="Task Street Address"
+            onChangeText={text => this.setState({ streetAddress: text })}
+            enableEmptySections={true}
+          />
+          <TextInput
+            clearButtonMode="always"
+            style={styles.textInputContainerTask}
             placeholder="Task City"
             onChangeText={text => this.setState({ city: text })}
             enableEmptySections={true}
@@ -188,15 +152,6 @@ export class AddTaskModal extends React.Component {
             onChangeText={text => this.setState({ state: text })}
             enableEmptySections={true}
           />
-
-          <TextInput
-            clearButtonMode="always"
-            style={styles.textInputContainerTask}
-            placeholder="Task Street Address"
-            onChangeText={text => this.setState({ streetAddress: text })}
-            enableEmptySections={true}
-          />
-
           <TextInput
             clearButtonMode="always"
             style={styles.textInputContainerTask}
@@ -257,7 +212,7 @@ export class AddTaskModal extends React.Component {
               <Text style={styles.buttonText}>Cancel</Text>
             </View>
           </TouchableHighlight>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
     );
   }
@@ -277,8 +232,8 @@ const mapDispatchToProps = (dispatch) => {
     toggleModal: () => {
       dispatch(toggleModal());
     },
-    addTask: (uid, task) => {
-      dispatch(addTask(uid, task));
+    addTask: (uid, date, newTask) => {
+      dispatch(addTask(uid, date, newTask));
     }
   }
 }

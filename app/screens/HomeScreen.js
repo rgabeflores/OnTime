@@ -1,11 +1,8 @@
 import React from "react";
-import { Agenda, calendarTheme } from "react-native-calendars";
+import { Agenda } from "react-native-calendars";
 import {
   Text,
   View,
-  TouchableHighlight,
-  Modal,
-  TextInput
 } from "react-native";
 
 import { connect } from "react-redux";
@@ -19,7 +16,7 @@ import HeaderButton from './components/HeaderButton';
 import styles from "./style";
 
 export class HomeScreen extends React.Component {
-  static navigationOptions = ({navigation}) => {
+  static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     return {
       title: 'Calendar',
@@ -46,18 +43,7 @@ export class HomeScreen extends React.Component {
         time: "",
       }
     }
-    
-  }
 
-  formatDate(year, month, day){
-    var dateString;
-    if (month < 10) {
-      dateString = year + "-0" + month + "-" + day
-    }
-    else {
-      dateString = year + "-" + month + "-" + day
-    }
-    return dateString;
   }
 
   componentDidMount() {
@@ -66,48 +52,48 @@ export class HomeScreen extends React.Component {
 
   renderItem(item) {
     return (
-      <TaskView item={item} action={this.toggleEditModal.bind(this)}/>
+      <TaskView item={item} action={this.toggleEditModal.bind(this)} />
     );
   }
-  renderEmptyDate(day){
-    return(
+  renderEmptyDate(day) {
+    return (
       <EmptyDateView />
     )
   }
-  renderEmptyData(day){
-    return(
+  renderEmptyData(day) {
+    return (
       <EmptyDateView>
-        <Text style={{...styles.smallTitle, color:"lightgrey", width: "95%"}}>Select a date to view your tasks.</Text>
+        <Text style={{ ...styles.smallTitle, color: "lightgrey", width: "95%" }}>Select a date to view your tasks.</Text>
       </EmptyDateView>
     )
   }
   rowHasChanged(r1, r2) {
     return r1.name !== r2.name;
   }
-  
-  toggleEditModal(task){
-    this.setState(prevState => ({...prevState, task}));
+
+  toggleEditModal(task) {
+    this.setState(prevState => ({ ...prevState, task }));
     this.props.toggleEditModal()
   }
   loadItems(day) {
-      for (let i = -15; i < 85; i++) {
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        const strTime = this.timeToString(time);
-        if (!this.props.user.account.taskDates[strTime]) {
-          this.props.user.account.taskDates[strTime] = [];
-        }
+    for (let i = -15; i < 85; i++) {
+      const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+      const strTime = this.timeToString(time);
+      if (!this.props.user.account.taskDates[strTime]) {
+        this.props.user.account.taskDates[strTime] = [];
       }
+    }
   }
   timeToString(time) {
     const date = new Date(time);
     return date.toISOString().split('T')[0];
   }
   render() {
-    return(
-      <View style={{width: "100%", height: "100%"}}>
+    return (
+      <View style={{ width: "100%", height: "100%" }}>
         <Agenda
           items={this.props.user.account.taskDates}
-          onDayPress={day => { console.log(day.dateString + " opened") }}
+          onDayPress={day => { console.log(day.dateString) }}
           selected={this.date}
           loadItemsForMonth={this.loadItems.bind(this)}
           renderItem={this.renderItem.bind(this)}
@@ -117,7 +103,7 @@ export class HomeScreen extends React.Component {
         />
 
         <AddTaskModal />
-        <EditTaskModal task={this.state.task}/>
+        <EditTaskModal task={this.state.task} />
       </View>
     );
   }
@@ -129,7 +115,8 @@ const mapStateToProps = store => {
   return {
     user: store.user.user, // store.user == reducer, store.user.user == reducer.state.user
     modalVisible: store.user.modalVisible,
-    editModalVisible: store.user.editModalVisible
+    editModalVisible: store.user.editModalVisible,
+    test: store.user.test
   };
 };
 

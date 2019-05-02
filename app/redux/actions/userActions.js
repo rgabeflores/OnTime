@@ -2,19 +2,19 @@
  * User Actions
  */
 
-import { 
+import {
     onLogin,
     onRegister,
     createTask,
     logout,
- } from '../util/util';
+} from '../util/util';
 import {
     setName,
     setEmail,
     setPassword,
     resetPassword,
     deleteAccount,
- } from '../../config/update';
+} from '../../config/update';
 import { db } from '../../config/db';
 
 import {
@@ -36,21 +36,21 @@ import {
     LOGOUT
 } from './types';
 
-export function toggleModal(){
+export function toggleModal() {
     return (dispatch) => {
-        dispatch({type: TOGGLE_MODAL});
+        dispatch({ type: TOGGLE_MODAL });
     }
 }
 
-export function toggleEditModal(){
+export function toggleEditModal() {
     return (dispatch) => {
-        dispatch({type: TOGGLE_EDIT_MODAL});
+        dispatch({ type: TOGGLE_EDIT_MODAL });
     }
 }
 
-export function setDay(){
+export function setDay() {
     return (dispatch) => {
-        dispatch({type: SET_DAY});
+        dispatch({ type: SET_DAY });
     }
 }
 
@@ -59,7 +59,7 @@ export function setDay(){
  * @param {String} email The user's email
  * @param {String} password The user's password
  */
-export function createUser(name, email, password){
+export function createUser(name, email, password) {
     return (dispatch) => {
         // Sets a "loading... " state
         dispatch({ type: CREATE_USER });
@@ -82,17 +82,17 @@ export function createUser(name, email, password){
                 userRef.set(account);
 
                 // Sets state to successfully loaded
-                dispatch({ 
-                    type: CREATE_USER_FULFILLED, 
+                dispatch({
+                    type: CREATE_USER_FULFILLED,
                     payload: {
                         uid: firebaseUser.user.uid, // Save UID
                         account: account // Save new account info
-                    } 
+                    }
                 });
             })
             .catch((err) => {
                 // Sets state to failure to load
-                dispatch({ type: REQUEST_REJECTED, payload: err});
+                dispatch({ type: REQUEST_REJECTED, payload: err });
             })
     }
 }
@@ -102,47 +102,47 @@ export function createUser(name, email, password){
  * @param {String} email The user's email
  * @param {String} password The user's password
  */
-export function fetchUser(email, password){
+export function fetchUser(email, password) {
     return (dispatch) => {
         // Sets a "loading... " state
         dispatch({ type: FETCH_USER });
 
         // Calls Firebase function
-        onLogin(email,password)
+        onLogin(email, password)
             .then((firebaseUser) => {
-                let userRef = db.ref('Accounts/'+firebaseUser.user.uid);
+                let userRef = db.ref('Accounts/' + firebaseUser.user.uid);
                 // Load the user account info into state
-                userRef.once('value') 
-                    .then((dataSnapshot) =>{
+                userRef.once('value')
+                    .then((dataSnapshot) => {
                         dispatch({
                             type: FETCH_USER_FULFILLED, // Sets state to successfully loaded
-                            payload: { 
+                            payload: {
                                 uid: firebaseUser.user.uid, // Save UID
                                 account: dataSnapshot.val(), // Save account info
                             }
                         });
-                        dispatch({type: TOGGLE_MODAL})
+                        dispatch({ type: TOGGLE_MODAL })
                     });
             })
             .catch((err) => {
                 // Sets state to failure to load
-                dispatch({ type: REQUEST_REJECTED, payload: err});
+                dispatch({ type: REQUEST_REJECTED, payload: err });
             })
     }
 }
 
-export function addTask(uid, date, tasks, newTask){
+export function addTask(uid, date, newTask) {
     return (dispatch) => {
         // Sets a "loading... " state
         dispatch({ type: ADD_TASK });
 
-        createTask(uid, date, tasks, newTask)
+        createTask(uid, date, newTask)
             .then((response) => {
-                dispatch({ type: ADD_TASK_FULFILLED, payload: newTask });
+                dispatch({ type: ADD_TASK_FULFILLED, payload: newTask, position: date });
             })
             .catch((err) => {
                 // Sets state to failure to load
-                dispatch({ type: REQUEST_REJECTED, payload: err});
+                dispatch({ type: REQUEST_REJECTED, payload: err });
             })
     }
 }
@@ -150,11 +150,11 @@ export function addTask(uid, date, tasks, newTask){
 /**
  * Log out the user
  */
-export function logoutUser(){
+export function logoutUser() {
     return (dispatch) => {
         logout()
             .then(() => {
-                dispatch({type: LOGOUT });
+                dispatch({ type: LOGOUT });
             })
     }
 }
@@ -163,14 +163,14 @@ export function logoutUser(){
     TO-DO: These methods need to be implemented
 */
 
-export function setUserEmail(email){
+export function setUserEmail(email) {
     return (dispatch) => {
         dispatch({ type: SET_USER_EMAIL });
 
 
     }
 }
-export function setUserName(name){
+export function setUserName(name) {
     return (dispatch) => {
         dispatch({ type: SET_USER_NAME });
 
@@ -188,6 +188,6 @@ export function setUserName(name){
                 })
             })
     }
-    
+
 }
 
