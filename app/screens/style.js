@@ -31,13 +31,6 @@ module.exports = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  containerCompressed: {
-    flex: 1,
-    marginBottom: "45%",
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "flex-start"
-  },
   textInputContainer: {
     borderColor: SECOND_TEXT_COLOR,
     borderWidth: 1,
@@ -73,8 +66,13 @@ module.exports = StyleSheet.create({
     color: MAIN_TEXT_COLOR,
     fontSize: 32,
     textAlign: "center",
-  }
-  ,
+  },
+  text:{
+    width: "100%",
+    fontSize: 18,
+    color: MAIN_TEXT_COLOR,
+    textAlign: "left"
+  },
   image: {
     width: 150,
     height: 150
@@ -196,11 +194,50 @@ module.exports = StyleSheet.create({
   },
   // For TaskScreen
   taskContainer: {
+    flex: 1,
     textAlign: "left",
-    borderBottomWidth: 5,
-    borderBottomColor: "lightblue",
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    maxWidth: "100%",
+    padding: 5,
+    margin: 5,
+    borderRadius: 5,
+    borderColor: SECOND_TEXT_COLOR,
+    backgroundColor: "white",
+    ...DEFAULT_SHADOW_SETTINGS,
+    shadowColor: MAIN_COLOR,
+    shadowOpacity: 0.15,
+  },
+  taskTextContainer: {
+    textShadowOffset: {width: 0, height: 0},
+    textShadowColor: "white",
+    textShadowRadius: 0,
+  },
+  taskButtonContainer:{
+    position: "absolute",
+    right: 5,
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  taskTitle:{
+    fontSize: 22,
+    fontWeight: "800",
+    color: MAIN_COLOR
+  },
+  taskDate: {
+    fontSize: 18,
+    fontWeight: "600",
+    fontStyle: "italic",
+    color: SECOND_TEXT_COLOR
+  },
+  taskTime:{
+    fontSize: 16,
+    color: MAIN_TEXT_COLOR    
+  },
+  taskAddress:{
+    fontSize: 14,
+    color: MAIN_TEXT_COLOR
   },
   // For HomeScreen
   calendarEmptyTaskContainer:{

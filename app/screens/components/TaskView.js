@@ -20,7 +20,6 @@ export default TaskView = (props) => {
     }
     if(minutes === 0) minutes = "00";
 
-    // TO-DO: Use button to trigger modal for additional information?
     return (
         <View style={styles.calendarTaskContainer}>
             <View>
