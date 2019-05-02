@@ -104,7 +104,7 @@ export class TasksScreen extends React.Component {
   showRemoveTask = e => {
     this.setState(prevState => ({
       ...prevState,
-      deleteMode: !this.state.deleteMode
+      deleteMode: !prevState.deleteMode
     }));
   };
   
