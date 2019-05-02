@@ -29,29 +29,43 @@ export class TimerScreen extends React.Component {
 
   //Toggles timer between start and stop functions
   toggleTimer() {
-    this.setState({ timerStart: !this.state.timerStart, timerReset: false });
+    this.setState(prevState => ({
+        ...prevState,
+        timerStart: !this.state.timerStart,
+        timerReset: false 
+      }));
   }
 
   //Resets timer to set value
   resetTimer() {
-    this.setState({ timerStart: false, timerReset: true });
+    this.setState(prevState => ({
+        ...prevState,
+        timerStart: false,
+        timerReset: true 
+      }));
   }
 
   //Toggles stopwatch between start and stop fuctions
   toggleStopwatch() {
-    this.setState({
+    this.setState(prevState => ({
+      ...prevState,
       stopwatchStart: !this.state.stopwatchStart,
-      stopwatchReset: false
-    });
+      // stopwatchReset: false
+    }));
   }
 
   //Resets stopwatch back to zero
   resetStopwatch() {
-    this.setState({ stopwatchStart: false, stopwatchReset: true });
+    this.setState(prevState => ({ 
+      ...prevState,
+      stopwatchStart: false,
+      stopwatchReset: true 
+    }));
   }
 
   getFormattedTime(time) {
     this.currentTime = time;
+    return time;
   }
 
   render() {
@@ -120,19 +134,6 @@ export class TimerScreen extends React.Component {
 }
 //style for timer screen
 const options = {
-  // container: {
-  //   backgroundColor: "lightblue",
-  //   padding: 5,
-  //   borderRadius: 5,
-  //   width: 220,
-  //   position: "relative",
-  //   left: 50
-  // },
-  // text: {
-  //   fontSize: 30,
-  //   color: '#FFF',
-  //   textAlign: "center",
-  // },
   container: styles.stopwatchContainer,
   text: styles.stopwatchText
 }
