@@ -1,7 +1,7 @@
 import React from "react";
-import { Text, TextInput, SafeAreaView, View } from "react-native";
-import { Stopwatch, Timer } from "react-native-stopwatch-timer";
 import { TouchableHighlight } from "react-native";
+import { Text, SafeAreaView, View } from "react-native";
+import { Stopwatch, Timer } from "react-native-stopwatch-timer";
 
 import { connect } from "react-redux";
 
