@@ -101,19 +101,21 @@ export default createMaterialTopTabNavigator(
       showLabel: true,
       showIcon: true,
       inactiveTintColor: "grey",
-      activeTintColor: "lightblue",
+      activeTintColor: "#00adf5",
       indicatorStyle: {
-        backgroundColor: "#2f95dc",
+        backgroundColor: "#00adf5",
         paddingVertical: 2
       },
       style: {
         backgroundColor: "white",
         paddingVertical: 10,
-        borderTopWidth: 0.5,
-        borderTopColor: "lightgrey"
+        shadowOffset: { width: 1, height: 1 },
+        shadowRadius: 2,
+        shadowColor: "lightgrey",
+        shadowOpacity: 0.75,
       },
       tabStyle: {
-        marginTop: Platform.OS == "ios" ? 0 : 0,
+        marginTop: 0,
         height: 40
       },
       iconStyle: {
