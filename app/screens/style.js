@@ -377,6 +377,19 @@ module.exports = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: SECOND_TEXT_COLOR,
   },
+  // Settings Styles
+  settingsHeader:{
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+    backgroundColor: "white",
+    ...DEFAULT_SHADOW_SETTINGS,
+  },
+  settingsRowText: {
+    fontSize: 18,
+    fontWeight: "500",
+    color: MAIN_TEXT_COLOR
+  },
   // Test Code
   settingsRow: {
     flexDirection: "row",

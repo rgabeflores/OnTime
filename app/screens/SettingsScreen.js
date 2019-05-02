@@ -1,14 +1,10 @@
 import React from "react";
-import { Text, View, TouchableHighlight,Linking, Alert, Switch } from "react-native";
+import { Text, View, Linking, Alert } from "react-native";
 import { Avatar } from "react-native-elements";
 import SettingsList from "react-native-settings-list";
-import firebase from "firebase";
-import { db } from "../config/db.js";
+
 import { connect } from "react-redux";
-
 import { logoutUser } from "../redux/actions/userActions";
-
-import SettingsRow from './components/SettingsRow';
 
 import styles from "./style";
 
@@ -21,78 +17,66 @@ export class SettingsScreen extends React.Component {
     this.onValueChange = this.onValueChange.bind(this);
     this.state = { switchValue: false };
   }
+  AsyncAlert() {
+    return new Promise((resolve, reject) => {
+      Alert.alert(
+        'Logout',
+        'Are you sure you want to logout?',
+        [
+          { text: "Logout", onPress: () => (resolve(true)) },
+          { text: "Cancel", onPress: () => (resolve(false)) }
+        ],
+        { cancelable: false }
+      )
+    })
+  }
 
-  logout = () => {
-    // Alert.alert(
-    //   'Alert Title',
-    //   'My Alert Msg',
-    //   [
-    //     {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-    //     {
-    //       text: 'Cancel',
-    //       onPress: () => console.log('Cancel Pressed'),
-    //       style: 'cancel',
-    //     },
-    //     {text: 'OK', onPress: () => console.log('OK Pressed')},
-    //   ],
-    //   {cancelable: false},
-    // );
+  logout() {
+    if (this.AsyncAlert()) this.props.logoutUser();
 
-    this.props.logoutUser();
+    return false;
   };
 
   render() {
     return (
       <View>
-          <View style={ styles.settingsHeader }>
-            <Avatar
-              size={"large"}
-              overlayContainerStyle={{ backgroundColor: '#00adf5'}}
-              rounded
-              title={this.props.user.account.accountInfo.name[0]}
+        <View style={styles.settingsHeader}>
+          <Avatar
+            size={"large"}
+            overlayContainerStyle={{ backgroundColor: '#00adf5' }}
+            rounded
+            title={this.props.user.account.accountInfo.name[0]}
+          />
+          <Text style={styles.smallTitle}>
+            {this.props.user.account.accountInfo.name}
+          </Text>
+        </View>
+        <View style={{ height: "65%" }}>
+          <SettingsList
+            borderColor={"lightgrey"}
+            backgroundColor={"white"}
+            underlayColor={"#00adf5"}
+            defaultItemSize={100}
+            defaultTitleStyle={styles.settingsRowText}
+          >
+            <SettingsList.Item
+              title="Push Notifications"
+              hasSwitch={true}
+              switchState={this.state.switchValue}
+              switchOnValueChange={this.onValueChange}
+              switchProps={{ trackColor: { false: "lightgrey", true: "#00adf5" } }}
+              hasNavArrow={false}
             />
-            <Text style={styles.smallTitle}>
-              {this.props.user.account.accountInfo.name}
-            </Text>
-          </View>
-          <View style={{ height: "65%" }}>
-            {/* <SettingsRow 
-              title={"Push Notifications"}
-              isSwitch
-              action={this.onValueChange.bind(this)}
-              value={this.state.switchValue}
+            <SettingsList.Item
+              title="Contact Us"
+              onPress={() => { Linking.openURL('https://github.com/rgabeflores/OnTime') }}
             />
-            <SettingsRow 
-              title={"Contact Us"}
-              action={()=>{Linking.openURL('https://github.com/rgabeflores/OnTime')}}
+            <SettingsList.Item
+              title="Logout"
+              onPress={this.logout.bind(this)}
             />
-            <SettingsRow 
-              title={"Logout"}
-              action={this.logout.bind(this)}
-            /> */}
-
-            <SettingsList
-              backgroundColor={"white"}
-              defaultItemSize={100}
-              >
-                <SettingsList.Item
-                  hasNavArrow={false}
-                  switchState={this.state.switchValue}
-                  switchOnValueChange={this.onValueChange}
-                  hasSwitch={true}
-                  switchProps={{ trackColor: {false: "lightgrey", true: "#00adf5"} }}
-                  title="Push Notifications"
-                />
-                <SettingsList.Item
-                  title="Contact Us"
-                  onPress={()=>{Linking.openURL('https://github.com/rgabeflores/OnTime')}}
-                />
-                <SettingsList.Item 
-                  onPress={this.logout.bind(this)}
-                  title="Logout"
-                />
-            </SettingsList>
-          </View>
+          </SettingsList>
+        </View>
       </View>
     );
   }
