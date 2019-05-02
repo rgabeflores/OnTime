@@ -94,7 +94,7 @@ export class PlannedTask extends React.Component {
         });
 
         return (
-            <View style={styles.container}>
+            <View style={{...styles.container, marginTop: 5}}>
                 { pieCharts }
             </View>
         );

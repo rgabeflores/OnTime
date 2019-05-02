@@ -11,11 +11,11 @@ import {
   DatePickerAndroid,
   KeyboardAvoidingView
 } from "react-native";
-import styles from '../style'
+
 import { connect } from "react-redux";
 import { toggleModal, addTask } from "../../redux/actions/userActions";
 
-import { db } from "../../config/db"
+import styles from '../style';
 
 export class AddTaskModal extends React.Component {
   // constructor of the class, this stores the data(what it displays) for TaskScreen

@@ -1,17 +1,10 @@
 import React from "react";
 
 import {
-  AppRegistry,
   Text,
   View,
-  ListView,
   TouchableHighlight,
-  ScrollView,
-  TextInput,
   Modal,
-  Platform,
-  DatePickerIOS,
-  DatePickerAndroid
 } from "react-native";
 import styles from '../style'
 import { connect } from "react-redux";

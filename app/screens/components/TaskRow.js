@@ -23,7 +23,7 @@ export default TaskRow = (props) => {
         <Text style={styles.taskTime}>
           Time: {props.task.hours}
         </Text>
-        <Text style={styles.text}>
+        <Text style={styles.taskAddress}>
           {
             "Location: \n" + 
             props.task.location.streetAddress + '\n' +
