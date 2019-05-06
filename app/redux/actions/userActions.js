@@ -2,36 +2,42 @@
  * User Actions
  */
 
-import { onLogin, onRegister, createTask } from "../util/util";
+import { 
+    onLogin,
+    onRegister,
+    createTask,
+    logout,
+ } from '../util/util';
 import {
-  setName,
-  setEmail,
-  setPassword,
-  resetPassword,
-  deleteAccount
-} from "../../config/update";
-import { db } from "../../config/db";
+    setName,
+    setEmail,
+    setPassword,
+    resetPassword,
+    deleteAccount,
+ } from '../../config/update';
+import { db } from '../../config/db';
 
 import {
-  TOGGLE_MODAL,
-  CREATE_USER,
-  CREATE_USER_FULFILLED,
-  FETCH_USER,
-  FETCH_USER_FULFILLED,
-  REQUEST_REJECTED,
-  SET_USER_EMAIL,
-  SET_USER_EMAIL_FULFILLED,
-  SET_USER_NAME,
-  SET_USER_NAME_FULFILLED,
-  NEW_ACCOUNT,
-  ADD_TASK,
-  ADD_TASK_FULFILLED
-} from "./types";
+    TOGGLE_MODAL,
+    CREATE_USER,
+    CREATE_USER_FULFILLED,
+    FETCH_USER,
+    FETCH_USER_FULFILLED,
+    REQUEST_REJECTED,
+    SET_USER_EMAIL,
+    SET_USER_EMAIL_FULFILLED,
+    SET_USER_NAME,
+    SET_USER_NAME_FULFILLED,
+    NEW_ACCOUNT,
+    ADD_TASK,
+    ADD_TASK_FULFILLED,
+    LOGOUT
+} from './types';
 
-export function toggleModal() {
-  return dispatch => {
-    dispatch({ type: TOGGLE_MODAL });
-  };
+export function toggleModal(){
+    return (dispatch) => {
+        dispatch({type: TOGGLE_MODAL})
+    }
 }
 
 /**
@@ -110,20 +116,20 @@ export function fetchUser(email, password) {
   };
 }
 
-export function addTask(uid, task) {
-  return dispatch => {
-    // Sets a "loading... " state
-    dispatch({ type: ADD_TASK });
+export function addTask(uid, date, tasks, newTask){
+    return (dispatch) => {
+        // Sets a "loading... " state
+        dispatch({ type: ADD_TASK });
 
-    createTask(uid, task)
-      .then(response => {
-        dispatch({ type: ADD_TASK_FULFILLED, payload: task });
-      })
-      .catch(err => {
-        // Sets state to failure to load
-        dispatch({ type: REQUEST_REJECTED, payload: err });
-      });
-  };
+        createTask(uid, date, tasks, newTask)
+            .then((response) => {
+                dispatch({ type: ADD_TASK_FULFILLED, payload: newTask });
+            })
+            .catch((err) => {
+                // Sets state to failure to load
+                dispatch({ type: REQUEST_REJECTED, payload: err});
+            })
+    }
 }
 
 /*
@@ -160,3 +166,35 @@ export function setUserName(uid, name) {
       });
   };
 }
+<<<<<<< HEAD
+=======
+export function setUserName(name){
+    return (dispatch) => {
+        dispatch({ type: SET_USER_NAME });
+
+        setName(name)
+            .then((response) => {
+                dispatch({
+                    type: SET_USER_NAME_FULFILLED,
+                    payload: name
+                })
+            })
+            .catch((err) => {
+                dispatch({
+                    type: REQUEST_REJECTED,
+                    payload: err
+                })
+            })
+    }
+    
+}
+
+export function logoutUser(){
+    return (dispatch) => {
+        logout()
+            .then(() => {
+                dispatch({type: LOGOUT });
+            })
+    }
+}
+>>>>>>> e88a816bfc9e19d6734b6bae4cfcd93f2cd0d5d3

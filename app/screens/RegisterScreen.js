@@ -34,10 +34,10 @@ export class RegisterScreen extends React.Component {
       >
         <View style={styles.container}>
           <View>
-            <Image
+            {/* <Image
               source={require("../assets/stopwatch_vector.png")}
               style={styles.image}
-            />
+            /> */}
           </View>
           <Text style={styles.Title}> On Time </Text>
           <View >

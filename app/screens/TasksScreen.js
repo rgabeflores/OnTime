@@ -29,7 +29,7 @@ export class TasksScreen extends React.Component {
   static navigationOptions = {
     title: "Tasks"
   };
-  
+
   // constructor of the class, this stores the data(what it displays) for TaskScreen
   constructor() {
     super();
@@ -43,11 +43,15 @@ export class TasksScreen extends React.Component {
       title: "",
       hours: "",
       address: "",
+      city: "",
+      state: "",
+      streetAddress: "",
+      zipcode: "",
       yyyymmdd: "",
       date: new Date(),
       selectDateModal: false
     };
-    
+
   }
 
   componentDidMount() {
@@ -55,35 +59,36 @@ export class TasksScreen extends React.Component {
   }
   // get the items from the list view
   getItems = async () => {
-    //console.log(this.props.user);
-    var userRef = db.ref("Accounts/" + this.props.user.uid+"/tasks/");
+    // user's database reference
+    var userRef = db.ref("/Accounts/" + this.props.user.uid + "/taskDates/" + this.state.yyyymmdd + "/");
     let data = [];
     userRef.once("value", snapshot => {
       snapshot.forEach(childSnapshot => {
-        var taskName = childSnapshot.key; // "date"
-        var taskDetails = childSnapshot.val();
-        var temp = {
-          title: taskName,
-          hours: taskDetails.hours,
-          address: taskDetails.address
-        };
-        data.push(temp);
+        var date = childSnapshot.key; // the key is the date (?)
+        var taskList = childSnapshot.val(); // 
+        taskList.forEach(task => {
+          var temp = {
+            date: date,
+            title: task.name,
+            hours: task.time,
+            address: task.location.streetAddress + "\n\t\t\t" + task.location.city + ", " + task.location.state + " " + task.location.zipcode,
+          };
+          data.push(temp);
+        })
         return false;
       });
-      // console.log(data);
       this.setState({
         tasks: data,
         taskDataSource: this.state.taskDataSource.cloneWithRows(data)
       });
     });
-    // update the view
   };
-  
+
   // when the user presses the remove task button
   updateView() {
     this.setState({ taskDataSource: this.state.taskDataSource.cloneWithRows(this.state.tasks) });
   }
-  
+
   _closeModal() {
     setState({
       modalVisible: false
@@ -100,76 +105,151 @@ export class TasksScreen extends React.Component {
       deleteMode: !this.state.deleteMode
     }));
   };
-  addTask = e => {
+  addTask = async () => {
     // user's database reference
-    var userRef = db.ref("/Accounts/" + this.props.user.uid + "/tasks/");
-    if (this.state.title.length === 0) {
-      alert("Title can not be empty!");
+    var userRef = db.ref("/Accounts/" + this.props.user.uid + "/taskDates/" + this.state.yyyymmdd + "/");
+    var date
+    await userRef.once("value", snapshot => {
+      snapshot.forEach(childSnapshot => {
+        date = childSnapshot.val
+      })
+    })
+    if (this.state.title.length === 0 || this.state.hours.length === 0) {
+      alert("Title and hours can not be empty!");
     } else {
-      // update the database
-      userRef.child(this.state.title).set({
-        hours: this.state.hours,
-        address: this.state.address
-      });
+      // if the date has no tasks 
+      if (typeof date === 'undefined') {
+        // update the task list at index of 0 on that date
+        userRef.child(0).set({
+          time: this.state.hours,
+          name: this.state.title,
+          location: {
+            city: this.state.city,
+            state: this.state.state,
+            streetAddress: this.state.streetAddress,
+            zipcode: this.state.zipcode
+          }
+        });
+      } else { // else, add an object at index (length) of the size of the list
+        var data = [];
+        // fetch data from db
+        await userRef.once("value", snapshot => {
+          var date = snapshot.key; // "date"
+          var taskList = snapshot.val();
+          taskList.forEach(task => {
+            var temp = {
+              date: date,
+              title: task.name,
+              hours: task.time,
+              address: task.location.streetAddress + "\n\t\t\t" + task.location.city + ", " + task.location.state + " " + task.location.zipcode,
+            };
+            data.push(temp);
+          })
+          return false;
+        })
+        //console.log(tasksInTheDay.length)
+        // update the task list at index of the length of the task array on that date
+        userRef.child(data.length).set({
+          time: this.state.hours,
+          name: this.state.title,
+          location: {
+            city: this.state.city,
+            state: this.state.state,
+            streetAddress: this.state.streetAddress,
+            zipcode: this.state.zipcode
+          }
+        })
+      }
       this.setState(prevState => ({
         // clear the current inputs
         title: "",
         hours: "",
         address: "",
+        yyyymmdd: "",
         // add a new set of tasks
         tasks: [
           ...prevState.tasks,
           {
+            date: this.state.yyyymmdd,
             title: this.state.title,
             hours: this.state.hours,
-            address: this.state.address
+            address: this.state.streetAddress + "\n\t\t\t" + this.state.city
+              + ", " + this.state.state + " " + this.state.zipcode,
           }
         ],
         taskDataSource: this.state.taskDataSource.cloneWithRows([
           ...prevState.tasks,
           {
+            date: this.state.yyyymmdd,
             title: this.state.title,
             hours: this.state.hours,
-            address: this.state.address
+            address: this.state.streetAddress + "\n\t\t\t" + this.state.city
+              + ", " + this.state.state + " " + this.state.zipcode,
           }
         ]),
         // remove the modal
         modalVisible: false
       }));
     }
-    // Redux
-    this.props.addTask(
-      this.props.user.uid,
-      {
-        title: this.state.title,
-        hours: this.state.hours,
-        address: this.state.address 
-      });
+    // // Redux
+    // this.props.addTask(
+    //   this.props.user.uid,
+    //   {
+    //     title: this.state.title,
+    //     hours: this.state.hours,
+    //     address: this.state.address
+    //   });
   };
-  removeTask = async(task) =>{
-    var userRef = db.ref("Accounts/" + this.props.user.uid+ "/tasks/");
-    var deleteReference = db.ref("Accounts/" + this.props.user.uid+ "/tasks/"+task.title);
-    deleteReference.remove();
-    let data = [];
-    userRef.once("value", snapshot => {
-      snapshot.forEach(childSnapshot => {
-        var taskName = childSnapshot.key; // "task name"
-        var taskDetails = childSnapshot.val();
-
+  removeTask = async (task) => {
+    var userRef = db.ref("/Accounts/" + this.props.user.uid + "/taskDates/" + task.date + "/");
+    var data = [];
+    // fetch data from db
+    await userRef.once("value", snapshot => {
+      var date = snapshot.key; // "date"
+      var taskList = snapshot.val();
+      taskList.forEach(task => {
         var temp = {
-          title: taskName,
-          hours: taskDetails.hours,
-          address: taskDetails.address
+          date: date,
+          title: task.name,
+          hours: task.time,
+          address: task.location.streetAddress + "\n\t\t\t" + task.location.city + ", " + task.location.state + " " + task.location.zipcode,
         };
         data.push(temp);
-        return false;
-      });
-      console.log(data);
-      this.setState({
-        tasks: data,
-        taskDataSource: this.state.taskDataSource.cloneWithRows(data)
-      });
+      })
+      return false;
+    })
+    // look for the index of the task to be deleted
+    // assume key is equal to task name and time
+    var index = -1
+    var lookForTask = data.find(function (item, i) {
+      if (item.name === task.name && item.time == task.time) {
+        index = i;
+        return i;
+      }
     });
+    var localIndex = -1
+    var lookForTaskLocal = this.state.tasks.find(function (item, i){
+      if(item === task){
+        localIndex = i
+        return i;
+      }
+    })
+    // if the index is found, remove the said task
+    if (index !== -1) {
+      var deleteReference = db.ref("/Accounts/" + this.props.user.uid + "/taskDates/" + task.date + "/" + index);
+      await deleteReference.remove();
+      // update the view
+      var taskListNew = this.state.tasks
+      var removedTaskArray = taskListNew.splice(localIndex, 1)
+      console.log(localIndex);
+      this.setState(prevState => ({
+        // remove the task at the local index
+        tasks: taskListNew,
+        taskDataSource: this.state.taskDataSource.cloneWithRows(taskListNew),
+      }));
+    } else { // error handling
+      alert("The Task To Be Removed Cannot Be Found! Look at TasksScreen.js")
+    }
   }
   // close the modal (the form to add a task)
   _closeModal() {
@@ -186,6 +266,27 @@ export class TasksScreen extends React.Component {
     console.log(date)
 
     this.setState({ selectDateModal: false, yyyymmdd: date });
+  }
+  androidDatePick = async () => {
+    try {
+      const { action, year, month, day } = await DatePickerAndroid.open({ mode: 'spinner' })
+      if (action !== DatePickerAndroid.dismissedAction) {
+        var dateChosen = new Date(year, month, day)
+        if (month < 10) {
+          var dateString = year + "-0" + month + "-" + day
+          this.setState({ yyyymmdd: dateString })
+        }
+        else {
+          var dateString = year + "-" + month + "-" + day
+          this.setState({ yyyymmdd: dateString })
+        }
+
+        console.log(dateString)
+        // returned undefined, try fixing it tomorrow TODO
+      }
+    } catch ({ code, message }) {
+      console.warn('Cannot open date picker', message)
+    }
   }
   setDate(newDate) {
     this.setState({ date: newDate });
@@ -210,7 +311,7 @@ export class TasksScreen extends React.Component {
             {/* NOTE: ListView is deprecated */}
             <ListView
               dataSource={this.state.taskDataSource}
-              renderRow={ (task) => { return <TaskRow task={task} press={this.removeTask.bind(this)} deleteMode={this.state.deleteMode} />} }
+              renderRow={(task) => { return <TaskRow task={task} press={this.removeTask.bind(this)} deleteMode={this.state.deleteMode} /> }}
             />
             {/* Add a Task button */}
             <TouchableHighlight
@@ -258,16 +359,39 @@ export class TasksScreen extends React.Component {
               <TextInput
                 clearButtonMode="always"
                 style={otherStyles.textInputContainerTask}
-                placeholder="Task Address"
-                onChangeText={text => this.setState({ address: text })}
+                placeholder="Task City"
+                onChangeText={text => this.setState({ city: text })}
+                enableEmptySections={true}
+              />
+              <TextInput
+                clearButtonMode="always"
+                style={otherStyles.textInputContainerTask}
+                placeholder="Task State"
+                onChangeText={text => this.setState({ state: text })}
+                enableEmptySections={true}
+              />
+
+              <TextInput
+                clearButtonMode="always"
+                style={otherStyles.textInputContainerTask}
+                placeholder="Task Street Address"
+                onChangeText={text => this.setState({ streetAddress: text })}
+                enableEmptySections={true}
+              />
+
+              <TextInput
+                clearButtonMode="always"
+                style={otherStyles.textInputContainerTask}
+                placeholder="Task Zipcode"
+                onChangeText={text => this.setState({ zipcode: text })}
                 enableEmptySections={true}
               />
               {/* Choose a date */}
-              
+
               <Text>Chosen Date: {this.state.yyyymmdd}</Text>
               <TouchableHighlight
                 style={otherStyles.buttonContainer}
-                onPress={this._openDateModal.bind(this)}
+                onPress={Platform.OS === "ios" ? this._openDateModal.bind(this) : this.androidDatePick.bind(this)}
                 underlayColor="white"
               >
                 <View style={otherStyles.button}>
@@ -281,21 +405,22 @@ export class TasksScreen extends React.Component {
                 onRequestClose={this._closeModal.bind(this)}
               >
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                  <DatePickerIOS
-                    mode='date'
-                    date={this.state.date}
-                    onDateChange={this.setDate.bind(this)}
-                  />
-
-                  <TouchableHighlight
-                    style={otherStyles.buttonContainer}
-                    onPress={this._closeDateModal.bind(this)}
-                    underlayColor="white"
-                  >
-                    <View style={otherStyles.button}>
-                      <Text style={otherStyles.buttonText}>Choose Date</Text>
-                    </View>
-                  </TouchableHighlight>
+                  <View style={Platform.OS === "ios" ? { flex: 1, justifyContent: 'center' } : { flex: 'None' }}>
+                    <DatePickerIOS
+                      mode='date'
+                      date={this.state.date}
+                      onDateChange={this.setDate.bind(this)}
+                    />
+                    <TouchableHighlight
+                      style={otherStyles.buttonContainer}
+                      onPress={this._closeDateModal.bind(this)}
+                      underlayColor="white"
+                    >
+                      <View style={otherStyles.button}>
+                        <Text style={otherStyles.buttonText}>Choose Date</Text>
+                      </View>
+                    </TouchableHighlight>
+                  </View>
                 </View>
               </Modal>
               <TouchableHighlight

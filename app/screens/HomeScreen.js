@@ -11,6 +11,8 @@ import {
 import { connect } from "react-redux";
 import { toggleModal, addTask } from "../redux/actions/userActions";
 
+import AddTaskModal from './components/AddTaskModal';
+import EmptyDateView from './components/EmptyDateView';
 import TaskView from './components/TaskView';
 import HeaderButton from './components/HeaderButton';
 import styles from "./style";
@@ -52,18 +54,9 @@ export class HomeScreen extends React.Component {
       <TaskView item={item}/>
     );
   }
-  renderEmptyDate() {
-    return (
-      <View>
-        <Text>Nothing saved for this date</Text>
-      </View>
-    );
-  }
-  renderEmptyData(){
+  renderEmptyDate(day){
     return(
-      <View>
-        <Text>No tasks scheduled for this day</Text>
-      </View>
+      <EmptyDateView />
     )
   }
   rowHasChanged(r1, r2) {
@@ -98,7 +91,35 @@ export class HomeScreen extends React.Component {
         address: this.state.address 
       });
   };
-
+  loadItems(day) {
+    // setTimeout(() => {
+      for (let i = -15; i < 85; i++) {
+        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+        const strTime = this.timeToString(time);
+        if (!this.props.user.account.taskDates[strTime]) {
+          this.props.user.account.taskDates[strTime] = [];
+          // const numItems = Math.floor(Math.random() * 5);
+          // for (let j = 0; j < numItems; j++) {
+          //   items[strTime].push({
+          //     name: 'Item for ' + strTime,
+          //     height: Math.max(50, Math.floor(Math.random() * 150))
+          //   });
+          // }
+        }
+      }
+      // //console.log(items);
+      // const newItems = {};
+      // Object.keys(items).forEach(key => {newItems[key] = items[key];});
+      // this.setState({
+      //   items: newItems
+      // });
+    // }, 1000);
+    // console.log(`Load Items for ${day.year}-${day.month}`);
+  }
+  timeToString(time) {
+    const date = new Date(time);
+    return date.toISOString().split('T')[0];
+  }
   render() {
     // if(__DEV__) console.log(this.props.user.account.accountInfo.name);
     console.log(this.props.modalVisible);
@@ -111,6 +132,7 @@ export class HomeScreen extends React.Component {
           onDayPress={day => { console.log(day.dateString + " opened") }}
           // initially selected day
           selected={this.date}
+          loadItemsForMonth={this.loadItems.bind(this)}
           // specify how each item should be rendered in agenda
           renderItem={this.renderItem.bind(this)}
           // specify how each date should be rendered. day can be undefined if the item is not first in that day.
@@ -118,109 +140,12 @@ export class HomeScreen extends React.Component {
           // specify how empty date content with no items should be rendered
           renderEmptyDate={this.renderEmptyDate.bind(this)}
           // specify what should be rendered instead of ActivityIndicator
-          renderEmptyData = {this.renderEmptyData.bind(this)}
           // specify your item comparison function for increased performance
           rowHasChanged={this.rowHasChanged.bind(this)}
         />
 
-        <Modal
-            animationType="slide"
-            visible={this.props.modalVisible}
-            enableEmptySections={true}
-            onRequestClose={this.props.toggleModal.bind(this)}
-          >
-            <View style={styles.container}>
-              <TextInput
-                clearButtonMode="always"
-                style={styles.textInputContainerTask}
-                placeholder="Name"
-                onChangeText={text => this.setState({ name: text })}
-                enableEmptySections={true}
-              />
-              <TextInput
-                clearButtonMode="always"
-                style={styles.textInputContainerTask}
-                placeholder="Description"
-                onChangeText={text => this.setState({ description: text })}
-                enableEmptySections={true}
-              />
-              <TextInput
-                clearButtonMode="always"
-                style={styles.textInputContainerTask}
-                placeholder="Street Address"
-                onChangeText={text => this.setState(prevState => ({
-                  location: {
-                    ...prevState.location,
-                    streetAddress: text 
-                  }
-                }))}
-                enableEmptySections={true}
-              />
-              <TextInput
-                clearButtonMode="always"
-                style={styles.textInputContainerTask}
-                placeholder="City"
-                onChangeText={text => this.setState(prevState => ({
-                  location: {
-                    ...prevState.location,
-                    city: text
-                  } }))}
-                enableEmptySections={true}
-              />
-              <TextInput
-                clearButtonMode="always"
-                style={styles.textInputContainerTask}
-                placeholder="State"
-                onChangeText={text => this.setState(prevState => ({ 
-                  location: {
-                    ...prevState.location,
-                    state: text 
-                  }
-                }))}
-                enableEmptySections={true}
-              />
-              <TextInput
-                clearButtonMode="always"
-                style={styles.textInputContainerTask}
-                placeholder="Zipcode"
-                onChangeText={text => this.setState(prevState => ({ 
-                  location: {
-                    ...prevState.location,
-                    zipcode: text 
-                  }
-                }))}
-                enableEmptySections={true}
-              />
-              <TextInput
-                clearButtonMode="always"
-                style={styles.textInputContainerTask}
-                placeholder="Zipcode"
-                onChangeText={text => this.setState({ 
-                  time: text
-                })}
-                enableEmptySections={true}
-              />
-              <TouchableHighlight
-                style={styles.modalButtonContainer}
-                onPress={this.addTask.bind(this)}
-                underlayColor="white"
-              >
-                <View style={styles.modalButton}>
-                  <Text style={styles.modalButtonText}>Add Task</Text>
-                </View>
-              </TouchableHighlight>
-              <TouchableHighlight
-                style={styles.modalButtonContainer}
-                onPress={this.props.toggleModal.bind(this)}
-                underlayColor="white"
-              >
-                <View style={styles.modalButton}>
-                  <Text style={styles.modalButtonText}>Cancel</Text>
-                </View>
-              </TouchableHighlight>
-            </View>
-          </Modal>
-        </View>
+        <AddTaskModal />
+      </View>
     );
   }
 

@@ -15,7 +15,8 @@ import {
     SET_USER_NAME_FULFILLED,
     NEW_ACCOUNT,
     ADD_TASK,
-    ADD_TASK_FULFILLED
+    ADD_TASK_FULFILLED,
+    LOGOUT,
     } from '../actions/types';
 
 // Used for the initial state of the application
@@ -129,6 +130,12 @@ export default function reducer( state = INITIAL_STATE, action){
                         }
                     }
                 }
+            }
+        }
+        case LOGOUT: {
+            return {
+                ...state,
+                isLoggedIn: false
             }
         }
         case TOGGLE_MODAL: {

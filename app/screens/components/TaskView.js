@@ -37,7 +37,7 @@ export default TaskView = (props) => {
                 underlayColor="white"
             >
                 <View style={styles.calendarTaskButton}>
-                    <Text style={styles.calendarTaskButtonText}>View</Text>
+                    <Text style={styles.calendarTaskButtonText}>Edit</Text>
                 </View>
             </TouchableHighlight>
         </View>
